@@ -1,0 +1,21 @@
+page-home {
+    font-family: 'Pacifico', cursive;
+    ion-card{
+        border-radius: 10px !important;
+        width: 100% !important;
+        margin : 0px !important;
+    }
+    ion-card-content{
+            background-color: #553F7A;
+    }
+    ion-card-title{
+        font-size: 16px !important;
+        color: #fff !important;
+    }
+    .cost_badge{
+        font-size: 10px;
+    }
+    .qty_badge{
+        font-size: 10px;
+    }
+}
