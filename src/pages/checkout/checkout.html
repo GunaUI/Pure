@@ -1,0 +1,55 @@
+
+<ion-header>
+
+  <ion-navbar color="primary">
+    <ion-title>Checkout</ion-title>
+  </ion-navbar>
+
+</ion-header>
+<ion-content>
+  <ion-item>
+    <ion-avatar item-start>
+      <img [src]="orderInfo.image_url" alt="orderInfo.name">
+    </ion-avatar>
+    <h2>{{orderInfo.name}}</h2>
+    <p>20 Liter - {{orderInfo.prod_cost}}</p>
+  </ion-item>
+  <div #map id="map"></div>
+  <ion-item>
+    Order Qunatity :
+    <ion-note item-end> {{orderInfo.qty}} </ion-note>
+  </ion-item>
+  <ion-item>
+    Return Empty Can : 
+    <ion-note item-end> {{orderInfo.emptyCan}}</ion-note>
+  </ion-item>
+  <ion-item>
+    Total Price : 
+    <ion-note item-end>{{orderInfo.price}}</ion-note>
+  </ion-item>
+  <ion-item>
+    Delivery Time : 
+    <ion-note item-end>{{orderInfo.delivery}}</ion-note>
+  </ion-item>
+  <ion-item>
+    Address :
+    <ion-note item-end>{{orderInfo.flat}}</ion-note>
+  </ion-item>
+  <ion-item>
+    
+    <ion-note item-end>{{orderInfo.address}}</ion-note>
+  </ion-item>
+  <ion-item>
+    Landmark : 
+    <ion-note item-end>{{orderInfo.landmark}}</ion-note>
+  </ion-item>
+  <ion-item>
+    City : 
+    <ion-note item-end>{{orderInfo.city}}</ion-note>
+  </ion-item>
+  <ion-item>
+    Zipcode : 
+    <ion-note item-end>{{orderInfo.zipcode}}</ion-note>
+  </ion-item>
+  <button ion-button class = "button button-block" color="primary" >Confirm</button>
+</ion-content>
