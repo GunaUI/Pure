@@ -1,6 +1,8 @@
 page-home {
     font-family: 'Pacifico', cursive;
+    
     ion-card{
+        text-align: center;
         border-radius: 10px !important;
         width: 100% !important;
         margin : 0px !important;
@@ -9,6 +11,7 @@ page-home {
             background-color: #553F7A;
     }
     ion-card-title{
+        position: relative !important;
         font-size: 16px !important;
         color: #fff !important;
     }
@@ -17,5 +20,8 @@ page-home {
     }
     .qty_badge{
         font-size: 10px;
+    }
+    ion-content{
+        background: linear-gradient(to top, #cd9cf2 0%, #f6f3ff 100%);
     }
 }

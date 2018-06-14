@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController, ToastController } from 'ionic-angular';
 import { Product } from '../../models/product.interface';
+import { google } from "google-maps";
 
 @IonicPage()
 @Component({
@@ -9,7 +10,7 @@ import { Product } from '../../models/product.interface';
 })
 export class ProductDetailsPage {
   productInfo : Product
-  google: any;
+  google: google;
   model: any = {
     qty : 10,
     emptyCan : 5,

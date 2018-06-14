@@ -1,5 +1,6 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { google } from "google-maps";
 
 @IonicPage()
 @Component({
@@ -8,7 +9,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class CheckoutPage {
   orderInfo : any
-  google: any;
+  google: google;
   @ViewChild('map') mapRef: ElementRef;
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
@@ -20,9 +21,7 @@ export class CheckoutPage {
     const location = new google.maps.LatLng(this.orderInfo.latitude, this.orderInfo.longitude);
     const options = {
       center:location,
-      zoom : 13,
-      streetViewControl:false,
-      mapTypeId: 'roadmap'
+      zoom : 13
     }
     const map = new google.maps.Map(this.mapRef.nativeElement, options);
     this.addMarker(location, map)

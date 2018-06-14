@@ -1,0 +1,60 @@
+<ion-menu [content]="content">
+  <ion-header>
+    <ion-toolbar color="primary">
+      <ion-title>Menu</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content>
+    <ion-card class="menuCard">
+      <img src="assets/imgs/menu.jpeg"/>
+      <div class="card-title">Puredip</div>
+      <div class="card-subtitle">Drink Pure Water</div>
+    </ion-card>
+
+    <ion-list>
+      <!--<button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">
+        {{p.title}}
+      </button>-->
+
+      <ion-item *ngFor="let p of pages" text-wrap (click)= "openPage(p)" menuClose>
+        <ion-icon name="home" item-left large></ion-icon>
+        <h2>{{p.title}}</h2>
+        <p>test desc</p>
+      </ion-item>
+
+      <ion-item-divider color="primary">Account</ion-item-divider>
+      <ion-item (click)="openPage('signup');" menuClose *ngIf="!loggedIn">
+        <ion-icon name="md-clipboard" item-left large></ion-icon>
+        <h2>Sign Up</h2>
+        <p>For a new account</p>
+      </ion-item>
+      <ion-item (click)="openPage('login');" menuClose *ngIf="!loggedIn">
+        <ion-icon name="log-in" item-left large></ion-icon>
+        <h2>Login</h2>
+        <p>Using email and password</p>
+      </ion-item>
+      <ion-item *ngIf="false" menuClose>
+        <ion-icon name="contact" item-left large></ion-icon>
+        <h2>Hi Admin</h2>
+        <p>Welcome</p>
+      </ion-item>
+      <ion-item (click)="openPage('cart');" *ngIf="false" menuClose>
+        <ion-icon name="cart" item-left large></ion-icon>
+        <h2>Your Cart</h2>
+        <p>Check items in your cart</p>
+      </ion-item>
+      <ion-item (click)="openPage('logout');" *ngIf="false" menuClose>
+        <ion-icon name="log-out" item-left large></ion-icon>
+        <h2>Logout</h2>
+        <p>of your Account</p>
+      </ion-item>
+
+    </ion-list>
+
+  </ion-content>
+
+</ion-menu>
+
+<!-- Disable swipe-to-go-back because it's poor UX to combine STGB with side menus -->
+<ion-nav [root]="rootPage" #content swipeBackEnabled="false"></ion-nav>
