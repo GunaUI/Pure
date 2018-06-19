@@ -1,12 +1,6 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
-
-/**
- * Generated class for the LoginPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { Component, ViewChild } from '@angular/core';
+import { IonicPage, NavController, NavParams, ToastController,AlertController, Events } from 'ionic-angular';
+import { Storage } from '@ionic/storage';
 
 @IonicPage()
 @Component({
@@ -15,11 +9,49 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class LoginPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  username : String;
+  password : String;
+
+  @ViewChild('content') nav: NavController;
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, private toastCtrl: ToastController, private storage : Storage, private alertCtrl : AlertController, public events: Events) {
+    this.username = '';
+    this.password = '';
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad LoginPage');
+  login() {
+    if(this.username!='admin@deforay.com' ||this.password!='123'){
+      this.toastCtrl.create({
+        message:'Invalid username and/or password!',
+        duration: 3000
+      }).present()
+
+    }else{
+      let response = {'user':{'name':'Admin'}};
+      this.storage.set('userLoginInfo',response).then((data)=>{
+        this.alertCtrl.create({
+          title : "Login Successful",
+          message : "You have been logged in successfully!.",
+          buttons: [{
+            text: "OK",
+            handler: () => {
+              if(this.navParams.get('next')){
+                this.navCtrl.setRoot(this.navParams.get("next"));
+              }else{
+                this.events.publish('user:loggedin', response, Date.now());
+                this.navCtrl.setRoot("HomePage");  
+              }
+            }
+          }]
+        }).present()
+      });
+    }
+  }
+  
+  openPage(pageName : String){
+    if(pageName=='signup'){
+      this.navCtrl.push("SignupPage");
+    }
   }
 
 }
