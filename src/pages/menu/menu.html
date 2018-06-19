@@ -18,7 +18,7 @@
         <h2>{{p.title}}</h2>
         <p>test desc</p>
       </ion-item>
-       <ion-item (click)="openPage('cart');" *ngIf="loggedIn" menuClose>
+       <ion-item (click)="openPage('orders');" *ngIf="loggedIn" menuClose>
         <ion-icon name="cart" item-left large></ion-icon>
         <h2>Your Orders</h2>
         <p>Check your orders</p>
@@ -35,7 +35,7 @@
         <h2>Login</h2>
         <p>Using email and password</p>
       </ion-item>
-      <ion-item *ngIf="loggedIn" menuClose>
+      <ion-item  (click)="openPage('profile');" *ngIf="loggedIn" menuClose>
         <ion-icon name="contact" item-left large></ion-icon>
         <h2>Profile</h2>
         <p>Update your profile</p>

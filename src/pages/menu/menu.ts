@@ -25,17 +25,6 @@ export class MenuPage {
   constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public events: Events) {
     this.user = {};
     events.subscribe('user:loggedin', (user, time) => {
-      // this.storage.ready().then(() => {
-      //   this.storage.get('userLoginInfo').then((userLoginInfo)=>{
-      //     if (userLoginInfo!=null){
-      //       this.loggedIn = true;
-      //       this.user = userLoginInfo.user;
-      //     }else{
-      //       this.loggedIn = false;
-      //       this.user = null;
-      //     }
-      //   })
-      // });
       this.getLoggedInfo()
     });
   }
@@ -44,15 +33,19 @@ export class MenuPage {
     if(page=='signup'){
       this.nav.setRoot('SignupPage');
     }else if(page=='login'){
-      // this.navCtrl.push("LoginPage");
       this.nav.setRoot("LoginPage");
-    }else if(page=='logout'){
+    }else if(page=='profile'){
+      this.nav.setRoot("ProfilePage");
+    }
+    else if(page=='orders'){
+      this.nav.setRoot("OrdersPage");
+    }
+    else if(page=='logout'){
       this.storage.remove('userLoginInfo').then(()=>{
         this.loggedIn = false;
         this.user = null;
       })
-    }
-    else{
+    }else{
       this.nav.setRoot(page.component);
     }
   }
