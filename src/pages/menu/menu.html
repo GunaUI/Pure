@@ -23,10 +23,15 @@
         <h2>Your Orders</h2>
         <p>Check your orders</p>
       </ion-item>
+       <ion-item menuClose *ngIf="loggedIn" (click)="openPage('subscription');">
+        <ion-icon name="notifications" item-left large></ion-icon>
+        <h2>Subscription</h2>
+        <p>Frequency of delivery</p>
+      </ion-item>
 
       <ion-item-divider color="primary">Account</ion-item-divider>
       <ion-item (click)="openPage('signup');" menuClose *ngIf="!loggedIn">
-        <ion-icon name="md-clipboard" item-left large></ion-icon>
+        <ion-icon name="clipboard" item-left large></ion-icon>
         <h2>Sign Up</h2>
         <p>For a new account</p>
       </ion-item>

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Events } from 'ionic-angular';
 import { Product } from '../../models/product.interface';
 import { ProductServiceProvider } from '../../providers/product-service/product.service';
 
@@ -12,8 +12,13 @@ import { ProductServiceProvider } from '../../providers/product-service/product.
 export class HomePage {
 
   products : Product[];
-  productDetail : Product
-  constructor(public navCtrl: NavController, public navParams: NavParams, private prodService : ProductServiceProvider) {}
+  productDetail : Product;
+  showTabs = false;
+  constructor(public navCtrl: NavController, public navParams: NavParams, private prodService : ProductServiceProvider , public events: Events) {
+    events.subscribe('goToHome', () => {
+      navCtrl.setRoot('HomePage');
+    });
+  }
 
   getProducts(): void{
     this.prodService.mockgetProduct().subscribe((data : Product[]) => this.products = data);

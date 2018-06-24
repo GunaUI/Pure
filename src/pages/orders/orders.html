@@ -1,9 +1,3 @@
-<!--
-  Generated template for the OrdersPage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
 
   <ion-navbar>
@@ -12,12 +6,150 @@
         <ion-icon name="menu"></ion-icon>
       </button>
     </ion-buttons>
-    <ion-title>orders</ion-title>
+    <ion-title>Orders</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
-<ion-content padding>
+<ion-content>
+  <ion-list>
+  <ion-item-sliding>
+    <ion-item>
+      <ion-avatar item-start>
+          <img src="assets/imgs/menu.jpeg">
+      </ion-avatar>
+      <h2>PURE0001</h2>
+      <ion-note item-end class="note">06-07-2018 9:38 pm</ion-note>
+      <p>Order Placed</p>
+    </ion-item>
+    <ion-item-options side="left" *ngIf="true">
+        <button ion-button color="danger">
+          <ion-icon name="trash"></ion-icon>
+          Delete
+        </button>
+        <button ion-button color="secondary">
+          <ion-icon name="create"></ion-icon>
+          Edit
+        </button>
+    </ion-item-options>
+    <ion-item-options side="right">
+        <button ion-button color="primary">
+          <ion-icon name="more"></ion-icon>
+          More
+        </button>
+        <button ion-button color="success" (click)="openInvoice();">
+          <ion-icon name="document"></ion-icon>
+          Invoice
+        </button>
+        <button ion-button color="warning">
+          <ion-icon name="copy"></ion-icon>
+          Repeat
+        </button>
+    </ion-item-options>
+  </ion-item-sliding>
+  <ion-item-sliding>
+    <ion-item>
+      <ion-avatar item-start>
+          <img src="assets/imgs/menu.jpeg">
+      </ion-avatar>
+      <h2>PURE0002</h2>
+      <ion-note item-end class="note">05-07-2018 9:38 pm</ion-note>
+      <p>Order Received</p>
+    </ion-item>
+    <ion-item-options side="left" *ngIf="true">
+        <button ion-button color="danger">
+          <ion-icon name="trash"></ion-icon>
+          Delete
+        </button>
+        <button ion-button color="secondary">
+          <ion-icon name="create"></ion-icon>
+          Edit
+        </button>
+      </ion-item-options>
+      <ion-item-options side="right">
+        <button ion-button color="primary">
+          <ion-icon name="more"></ion-icon>
+          More
+        </button>
+        <button ion-button color="success" (click)="openInvoice();">
+          <ion-icon name="document"></ion-icon>
+          Invoice
+        </button>
+        <button ion-button color="warning">
+          <ion-icon name="copy"></ion-icon>
+          Repeat
+        </button>
+    </ion-item-options>
+  </ion-item-sliding>
+  <ion-item-sliding>
+    <ion-item>
+      <ion-avatar item-start>
+          <img src="assets/imgs/menu.jpeg">
+      </ion-avatar>
+      <h2>PURE0003</h2>
+      <ion-note item-end class="note">04-07-2018 9:38 pm</ion-note>
+      <p>Packed</p>
+    </ion-item>
+    <ion-item-options side="left" *ngIf="false">
+        <button ion-button color="danger">
+          <ion-icon name="trash"></ion-icon>
+          Delete
+        </button>
+        <button ion-button color="secondary">
+          <ion-icon name="create"></ion-icon>
+          Edit
+        </button>
+      </ion-item-options>
+      <ion-item-options side="right">
+        <button ion-button color="primary">
+          <ion-icon name="more"></ion-icon>
+          More
+        </button>
+        <button ion-button color="success" (click)="openInvoice();">
+          <ion-icon name="document"></ion-icon>
+          Invoice
+        </button>
+        <button ion-button color="warning">
+          <ion-icon name="copy"></ion-icon>
+          Repeat
+        </button>
+    </ion-item-options>
+  </ion-item-sliding>
+  <ion-item-sliding>
+    <ion-item>
+      <ion-avatar item-start>
+          <img src="assets/imgs/menu.jpeg">
+      </ion-avatar>
+      <h2>PURE0004</h2>
+      <ion-note item-end class="note">03-07-2018 9:38 pm</ion-note>
+      <p>Out for delivery</p>
+    </ion-item>
+    <ion-item-options side="left" *ngIf="false">
+        <button ion-button color="danger">
+          <ion-icon name="trash"></ion-icon>
+          Delete
+        </button>
+        <button ion-button color="secondary">
+          <ion-icon name="create"></ion-icon>
+          Edit
+        </button>
+      </ion-item-options>
+      <ion-item-options side="right">
+        <button ion-button color="primary">
+          <ion-icon name="more"></ion-icon>
+          More
+        </button>
+        <button ion-button color="success" (click)="openInvoice();">
+          <ion-icon name="document"></ion-icon>
+          Invoice
+        </button>
+        <button ion-button color="warning">
+          <ion-icon name="copy"></ion-icon>
+          Repeat
+        </button>
+    </ion-item-options>
+  </ion-item-sliding>
+</ion-list>
 
 </ion-content>

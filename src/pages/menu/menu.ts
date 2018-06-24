@@ -40,11 +40,15 @@ export class MenuPage {
     else if(page=='orders'){
       this.nav.setRoot("OrdersPage");
     }
+    else if(page=='subscription'){
+      this.nav.setRoot("SubscriptionPage");
+    }
     else if(page=='logout'){
       this.storage.remove('userLoginInfo').then(()=>{
         this.loggedIn = false;
         this.user = null;
       })
+      this.nav.setRoot("HomePage");
     }else{
       this.nav.setRoot(page.component);
     }

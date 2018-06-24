@@ -1,12 +1,10 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController, Platform } from 'ionic-angular';
+import { File } from '@ionic-native/file';
+import { DocumentViewer, DocumentViewerOptions } from '@ionic-native/document-viewer';
+import { FileTransfer } from '@ionic-native/file-transfer';
 
-/**
- * Generated class for the OrdersPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+
 
 @IonicPage()
 @Component({
@@ -15,11 +13,34 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class OrdersPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public modalCtrl : ModalController, private document: DocumentViewer, private file: File, private transfer: FileTransfer, private platform: Platform) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad OrdersPage');
   }
-
+  openInvoice(){
+      const options: DocumentViewerOptions = {
+        title: 'Invoice',
+        documentView: { closeLabel: '' },
+        navigationView: { closeLabel: '' },
+        email: { enabled: true },
+        print: { enabled: true },
+        openWith: { enabled: true },
+        bookmarks: { enabled: true },
+        search: { enabled: false },
+        autoClose: { onPause: false }
+      }
+    let path = null;
+    if (this.platform.is('ios')) {
+      path = this.file.documentsDirectory;
+    } else if (this.platform.is('android')) {
+      path = this.file.dataDirectory;
+    }
+    const transfer = this.transfer.create();
+    transfer.download('https://devdactic.com/html/5-simple-hacks-LBT.pdf', path + 'invoice.pdf').then(entry => {
+      let url = entry.toURL();
+      this.document.viewDocument(url, 'application/pdf', options);
+    });
+  }
 }

@@ -11,7 +11,9 @@ export class CheckoutPage {
   orderInfo : any
   google: google;
   @ViewChild('map') mapRef: ElementRef;
+  showTabs : boolean;
   constructor(public navCtrl: NavController, public navParams: NavParams) {
+    this.showTabs = false;
   }
   ionViewDidLoad() {
     console.log('ionViewDidLoad CheckoutPage');

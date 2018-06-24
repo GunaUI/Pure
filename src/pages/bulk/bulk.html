@@ -1,0 +1,90 @@
+
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-buttons left (click)="backToHome();">
+      <button ion-button icon-only left><ion-icon name="arrow-round-back"></ion-icon></button>
+    </ion-buttons>
+    <ion-title>Bulk Order</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content>
+  <ion-card>
+    <ion-row col-12>
+      <ion-col col-6>
+        <img [src]="productInfo.image_url" alt="productInfo.name"/>
+      </ion-col> 
+      <ion-col col-6>
+        <h1> {{productInfo.name}}</h1>
+        <h2> 20 Liter - {{productInfo.prod_cost}}</h2>
+        <p>
+          No matter what your drinking water needs are, You can always count on us!
+        </p>
+      </ion-col> 
+    </ion-row>
+    <ion-card-content>
+      
+      <ion-list>
+        <ion-list-header> Order Details</ion-list-header>
+        <ion-item>      
+          <ion-label> Order Qunatity</ion-label>
+          <ion-input type="number" min="3" inputmode="numeric" pattern="[0-9]*"  required [(ngModel)]="model.qty" ></ion-input>
+          <ion-icon name="remove-circle"  color="warning" item-end></ion-icon>
+          <ion-icon name="add-circle" color="success" item-end></ion-icon>
+        </ion-item>
+        <ion-item>      
+          <ion-label>Return Empty Can</ion-label>
+          <ion-input type="number" min="0" inputmode="numeric" pattern="[0-9]*" required [(ngModel)]="model.emptyCan" ></ion-input>
+          <ion-icon name="remove-circle"  color="warning" item-end></ion-icon>
+          <ion-icon name="add-circle" color="success" item-end></ion-icon>
+        </ion-item>
+        <ion-item>
+          <ion-label>Total Price</ion-label>
+          <ion-input type="text" [readonly]="true" [(ngModel)]="model.price"></ion-input>
+        </ion-item>
+        <ion-list-header> Delivery Details</ion-list-header>
+        <ion-item>
+          <ion-label floating>Delivery Time</ion-label>
+          <ion-select [(ngModel)]="model.delivery" interface="popover">
+            <ion-option value="9AM to 12AM">9AM to 12AM</ion-option>
+            <ion-option value="1PM to 4PM">1PM to 4PM</ion-option>
+            <ion-option value="4PM to 7PM">4PM to 7PM</ion-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-label>Flat No.</ion-label>
+          <ion-input type="text" [(ngModel)]="model.flat"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>Floor</ion-label>
+          <ion-input type="text" [(ngModel)]="model.floor"></ion-input>
+        </ion-item>
+        
+        <ion-item>
+          <ion-label>Address</ion-label>
+          <ion-textarea maxlength="80" [(ngModel)]="model.address" ></ion-textarea>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>Lift Access</ion-label>
+          <ion-toggle color="success"></ion-toggle>
+        </ion-item>
+        <ion-item>
+          <ion-label>Landmark</ion-label>
+          <ion-input type="text" [(ngModel)]="model.landmark"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label>City</ion-label>
+          <ion-input type="text" [(ngModel)]="model.city"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label>Zipcode</ion-label>
+          <ion-input type="text" [(ngModel)]="model.zipcode"></ion-input>
+        </ion-item>
+        <button ion-button class = "button button-block" color="primary" (click)="getGeolocation(model)">Proceed</button>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
