@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams,} from 'ionic-angular';
+import { IonicPage, Nav, NavParams,} from 'ionic-angular';
 
 @IonicPage()
 @Component({
@@ -12,7 +12,7 @@ export class ProductDetailsPage {
   showTabs : boolean;
 
   myIndex : number;
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: Nav, public navParams: NavParams) {
     this.myIndex = this.navParams.data.tabIndex || 0 ;
     this.showTabs = true;
   }

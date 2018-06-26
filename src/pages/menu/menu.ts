@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, Events } from 'ionic-angular';
+import { IonicPage, Nav, NavParams, Events } from 'ionic-angular';
 
 import { Storage } from '@ionic/storage';
 
@@ -17,12 +17,12 @@ export class MenuPage {
 	  // { title: 'List', component: 'ListPage' }
   ];
 
-  @ViewChild('content') nav: NavController;
+  @ViewChild('content') nav: Nav;
 
   loggedIn : boolean;
   user : any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public storage: Storage, public events: Events) {
+  constructor(public navCtrl: Nav, public navParams: NavParams, public storage: Storage, public events: Events) {
     this.user = {};
     events.subscribe('user:loggedin', (user, time) => {
       this.getLoggedInfo()

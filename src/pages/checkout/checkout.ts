@@ -1,5 +1,5 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, Nav, NavParams } from 'ionic-angular';
 import { google } from "google-maps";
 
 @IonicPage()
@@ -12,7 +12,7 @@ export class CheckoutPage {
   google: google;
   @ViewChild('map') mapRef: ElementRef;
   showTabs : boolean;
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: Nav, public navParams: NavParams) {
     this.showTabs = false;
   }
   ionViewDidLoad() {

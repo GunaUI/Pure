@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
+import { IonicPage, Nav, NavParams, ViewController } from 'ionic-angular';
 
 /**
  * Generated class for the DepositPage page.
@@ -15,9 +15,9 @@ import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angul
 })
 export class DepositPage {
   
-  @ViewChild('content') nav: NavController;
+  @ViewChild('content') nav: Nav;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl : ViewController) {
+  constructor(public navCtrl: Nav, public navParams: NavParams, public viewCtrl : ViewController) {
   }
 
   ionViewDidLoad() {

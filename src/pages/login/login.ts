@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController,AlertController, Events } from 'ionic-angular';
+import { IonicPage, Nav, NavParams, ToastController,AlertController, Events } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 
 @IonicPage()
@@ -12,9 +12,9 @@ export class LoginPage {
   username : String;
   password : String;
 
-  @ViewChild('content') nav: NavController;
+  @ViewChild('content') nav: Nav;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private toastCtrl: ToastController, private storage : Storage, private alertCtrl : AlertController, public events: Events) {
+  constructor(public navCtrl: Nav, public navParams: NavParams, private toastCtrl: ToastController, private storage : Storage, private alertCtrl : AlertController, public events: Events) {
     this.username = '';
     this.password = '';
   }

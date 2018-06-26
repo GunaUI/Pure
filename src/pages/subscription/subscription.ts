@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, Nav, NavParams } from 'ionic-angular';
 
 /**
  * Generated class for the SubscriptionPage page.
@@ -15,7 +15,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class SubscriptionPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: Nav, public navParams: NavParams) {
   }
 
   ionViewDidLoad() {

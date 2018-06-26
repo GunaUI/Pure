@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController, AlertController, ModalController } from 'ionic-angular';
+import { IonicPage, Nav, NavParams, ToastController, AlertController, ModalController } from 'ionic-angular';
 
 @IonicPage()
 @Component({
@@ -13,7 +13,7 @@ export class ProfilePage {
 
   // @ViewChild('content') nav: NavController;
 
-  constructor(private navCtrl: NavController, private navParams: NavParams, private toastCtrl: ToastController, private alertCtrl: AlertController, public modalCtrl : ModalController) {
+  constructor(private navCtrl: Nav, private navParams: NavParams, private toastCtrl: ToastController, private alertCtrl: AlertController, public modalCtrl : ModalController) {
     this.profile.billing_address = {};
     this.profile.shipping_address = {};
     this.billing_shipping_same = false;

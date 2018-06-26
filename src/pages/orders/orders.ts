@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController, Platform } from 'ionic-angular';
+import { IonicPage, Nav, NavParams, ModalController, Platform } from 'ionic-angular';
 import { File } from '@ionic-native/file';
 import { DocumentViewer, DocumentViewerOptions } from '@ionic-native/document-viewer';
 import { FileTransfer } from '@ionic-native/file-transfer';
@@ -13,7 +13,7 @@ import { FileTransfer } from '@ionic-native/file-transfer';
 })
 export class OrdersPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public modalCtrl : ModalController, private document: DocumentViewer, private file: File, private transfer: FileTransfer, private platform: Platform) {
+  constructor(public navCtrl: Nav, public navParams: NavParams, public modalCtrl : ModalController, private document: DocumentViewer, private file: File, private transfer: FileTransfer, private platform: Platform) {
   }
 
   ionViewDidLoad() {

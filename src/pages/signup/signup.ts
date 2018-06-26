@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController, AlertController } from 'ionic-angular';
+import { IonicPage, Nav, NavParams, ToastController, AlertController } from 'ionic-angular';
 
 @IonicPage()
 @Component({
@@ -13,7 +13,7 @@ export class SignupPage {
 
   // @ViewChild('content') nav: NavController;
 
-  constructor(private navCtrl: NavController, private navParams: NavParams, private toastCtrl: ToastController, private alertCtrl: AlertController) {
+  constructor(private navCtrl: Nav, private navParams: NavParams, private toastCtrl: ToastController, private alertCtrl: AlertController) {
     this.newUser.billing_address = {};
     this.newUser.shipping_address = {};
     this.billing_shipping_same = false;
