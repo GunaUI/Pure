@@ -10,13 +10,9 @@ import { Storage } from '@ionic/storage';
   templateUrl: 'menu.html',
 })
 export class MenuPage {
-
+  activePage: any;
   rootPage = 'HomePage';
-  pages = [
-	  { title: 'Home', component: 'HomePage' }
-	  // { title: 'List', component: 'ListPage' }
-  ];
-
+ 
   @ViewChild('content') nav: Nav;
 
   loggedIn : boolean;
@@ -24,12 +20,18 @@ export class MenuPage {
 
   constructor(public navCtrl: Nav, public navParams: NavParams, public storage: Storage, public events: Events) {
     this.user = {};
+    this.activePage = 'home';
     events.subscribe('user:loggedin', (user, time) => {
+      this.activePage = 'home';
       this.getLoggedInfo()
     });
   }
+  checkActive(page){
+    return page == this.activePage;
+  }
 
   openPage(page) {
+    this.activePage = page;
     if(page=='signup'){
       this.nav.setRoot('SignupPage');
     }else if(page=='login'){
@@ -48,9 +50,11 @@ export class MenuPage {
         this.loggedIn = false;
         this.user = null;
       })
+      this.activePage = 'home';
       this.nav.setRoot("HomePage");
     }else{
-      this.nav.setRoot(page.component);
+      this.activePage = 'home';
+      this.nav.setRoot("HomePage");
     }
   }
   ionViewDidEnter() {

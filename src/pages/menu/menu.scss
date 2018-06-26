@@ -20,5 +20,8 @@ page-menu {
         width: 100%;
         color: #fff
     }
+    .active-highlight{
+        color: map-get($colors , primary);
+    }
 
 }
