@@ -1,13 +1,7 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController, ToastController, Events } from 'ionic-angular';
+import { IonicPage, Nav, NavParams, LoadingController, ToastController } from "ionic-angular";
 import { Product } from '../../models/product.interface';
 import { google } from "google-maps";
-/**
- * Generated class for the NormalPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
 
 @IonicPage()
 @Component({
@@ -33,7 +27,7 @@ productInfo : Product
     longitude : ''
   };
   
-  constructor(private navCtrl: NavController, private navParams: NavParams, private loadingCtrl: LoadingController, private toastCtrl: ToastController , public events: Events) {}
+  constructor(private navCtrl: Nav, private navParams: NavParams, private loadingCtrl: LoadingController, private toastCtrl: ToastController) {}
 
   ionViewWillLoad() {
     this.productInfo = this.navParams.data
@@ -72,7 +66,7 @@ productInfo : Product
       },100);
   }
   backToHome(){
-    this.events.publish('goToHome');
+    this.navCtrl.setRoot('HomePage');
   }
 
 }

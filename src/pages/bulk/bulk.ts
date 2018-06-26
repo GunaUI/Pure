@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController, ToastController , Events} from 'ionic-angular';
+import { IonicPage, Nav, NavParams, LoadingController, ToastController} from 'ionic-angular';
 import { Product } from '../../models/product.interface';
 import { google } from "google-maps";
 /**
@@ -32,7 +32,7 @@ model: any = {
     longitude : ''
   };
   
-  constructor(private navCtrl: NavController, private navParams: NavParams, private loadingCtrl: LoadingController, private toastCtrl: ToastController , public events: Events) {}
+  constructor(private navCtrl: Nav, private navParams: NavParams, private loadingCtrl: LoadingController, private toastCtrl: ToastController) {}
 
   ionViewWillLoad() {
     console.log('bulk',this.navParams.data);
@@ -72,7 +72,7 @@ model: any = {
       },100);
   }
   backToHome(){
-    this.events.publish('goToHome');
+    this.navCtrl.setRoot('HomePage');
   }
 
 }

@@ -14,11 +14,7 @@ export class HomePage {
   products : Product[];
   productDetail : Product;
   showTabs = false;
-  constructor(public navCtrl: NavController, public navParams: NavParams, private prodService : ProductServiceProvider , public events: Events) {
-    events.subscribe('goToHome', () => {
-      navCtrl.setRoot('HomePage');
-    });
-  }
+  constructor(public navCtrl: NavController, public navParams: NavParams, private prodService : ProductServiceProvider , public events: Events) {}
 
   getProducts(): void{
     this.prodService.mockgetProduct().subscribe((data : Product[]) => this.products = data);
