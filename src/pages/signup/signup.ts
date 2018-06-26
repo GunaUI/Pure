@@ -33,15 +33,19 @@ export class SignupPage {
 
       //let validEmail=true
 
-      this.toastCtrl.create({
-        message: "Congratz, Email good to go",
-        duration : 3000
-      }).present();
+      // this.toastCtrl.create({
+      //   message: "Email good to go",
+      //   duration : 3000,
+      //   position: 'middle',
+      //   showCloseButton: true,
+      //   closeButtonText: 'Ok'
+      // }).present();
 
     }else{
 
       this.toastCtrl.create({
         message: "Please enter valid email",
+        position: 'middle',
         showCloseButton: true
       }).present();
 
