@@ -51,19 +51,27 @@
         <ion-input type="text" [(ngModel)]="profile.billing_address.address_1"></ion-input>
       </ion-item>
       <ion-item>
-        <ion-label floating >Address</ion-label>
+          <ion-label>Floor</ion-label>
+          <ion-input type="text" [(ngModel)]="profile.billing_address.floor"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>Address</ion-label>
         <ion-textarea maxlength="80" ></ion-textarea>
       </ion-item>
       <ion-item>
-        <ion-label floating >Landmark</ion-label>
+          <ion-label>Lift Access</ion-label>
+          <ion-toggle color="success"></ion-toggle>
+      </ion-item>
+      <ion-item>
+        <ion-label>Landmark</ion-label>
         <ion-input type="text" [(ngModel)]="profile.billing_address.address_2"></ion-input>
       </ion-item>
       <ion-item>
-        <ion-label floating >City</ion-label>
+        <ion-label>City</ion-label>
         <ion-input type="text" [(ngModel)]="profile.billing_address.city"></ion-input>
       </ion-item>
       <ion-item>
-        <ion-label floating >Zipcode</ion-label>
+        <ion-label>Zipcode</ion-label>
         <ion-input type="text" [(ngModel)]="profile.billing_address.zipcode"></ion-input>
       </ion-item>
       <ion-item>
@@ -75,20 +83,28 @@
         <ion-label>Flat No.</ion-label>
         <ion-input type="text" [(ngModel)]="profile.shipping_address.address_1">></ion-input>
       </ion-item>
-      <ion-item *ngIf="!billing_shipping_same">
-        <ion-label floating >Address</ion-label>
-        <ion-textarea maxlength="80" [(ngModel)]="profile.shipping_address.address_2" ></ion-textarea>
+      <ion-item  *ngIf="!billing_shipping_same">
+          <ion-label>Floor</ion-label>
+          <ion-input type="text" [(ngModel)]="profile.shipping_address.floor"></ion-input>
       </ion-item>
       <ion-item *ngIf="!billing_shipping_same">
-        <ion-label floating >Landmark</ion-label>
+        <ion-label>Address</ion-label>
+        <ion-textarea maxlength="80" [(ngModel)]="profile.shipping_address.address_2" ></ion-textarea>
+      </ion-item>
+      <ion-item  *ngIf="!billing_shipping_same">
+          <ion-label>Lift Access</ion-label>
+          <ion-toggle color="success"></ion-toggle>
+      </ion-item>
+      <ion-item *ngIf="!billing_shipping_same">
+        <ion-label>Landmark</ion-label>
         <ion-input type="text" [(ngModel)]="profile.shipping_address.landmark"></ion-input>
       </ion-item>
       <ion-item *ngIf="!billing_shipping_same">
-        <ion-label floating >City</ion-label>
+        <ion-label>City</ion-label>
         <ion-input type="text" [(ngModel)]="profile.shipping_address.city"></ion-input>
       </ion-item>
       <ion-item *ngIf="!billing_shipping_same">
-        <ion-label floating >Zipcode</ion-label>
+        <ion-label>Zipcode</ion-label>
         <ion-input type="text" [(ngModel)]="profile.shipping_address.zipcode"></ion-input>
       </ion-item>
   </ion-list>

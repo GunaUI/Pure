@@ -1,5 +1,5 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { IonicPage, Nav, NavParams } from 'ionic-angular';
+import { IonicPage, Nav, NavParams,AlertController } from 'ionic-angular';
 import { google } from "google-maps";
 
 @IonicPage()
@@ -11,9 +11,7 @@ export class CheckoutPage {
   orderInfo : any
   google: google;
   @ViewChild('map') mapRef: ElementRef;
-  showTabs : boolean;
-  constructor(public navCtrl: Nav, public navParams: NavParams) {
-    this.showTabs = false;
+  constructor(public navCtrl: Nav, public navParams: NavParams, private alertCtrl : AlertController) {
   }
   ionViewDidLoad() {
     console.log('ionViewDidLoad CheckoutPage');
@@ -33,6 +31,20 @@ export class CheckoutPage {
       position,
       map
     });
+  }
+
+  openOrders(){
+    this.alertCtrl.create({
+          title : "Order Saved Successfully!!",
+          message : "Will deliver shortly.",
+          buttons: [{
+            text: "OK",
+            handler: () => {
+              this.navCtrl.setRoot("OrdersPage");
+            }
+          }]
+        }).present()
+    
   }
 
 }

@@ -25,31 +25,34 @@
   </ion-item>
   <ion-item>
     Total Price : 
-    <ion-note item-end>{{orderInfo.price}}</ion-note>
+    <ion-note item-end>{{orderInfo.total}}</ion-note>
   </ion-item>
   <ion-item>
     Delivery Time : 
     <ion-note item-end>{{orderInfo.delivery}}</ion-note>
   </ion-item>
   <ion-item>
-    Address :
-    <ion-note item-end>{{orderInfo.flat}}</ion-note>
+    Payment : 
+    <ion-note item-end>Cash on delivery</ion-note>
   </ion-item>
   <ion-item>
-    
-    <ion-note item-end>{{orderInfo.address}}</ion-note>
+    Address :
+    <ion-note item-end>No.7, Parthasarathys street</ion-note>
+  </ion-item>
+  <ion-item>
+    <ion-note item-end>kulasekarapuram, koyambed</ion-note>
   </ion-item>
   <ion-item>
     Landmark : 
-    <ion-note item-end>{{orderInfo.landmark}}</ion-note>
+    <ion-note item-end>Near By SIB</ion-note>
   </ion-item>
   <ion-item>
     City : 
-    <ion-note item-end>{{orderInfo.city}}</ion-note>
+    <ion-note item-end>Chennai</ion-note>
   </ion-item>
   <ion-item>
     Zipcode : 
-    <ion-note item-end>{{orderInfo.zipcode}}</ion-note>
+    <ion-note item-end>600092</ion-note>
   </ion-item>
-  <button ion-button class = "button button-block" color="primary" >Confirm</button>
+  <button ion-button class = "button button-block" color="primary" (click)="openOrders();" >Confirm</button>
 </ion-content>

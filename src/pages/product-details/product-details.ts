@@ -9,12 +9,10 @@ import { IonicPage, Nav, NavParams,} from 'ionic-angular';
 export class ProductDetailsPage {
   tab1Root = "NormalPage";
   tab2Root = "BulkPage";
-  showTabs : boolean;
 
   myIndex : number;
   constructor(public navCtrl: Nav, public navParams: NavParams) {
     this.myIndex = this.navParams.data.tabIndex || 0 ;
-    this.showTabs = true;
   }
 
   ionViewDidLoad() {

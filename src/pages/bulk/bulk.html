@@ -29,30 +29,48 @@
         <ion-list-header> Order Details</ion-list-header>
         <ion-item>      
           <ion-label> Order Qunatity</ion-label>
-          <ion-input type="number" min="3" inputmode="numeric" pattern="[0-9]*"  required [(ngModel)]="model.qty" ></ion-input>
-          <ion-icon name="remove-circle"  color="warning" item-end></ion-icon>
-          <ion-icon name="add-circle" color="success" item-end></ion-icon>
+          <ion-input type="number" min="3" inputmode="numeric" pattern="[0-9]*"  required [(ngModel)]="model.qty" (keyup)="calculateOrder();"></ion-input>
+          <ion-icon name="remove-circle"  color="warning" item-end (click)="reduceQty('order');" style="z-index: 9999"></ion-icon>
+          <ion-icon name="add-circle" color="success" item-end (click)="increaseQty('order');" style="z-index: 9999"></ion-icon>
         </ion-item>
         <ion-item>      
           <ion-label>Return Empty Can</ion-label>
-          <ion-input type="number" min="0" inputmode="numeric" pattern="[0-9]*" required [(ngModel)]="model.emptyCan" ></ion-input>
-          <ion-icon name="remove-circle"  color="warning" item-end></ion-icon>
-          <ion-icon name="add-circle" color="success" item-end></ion-icon>
+          <ion-input type="number" min="0" inputmode="numeric" pattern="[0-9]*" required [(ngModel)]="model.emptyCan" (keyup)="calculateOrder();"></ion-input>
+          <ion-icon name="remove-circle"  color="warning" item-end (click)="reduceQty('return');" style="z-index: 9999"></ion-icon>
+          <ion-icon name="add-circle" color="success" item-end (click)="increaseQty('return');" style="z-index: 9999"></ion-icon>
         </ion-item>
+        <!--<ion-list-header> Delivery Details</ion-list-header>-->
         <ion-item>
-          <ion-label>Total Price</ion-label>
-          <ion-input type="text" [readonly]="true" [(ngModel)]="model.price"></ion-input>
-        </ion-item>
-        <ion-list-header> Delivery Details</ion-list-header>
-        <ion-item>
-          <ion-label floating>Delivery Time</ion-label>
-          <ion-select [(ngModel)]="model.delivery" interface="popover">
+          <ion-label>Delivery Time</ion-label>
+          <ion-select [(ngModel)]="model.delivery" interface="popover" (ionChange)="calculateOrder();">
+            <ion-option value="express">Express</ion-option>
             <ion-option value="9AM to 12AM">9AM to 12AM</ion-option>
             <ion-option value="1PM to 4PM">1PM to 4PM</ion-option>
             <ion-option value="4PM to 7PM">4PM to 7PM</ion-option>
           </ion-select>
         </ion-item>
         <ion-item>
+          <ion-label>Order Cost</ion-label>
+          <ion-note item-end >Rs.{{model.orderCost}}</ion-note>
+        </ion-item>
+        <ion-item>
+          <ion-label>Deposit Cost</ion-label>
+          <ion-note item-end >Rs.{{model.depositCost}}</ion-note>
+        </ion-item>
+        <ion-item>
+          <ion-label>Express delivery charge <h6 ion-text color="success" style="font-size: 0.7em" ><ion-icon name="information-circle" color="warning"></ion-icon> Extra Rs 10 for express delivery</h6></ion-label>
+          <ion-note item-end >Rs.{{model.expressCost}}</ion-note>
+        </ion-item>
+        <ion-item>
+          <ion-label>No lift access <h6 ion-text color="success" style="font-size: 0.7em" ><ion-icon name="information-circle" color="warning"></ion-icon> Extra Rs 5 Per Floor</h6> </ion-label>
+          
+          <ion-note item-end >Rs.{{model.floorCharge}}</ion-note>
+        </ion-item>
+        <ion-item>
+          <ion-label>Total Cost</ion-label>
+          <ion-note item-end color="success" style="font-weight: bold; font-size: 1.5em">Rs.{{model.total}}</ion-note>
+        </ion-item>
+        <!--<ion-item>
           <ion-label>Flat No.</ion-label>
           <ion-input type="text" [(ngModel)]="model.flat"></ion-input>
         </ion-item>
@@ -71,6 +89,7 @@
           <ion-label>Lift Access</ion-label>
           <ion-toggle color="success"></ion-toggle>
         </ion-item>
+
         <ion-item>
           <ion-label>Landmark</ion-label>
           <ion-input type="text" [(ngModel)]="model.landmark"></ion-input>
@@ -82,8 +101,8 @@
         <ion-item>
           <ion-label>Zipcode</ion-label>
           <ion-input type="text" [(ngModel)]="model.zipcode"></ion-input>
-        </ion-item>
-        <button ion-button class = "button button-block" color="primary" (click)="getGeolocation(model)">Proceed</button>
+        </ion-item>-->
+        <button ion-button class = "button button-block" color="primary" (click)="checkout()">Proceed</button>
       </ion-list>
     </ion-card-content>
   </ion-card>

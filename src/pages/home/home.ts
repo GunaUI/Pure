@@ -13,7 +13,6 @@ export class HomePage {
 
   products : Product[];
   productDetail : Product;
-  showTabs = false;
   constructor(public navCtrl: Nav, public navParams: NavParams, private prodService : ProductServiceProvider , public events: Events) {}
 
   getProducts(): void{

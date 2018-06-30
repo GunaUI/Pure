@@ -24,9 +24,9 @@
       <p>Order Placed</p>
     </ion-item>
     <ion-item-options side="left" *ngIf="true">
-        <button ion-button color="danger">
-          <ion-icon name="trash"></ion-icon>
-          Delete
+        <button ion-button color="danger" (click)="deleteOrder('PURE0001');">
+          <ion-icon name="close"></ion-icon>
+          Cancel
         </button>
         <button ion-button color="secondary">
           <ion-icon name="create"></ion-icon>
@@ -58,9 +58,9 @@
       <p>Order Received</p>
     </ion-item>
     <ion-item-options side="left" *ngIf="true">
-        <button ion-button color="danger">
-          <ion-icon name="trash"></ion-icon>
-          Delete
+        <button ion-button color="danger" (click)="deleteOrder('PURE0001');">
+          <ion-icon name="close"></ion-icon>
+          Cancel
         </button>
         <button ion-button color="secondary">
           <ion-icon name="create"></ion-icon>
@@ -92,9 +92,9 @@
       <p>Packed</p>
     </ion-item>
     <ion-item-options side="left" *ngIf="false">
-        <button ion-button color="danger">
-          <ion-icon name="trash"></ion-icon>
-          Delete
+        <button ion-button color="danger" (click)="deleteOrder('PURE0001');">
+          <ion-icon name="close"></ion-icon>
+          Cancel
         </button>
         <button ion-button color="secondary">
           <ion-icon name="create"></ion-icon>
@@ -126,9 +126,9 @@
       <p>Out for delivery</p>
     </ion-item>
     <ion-item-options side="left" *ngIf="false">
-        <button ion-button color="danger">
-          <ion-icon name="trash"></ion-icon>
-          Delete
+        <button ion-button color="danger" (click)="deleteOrder('PURE0001');">
+          <ion-icon name="close"></ion-icon>
+          Cancel
         </button>
         <button ion-button color="secondary">
           <ion-icon name="create"></ion-icon>

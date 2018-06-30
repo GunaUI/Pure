@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, Nav, NavParams, ViewController } from 'ionic-angular';
+import { IonicPage, Nav, NavController, NavParams, ViewController } from 'ionic-angular';
 
 /**
  * Generated class for the DepositPage page.
@@ -17,7 +17,7 @@ export class DepositPage {
   
   @ViewChild('content') nav: Nav;
 
-  constructor(public navCtrl: Nav, public navParams: NavParams, public viewCtrl : ViewController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl : ViewController) {
   }
 
   ionViewDidLoad() {
@@ -26,8 +26,9 @@ export class DepositPage {
   closeModal(){
     this.viewCtrl.dismiss();
   }
-  openOrders(){
-    this.navCtrl.push("OrdersPage");
-  }
+  // openOrders(){
+  //   this.viewCtrl.dismiss();
+  //   this.navCtrl.setRoot("OrdersPage");
+  // }
 
 }
