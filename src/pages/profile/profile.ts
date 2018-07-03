@@ -65,7 +65,7 @@ export class ProfilePage {
   }
 
   openModal(){
-    let modal = this.modalCtrl.create("DepositPage").present();
+    this.modalCtrl.create("DepositPage").present();
   }
 
 }

@@ -10,7 +10,7 @@ import { Product } from '../../models/product.interface';
 })
 export class NormalPage {
 
-productInfo : Product
+productInfo : any
   // google: google;
   model: any = {
     qty : 1,
@@ -73,9 +73,9 @@ productInfo : Product
     });
     loader.present();
 
-      this.model.image_url = this.productInfo.image_url;
-      this.model.name = this.productInfo.name;
-      this.model.prod_cost = this.productInfo.prod_cost;
+      // this.model.image_url = this.productInfo.image_url;
+      // this.model.name = this.productInfo.name;
+      // this.model.prod_cost = this.productInfo.prod_cost;
       loader.dismiss();
       this.navCtrl.push('CheckoutPage',{
         orderInfo : this.model

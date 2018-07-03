@@ -1,5 +1,8 @@
-import { Component } from '@angular/core';
-import { IonicPage, Nav, NavParams, ToastController, AlertController } from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
+import { IonicPage, Nav, ToastController, AlertController, LoadingController, PopoverController, ModalController } from 'ionic-angular';
+import { NgForm } from '@angular/forms';
+import { ServerService } from "../../services/server.service";
+import { google } from "google-maps";
 
 @IonicPage()
 @Component({
@@ -7,65 +10,226 @@ import { IonicPage, Nav, NavParams, ToastController, AlertController } from 'ion
   templateUrl: 'signup.html',
 })
 export class SignupPage {
+  @ViewChild('signupForm') registerForm: NgForm;
+  submitted = false;
+  localityValid=true;
+  stateValid=true;
+  cityValid=true;
+  areaValid=true;
+  disableSubmit=true;
+  registerData ={};
+  
+  google: google;
 
-  newUser : any = {};
-  billing_shipping_same : boolean;
+  billing = {
+            state:"None Selected",
+            state_id:0,
+            city:"None Selected",
+            city_id:0,
+            area:"None Selected",
+            area_id:0,
+            locality:"None Selected",
+            locality_id:0
+  };
 
-  // @ViewChild('content') nav: NavController;
-
-  constructor(private navCtrl: Nav, private navParams: NavParams, private toastCtrl: ToastController, private alertCtrl: AlertController) {
-    this.newUser.billing_address = {};
-    this.newUser.shipping_address = {};
-    this.billing_shipping_same = false;
+  constructor(private navCtrl: Nav, private toastCtrl: ToastController, private loadingCtrl: LoadingController,private serverService: ServerService,public popoverCtrl: PopoverController, public modalCtrl : ModalController, private alertCtrl : AlertController) {
+   
   }
 
-  setBillingToShipping() {
-    this.billing_shipping_same = !this.billing_shipping_same;
+ 
+  ionViewDidEnter() {
+    // this.registerForm.reset();
+    this.registerForm.form.patchValue({
+      billingData: {
+        floor:0,
+        lift:false
+      }
+    })
   }
-  validateEmail(){
+  
 
-    //let validEmail=false
-    let reg = '^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$';
-    var patt = new RegExp(reg);
-    console.log(this.newUser.email);
-    console.log(patt.test(this.newUser.email));
-    if(patt.test(this.newUser.email)){
+  onSubmit() {
+    
+    console.log(this.registerForm.value);
 
-      //let validEmail=true
+  var ctrl = this; 
+      const loader = this.loadingCtrl.create({
+        content: "Please wait..."
+      });
+      loader.present();
+      setTimeout(()=>{
+        var geocoder = new google.maps.Geocoder();
+        geocoder.geocode({
+          "address": `${ctrl.registerForm.value.billingData.address} ${ctrl.billing.locality}  ${ctrl.billing.area} ${ctrl.billing.city} ${ctrl.billing.state} ${ctrl.registerForm.value.billingData.zipcode}`
+        }, function(results) {
+          if(results[0]!=undefined){
+            ctrl.registerForm.value.billingData.latitude = results[0].geometry.location.lat();
+            ctrl.registerForm.value.billingData.longitude = results[0].geometry.location.lng();
+            console.log(results[0].geometry.location.lat());
+            console.log(results[0].geometry.location.lng());
+            
+            if(results[0].geometry.location.lat() && results[0].geometry.location.lng()){
+              this.registerData={
+                customerName: ctrl.registerForm.value.userData.firstName,
+                mobile: ctrl.registerForm.value.userData.phone,
+                password: ctrl.registerForm.value.userData.password,
+                email: ctrl.registerForm.value.userData.email,
+                address: ctrl.registerForm.value.billingData.address,
+                pincode: ctrl.registerForm.value.billingData.zipcode,
+                areaId: ctrl.billing.area_id,
+                localityId: ctrl.billing.locality_id,
+                liftAccess: ctrl.registerForm.value.billingData.lift,
+                floorNumber: ctrl.registerForm.value.billingData.floor,
+                latitude: results[0].geometry.location.lat(),
+                longitude: results[0].geometry.location.lng()
+              }
+              console.log(this.registerData);
+              ctrl.serverService.postData(this.registerData,'/api/customer').then((result) => {
+                  ctrl.modalCtrl.create("OtpPage").present();
+                  }, (err) => {
+                    console.log('error',err)
+                  });
+              loader.dismiss();
+            }
+          }else{
+            let toast = ctrl.toastCtrl.create({
+                message: 'Please enter valid delivery address',
+                duration: 3000
+            });
+            toast.present();
+            loader.dismiss();
+          }
+        });
+      },100);
 
-      // this.toastCtrl.create({
-      //   message: "Email good to go",
-      //   duration : 3000,
-      //   position: 'middle',
-      //   showCloseButton: true,
-      //   closeButtonText: 'Ok'
-      // }).present();
+    
+    
+  }
 
+  getState(ev){
+      var ctrl = this; 
+      this.serverService.getState()
+        .subscribe( states => {
+        let listData = states.state 
+        let popover = this.popoverCtrl.create('SearchSelectPage', {listData, fromPage: 'state'});
+        popover.present({
+        ev: ev
+        });
+        popover.onDidDismiss(data => {
+          if(data!=null && data.state_id!=0){
+            ctrl.billing.state=data.state_name;
+            ctrl.billing.state_id=data.state_id;
+            this.stateValid = true;
+          }else{
+            this.stateValid = false;
+            this.disableSubmit = true;
+          }
+        })
+      });
+  }
+
+  getCity(ev){
+    if(this.billing.state_id!=0 && this.billing.state_id!=null){
+      var ctrl = this; 
+      this.serverService.getCityById(this.billing.state_id,'')
+        .subscribe( city => {
+        let listData = city.city 
+        let popover = this.popoverCtrl.create('SearchSelectPage', {listData, fromPage: 'city', pageId: this.billing.state_id});
+        popover.present({
+        ev: ev
+        });
+        popover.onDidDismiss(data => {
+          if(data!=null){
+            ctrl.cityValid = true;
+            ctrl.billing.city=data.city_name;
+            ctrl.billing.city_id=data.city_id;
+          }
+        })
+      });
     }else{
-
-      this.toastCtrl.create({
-        message: "Please enter valid email",
-        position: 'middle',
-        showCloseButton: true
-      }).present();
-
-      let validEmail=false
-
+      this.cityValid = false;
+      this.disableSubmit = true;
     }
-
   }
-  signup(){
-    console.log('signup');
-    this.alertCtrl.create({
-      title : 'Account Created',
-      message : 'Dummy account creation done, Please login with username admin, Pwd 123',
-      buttons : [{
-        text:'Login',
-        handler: ()=>{
-          this.navCtrl.setRoot("LoginPage");
+
+  getArea(ev){
+    if(this.billing.city_id!=0 && this.billing.city_id!=null){
+      var ctrl = this; 
+      this.serverService.getAreaById(this.billing.city_id,'')
+        .subscribe( area => {
+        let listData = area.area 
+        let popover = this.popoverCtrl.create('SearchSelectPage', {listData, fromPage: 'area', pageId: this.billing.city_id});
+        popover.present({
+        ev: ev
+        });
+        popover.onDidDismiss(data => {
+          if(data!=null){
+            ctrl.areaValid = true;
+            ctrl.billing.area=data.area_name;
+            ctrl.billing.area_id=data.area_id;
+          }
+        })
+      });
+    }else{
+      this.areaValid = false;
+      this.disableSubmit = true;
+    }
+  }
+  getLocality(ev){
+    this.disableSubmit = true;
+    if(this.billing.area_id!=0 && this.billing.area_id!=null){
+      var ctrl = this; 
+      this.serverService.getLocationById(this.billing.area_id,'')
+        .subscribe( locality => {
+        let listData = locality.location 
+        let popover = this.popoverCtrl.create('SearchSelectPage', {listData, fromPage: 'locality', pageId: this.billing.area_id});
+        popover.present({
+        ev: ev
+        });
+        popover.onDidDismiss(data => {
+          if(data!=null){
+            ctrl.localityValid = true;
+            ctrl.disableSubmit = false;
+            ctrl.billing.locality=data.locality_name;
+            ctrl.billing.locality_id=data.locality_id;
+          }
+        })
+      });
+    }else{
+      this.disableSubmit = true;
+      this.localityValid = false;
+    }
+  }
+
+  checkExistingUser(){
+      this.serverService.checkExistingUser(this.registerForm.value.userData.phone)
+        .subscribe( user => {
+        if(user.status=="fail"){
+          const confirm = this.alertCtrl.create({
+            title: 'Alreay You have account!',
+            message: 'Do you want to login ?',
+            buttons: [
+              {
+                text: 'No',
+                handler: () => {
+                  this.registerForm.form.patchValue({
+                      userData: {
+                        phone:''
+                      }
+                    })
+                }
+              },
+              {
+                text: 'Yes',
+                handler: () => {
+                  this.navCtrl.setRoot("LoginPage");
+                }
+              }
+            ]
+          });
+          confirm.present();
         }
-      }]
-    }).present();
+      });
   }
 
 }

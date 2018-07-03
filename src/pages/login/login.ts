@@ -1,6 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, Nav, NavParams, ToastController,AlertController, Events } from 'ionic-angular';
+import { IonicPage, Nav, NavParams, ToastController,AlertController, Events, ModalController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
+import { ServerService } from "../../services/server.service";
 
 @IonicPage()
 @Component({
@@ -9,24 +10,30 @@ import { Storage } from '@ionic/storage';
 })
 export class LoginPage {
 
-  username : String;
-  password : String;
+  userData = {
+      mobile: '',
+      password:''
+    };
 
   @ViewChild('content') nav: Nav;
 
-  constructor(public navCtrl: Nav, public navParams: NavParams, private toastCtrl: ToastController, private storage : Storage, private alertCtrl : AlertController, public events: Events) {
-    this.username = '';
-    this.password = '';
+  constructor(public navCtrl: Nav, public navParams: NavParams, private toastCtrl: ToastController, private storage : Storage, private alertCtrl : AlertController, public events: Events, public modalCtrl : ModalController,private serverService: ServerService) {
+  
   }
 
   login() {
-    if(this.username!='admin@deforay.com' ||this.password!='123'){
+    if(this.userData.mobile=='' || this.userData.password==''){
       this.toastCtrl.create({
-        message:'Invalid username and/or password!',
+        message:'Please enter login credentials to proceed!',
         duration: 3000
       }).present()
 
     }else{
+        this.serverService.postData('/api/login',this.userData).then((result) => {
+          console.log(result)
+          }, (err) => {
+            console.log('error',err)
+          });
       let response = {'user':{'name':'Admin'}};
       this.storage.set('userLoginInfo',response).then((data)=>{
         this.alertCtrl.create({
@@ -45,12 +52,17 @@ export class LoginPage {
           }]
         }).present()
       });
+
+
+
     }
   }
   
   openPage(pageName : String){
     if(pageName=='signup'){
       this.navCtrl.push("SignupPage");
+    }if(pageName=='forgot'){
+      this.modalCtrl.create("ForgotPasswordPage").present();
     }
   }
 

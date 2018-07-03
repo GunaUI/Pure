@@ -15,8 +15,9 @@ import { google } from "google-maps";
   templateUrl: 'bulk.html',
 })
 export class BulkPage {
+  productInfo:any
 
-productInfo : Product
+// productInfo : Product
   // google: google;
   model: any = {
     qty : 3,
@@ -79,9 +80,9 @@ productInfo : Product
     });
     loader.present();
 
-      this.model.image_url = this.productInfo.image_url;
-      this.model.name = this.productInfo.name;
-      this.model.prod_cost = this.productInfo.prod_cost;
+      this.model.image_url = this.productInfo.product_image;
+      this.model.name = this.productInfo.product_name;
+      this.model.prod_cost = this.productInfo.mrp;
       loader.dismiss();
       this.navCtrl.push('CheckoutPage',{
         orderInfo : this.model

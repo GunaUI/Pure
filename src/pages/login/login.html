@@ -5,19 +5,15 @@
   Ionic pages and navigation.
 -->
 <ion-header>
-
   <ion-navbar>
     <ion-buttons left>
       <button color="primary" ion-button icon menuToggle>
         <ion-icon name="menu"></ion-icon>
       </button>
     </ion-buttons>
-
     <ion-title>Login</ion-title>
   </ion-navbar>
-
 </ion-header>
-
 
 <ion-content>
   <ion-card style="margin: 0px; border: none; width: 100%; ">
@@ -25,14 +21,15 @@
   </ion-card>
   <ion-list>
     <ion-item>
-      <ion-label floating>Username</ion-label>
-      <ion-input type="text" [(ngModel)]="username" ></ion-input>
+      <ion-label floating>Mobile Number</ion-label>
+      <ion-input type="tel" [(ngModel)]="userData.mobile"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label floating>Password</ion-label>
-      <ion-input type="password" [(ngModel)]="password"></ion-input>
+      <ion-input type="password" [(ngModel)]="userData.password" ></ion-input>
     </ion-item>
   </ion-list>
   <button ion-button block color="primary" (click)="login()" >Login</button>
   <button ion-button clear block color="primary" (click)="openPage('signup')">No Account? Sign Up Here</button>
+  <button ion-button clear block  color="success" (click)="openPage('forgot')">Forgot Password? Click Here</button>
 </ion-content>

@@ -4,12 +4,12 @@
         <ion-row col-12>
             <ion-badge class="qty_badge" color="secondary" col-4>500 ML</ion-badge>
             <ion-col col-4></ion-col>
-            <ion-badge class="cost_badge" color="danger" col-4>{{productInfo.prod_cost}}</ion-badge>
+            <ion-badge class="cost_badge" color="danger" col-4>{{productInfo.mrp}}</ion-badge>
         </ion-row>
-        <img  [src]="productInfo.image_url" src="productInfo.name" />
+        <img src="http://puredip.deforay.in/uploads/products/product_6/20l.png" alt="productInfo.product_name" />
         <ion-card-content (click)="getProductInfo(productInfo);">
             <ion-card-title>
-                Buy {{productInfo.name}}
+                Buy {{productInfo.product_name}}
             </ion-card-title>
         </ion-card-content>
     </ion-card>

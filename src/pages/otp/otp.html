@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title text-center>OTP</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-card style="margin: 0px; border: none; width: 100%; ">
+    <img src="assets/imgs/logo.png" style="width:70%;margin: auto;padding:20px;"/>
+    <ion-card-content>
+    <p>
+    We have sent an OTP to your registered Email.
+    </p>
+  </ion-card-content>
+  </ion-card>
+
+  <ion-list>
+    <ion-item>
+      <ion-label floating>OTP</ion-label>
+      <ion-input type="tel" [(ngModel)]="oneTimePwd"></ion-input>
+    </ion-item>
+  </ion-list>
+  <button ion-button block color="primary" (click)="submit()">Next</button>
+  <button ion-button clear block color="primary" (click)="Resend()">Resend OTP</button>
+</ion-content>
+

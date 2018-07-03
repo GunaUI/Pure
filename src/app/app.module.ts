@@ -3,6 +3,7 @@ import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
+import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { IonicStorageModule } from '@ionic/storage';
 
@@ -11,8 +12,10 @@ import { DocumentViewer, DocumentViewerOptions } from '@ionic-native/document-vi
 import { FileTransfer } from '@ionic-native/file-transfer';
 
 
+
 import { MyApp } from './app.component';
 import { ProductServiceProvider } from '../providers/product-service/product.service';
+import { ServerService } from "../services/server.service";
 
 @NgModule({
   declarations: [
@@ -20,6 +23,7 @@ import { ProductServiceProvider } from '../providers/product-service/product.ser
   ],
   imports: [
     BrowserModule,
+    FormsModule,
     IonicModule.forRoot(MyApp,{tabsHideOnSubPages: true}),
     IonicStorageModule.forRoot(),
     HttpModule
@@ -35,8 +39,8 @@ import { ProductServiceProvider } from '../providers/product-service/product.ser
     ProductServiceProvider,
     File,
     DocumentViewer,
-    FileTransfer
-
+    FileTransfer,
+    ServerService
   ]
 })
 export class AppModule {}

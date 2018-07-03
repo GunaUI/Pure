@@ -1,0 +1,18 @@
+
+<ion-header>
+<ion-toolbar  color="primary" position="top">
+<ion-searchbar (ionInput)="getItems($event)" style="position: relative;"></ion-searchbar>
+</ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-scroll scrollY="true">
+    <ion-list no-lines inset>
+      <ion-item *ngFor="let item of items" (click)="dismiss(item)">
+        <ion-label *ngIf="item.state_name">{{item.state_name}}</ion-label>
+        <ion-label *ngIf="item.city_name">{{item.city_name}}</ion-label>
+        <ion-label *ngIf="item.area_name">{{item.area_name}}</ion-label>
+        <ion-label *ngIf="item.locality_name">{{item.locality_name}}</ion-label>
+      </ion-item>
+    </ion-list>
+  </ion-scroll>
+</ion-content>
