@@ -84,7 +84,7 @@ export class SignupPage {
                 longitude: results[0].geometry.location.lng()
               }
               console.log(this.registerData);
-              ctrl.serverService.postData(this.registerData,'/api/customer').then((result) => {
+              ctrl.serverService.postData('/api/customer',this.registerData).then((result) => {
                   ctrl.modalCtrl.create("OtpPage").present();
                   }, (err) => {
                     console.log('error',err)
