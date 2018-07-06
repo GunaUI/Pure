@@ -34,17 +34,17 @@ export class CheckoutPage {
   }
 
   openOrders(){
-    this.alertCtrl.create({
-          title : "Order Saved Successfully!!",
-          message : "Will deliver shortly.",
-          buttons: [{
-            text: "OK",
-            handler: () => {
-              this.navCtrl.setRoot("OrdersPage");
-            }
-          }]
-        }).present()
-    
-  }
+    console.log(this.orderInfo);
+  //   this.alertCtrl.create({
+  //         title : "Order Saved Successfully!!",
+  //         message : "Will deliver shortly.",
+  //         buttons: [{
+  //           text: "OK",
+  //           handler: () => {
+  //             this.navCtrl.setRoot("OrdersPage");
+  //           }
+  //         }]
+  //  }).present()
+ }
 
 }

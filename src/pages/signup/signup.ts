@@ -3,6 +3,7 @@ import { IonicPage, Nav, ToastController, AlertController, LoadingController, Po
 import { NgForm } from '@angular/forms';
 import { ServerService } from "../../services/server.service";
 import { google } from "google-maps";
+import { Storage } from '@ionic/storage'
 
 @IonicPage()
 @Component({
@@ -32,8 +33,7 @@ export class SignupPage {
             locality_id:0
   };
 
-  constructor(private navCtrl: Nav, private toastCtrl: ToastController, private loadingCtrl: LoadingController,private serverService: ServerService,public popoverCtrl: PopoverController, public modalCtrl : ModalController, private alertCtrl : AlertController) {
-   
+  constructor(private navCtrl: Nav, private toastCtrl: ToastController, private loadingCtrl: LoadingController,private serverService: ServerService,public popoverCtrl: PopoverController, public modalCtrl : ModalController, private alertCtrl : AlertController, private storage : Storage) {
   }
 
  
@@ -50,56 +50,100 @@ export class SignupPage {
 
   onSubmit() {
     
-    console.log(this.registerForm.value);
-
   var ctrl = this; 
       const loader = this.loadingCtrl.create({
         content: "Please wait..."
       });
       loader.present();
       setTimeout(()=>{
-        var geocoder = new google.maps.Geocoder();
-        geocoder.geocode({
-          "address": `${ctrl.registerForm.value.billingData.address} ${ctrl.billing.locality}  ${ctrl.billing.area} ${ctrl.billing.city} ${ctrl.billing.state} ${ctrl.registerForm.value.billingData.zipcode}`
-        }, function(results) {
-          if(results[0]!=undefined){
-            ctrl.registerForm.value.billingData.latitude = results[0].geometry.location.lat();
-            ctrl.registerForm.value.billingData.longitude = results[0].geometry.location.lng();
-            console.log(results[0].geometry.location.lat());
-            console.log(results[0].geometry.location.lng());
-            
-            if(results[0].geometry.location.lat() && results[0].geometry.location.lng()){
-              this.registerData={
-                customerName: ctrl.registerForm.value.userData.firstName,
-                mobile: ctrl.registerForm.value.userData.phone,
-                password: ctrl.registerForm.value.userData.password,
-                email: ctrl.registerForm.value.userData.email,
-                address: ctrl.registerForm.value.billingData.address,
-                pincode: ctrl.registerForm.value.billingData.zipcode,
-                areaId: ctrl.billing.area_id,
-                localityId: ctrl.billing.locality_id,
-                liftAccess: ctrl.registerForm.value.billingData.lift,
-                floorNumber: ctrl.registerForm.value.billingData.floor,
-                latitude: results[0].geometry.location.lat(),
-                longitude: results[0].geometry.location.lng()
-              }
-              console.log(this.registerData);
-              ctrl.serverService.postData('/api/customer',this.registerData).then((result) => {
-                  ctrl.modalCtrl.create("OtpPage").present();
-                  }, (err) => {
-                    console.log('error',err)
+        this.serverService.checkExistingUser(this.registerForm.value.userData.phone)
+        .subscribe( user => {
+            if(user.status!="fail"){
+                    var geocoder = new google.maps.Geocoder();
+                    geocoder.geocode({
+                      "address": `${ctrl.registerForm.value.billingData.address} ${ctrl.billing.locality}  ${ctrl.billing.area} ${ctrl.billing.city} ${ctrl.billing.state} ${ctrl.registerForm.value.billingData.zipcode}`
+                    }, function(results) {
+                      if(results[0]!=undefined){
+                        ctrl.registerForm.value.billingData.latitude = results[0].geometry.location.lat();
+                        ctrl.registerForm.value.billingData.longitude = results[0].geometry.location.lng();
+                        console.log(results[0].geometry.location.lat());
+                        console.log(results[0].geometry.location.lng());
+                        
+                        if(results[0].geometry.location.lat() && results[0].geometry.location.lng()){
+                          this.registerData={
+                            customerName: ctrl.registerForm.value.userData.firstName,
+                            mobile: ctrl.registerForm.value.userData.phone,
+                            password: ctrl.registerForm.value.userData.password,
+                            email: ctrl.registerForm.value.userData.email,
+                            address: ctrl.registerForm.value.billingData.address,
+                            pincode: ctrl.registerForm.value.billingData.zipcode,
+                            areaId: ctrl.billing.area_id,
+                            localityId: ctrl.billing.locality_id,
+                            liftAccess: ctrl.registerForm.value.billingData.lift,
+                            floorNumber: ctrl.registerForm.value.billingData.floor,
+                            latitude: results[0].geometry.location.lat(),
+                            longitude: results[0].geometry.location.lng()
+                          }
+                          console.log(this.registerData);
+                          ctrl.serverService.postData('/api/customer',this.registerData).then((response) => {
+                            if(response["pinService"]){
+                                loader.dismiss();
+                                ctrl.storage.set('registrationVerifiction',response).then((data)=>{
+                                  ctrl.navCtrl.setRoot("LoginPage");
+                                });
+                            }else{
+                                let toast = ctrl.toastCtrl.create({
+                                    message: 'We are not serving for zipcode '+ctrl.registerForm.value.billingData.zipcode+', We will get back to you soon. ',
+                                    duration: 3000
+                                });
+                                toast.present();
+                                loader.dismiss();
+                                ctrl.navCtrl.setRoot("HomePage");  
+                            }
+                          }, (err) => {
+                                console.log('error',err)
+                                loader.dismiss();
+                          });
+                          
+                        }
+                      }else{
+                        let toast = ctrl.toastCtrl.create({
+                            message: 'Please enter valid delivery address',
+                            duration: 3000
+                        });
+                        toast.present();
+                        loader.dismiss();
+                      }
+                    });
+            }else{
+                  const confirm = this.alertCtrl.create({
+                    title: 'Alreay You have account!',
+                    message: 'Do you want to login ?',
+                    buttons: [
+                      {
+                        text: 'No',
+                        handler: () => {
+                          this.registerForm.form.patchValue({
+                              userData: {
+                                phone:''
+                              }
+                            })
+                        }
+                      },
+                      {
+                        text: 'Yes',
+                        handler: () => {
+                          this.navCtrl.setRoot("LoginPage");
+                        }
+                      }
+                    ]
                   });
-              loader.dismiss();
+                  confirm.present();
             }
-          }else{
-            let toast = ctrl.toastCtrl.create({
-                message: 'Please enter valid delivery address',
-                duration: 3000
-            });
-            toast.present();
-            loader.dismiss();
-          }
         });
+
+
+
       },100);
 
     
@@ -176,7 +220,7 @@ export class SignupPage {
     }
   }
   getLocality(ev){
-    this.disableSubmit = true;
+    // this.disableSubmit = true;
     if(this.billing.area_id!=0 && this.billing.area_id!=null){
       var ctrl = this; 
       this.serverService.getLocationById(this.billing.area_id,'')

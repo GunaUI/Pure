@@ -9,50 +9,63 @@
 <ion-content>
   <ion-item>
     <ion-avatar item-start>
-      <img [src]="orderInfo.image_url" alt="orderInfo.name">
+      <img src="http://puredip.deforay.in/uploads/products/product_6/20l.png" alt="{{orderInfo.name}}">
     </ion-avatar>
     <h2>{{orderInfo.name}}</h2>
-    <p>20 Liter - {{orderInfo.prod_cost}}</p>
+    <p>Rs.{{orderInfo.prod_cost}}</p>
   </ion-item>
   <div #map id="map"></div>
   <ion-item>
-    Order Qunatity :
-    <ion-note item-end> {{orderInfo.qty}} </ion-note>
+    Order Quantity :
+    <ion-note item-end class="formInput"> {{orderInfo.qty}} </ion-note>
   </ion-item>
   <ion-item>
     Return Empty Can : 
-    <ion-note item-end> {{orderInfo.emptyCan}}</ion-note>
+    <ion-note item-end class="formInput"> {{orderInfo.emptyCan}}</ion-note>
   </ion-item>
   <ion-item>
     Total Price : 
-    <ion-note item-end>{{orderInfo.total}}</ion-note>
+    <ion-note item-end class="formInput">Rs. {{orderInfo.total}}</ion-note>
   </ion-item>
   <ion-item>
     Delivery Time : 
-    <ion-note item-end>{{orderInfo.delivery}}</ion-note>
+    <ion-note item-end class="formInput">{{orderInfo.delivery}}</ion-note>
   </ion-item>
   <ion-item>
     Payment : 
-    <ion-note item-end>Cash on delivery</ion-note>
+    <ion-note item-end class="formInput">Cash on delivery</ion-note>
   </ion-item>
   <ion-item>
     Address :
-    <ion-note item-end>No.7, Parthasarathys street</ion-note>
+    <ion-note item-end class="formInput">{{orderInfo.address}}</ion-note>
   </ion-item>
   <ion-item>
-    <ion-note item-end>kulasekarapuram, koyambed</ion-note>
+    Floor : 
+    <ion-note item-end class="formInput">{{orderInfo.floor}}</ion-note>
   </ion-item>
   <ion-item>
     Landmark : 
-    <ion-note item-end>Near By SIB</ion-note>
+    <ion-note item-end class="formInput">{{orderInfo.landmark}}</ion-note>
+  </ion-item>
+  <ion-item>
+    State : 
+    <ion-note item-end class="formInput">{{orderInfo.state}}</ion-note>
   </ion-item>
   <ion-item>
     City : 
-    <ion-note item-end>Chennai</ion-note>
+    <ion-note item-end class="formInput">{{orderInfo.city}}</ion-note>
+  </ion-item>
+  <ion-item>
+    Area : 
+    <ion-note item-end class="formInput">{{orderInfo.area}}</ion-note>
+  </ion-item>
+  <ion-item>
+    Locality : 
+    <ion-note item-end class="formInput">{{orderInfo.locality}}</ion-note>
   </ion-item>
   <ion-item>
     Zipcode : 
-    <ion-note item-end>600092</ion-note>
+    <ion-note item-end class="formInput">{{orderInfo.zipcode}}</ion-note>
   </ion-item>
   <button ion-button class = "button button-block" color="primary" (click)="openOrders();" >Confirm</button>
 </ion-content>

@@ -44,7 +44,7 @@
         </ion-item>
         <ion-item no-lines *ngIf="confirmPassword.touched && confirmPassword.value!=password.value" class="error-font-size"><ion-icon name="alert" item-left small color="warning" ></ion-icon> Confirm password amd Password should be same!</ion-item>
     </ion-list>
-    <ion-list id="billing-data" ngModelGroup="billingData" #shippingData="ngModelGroup">
+    <ion-list id="billing-data" ngModelGroup="billingData" #billingData="ngModelGroup">
       <ion-item-divider color="primary">Billing Details <ion-icon name="list-box" item-left></ion-icon></ion-item-divider>
         <ion-item>
           <ion-label>Address</ion-label>
@@ -66,28 +66,28 @@
         </ion-item>
         <ion-item>
           <ion-label>State</ion-label>
-          <ion-note item-end (click)="getState($event);">
+          <ion-note item-end (click)="getState($event);" color="primary">
             {{billing.state}}
           </ion-note>
         </ion-item>
         <ion-item no-lines *ngIf="!stateValid" class="error-font-size"><ion-icon name="alert" item-left small color="warning" ></ion-icon>State is required!</ion-item>
         <ion-item>
           <ion-label>City</ion-label>
-          <ion-note item-end (click)="getCity($event);">
+          <ion-note item-end (click)="getCity($event);" color="primary">
             {{billing.city}}
           </ion-note>
         </ion-item>
         <ion-item no-lines *ngIf="!cityValid" class="error-font-size"><ion-icon name="alert" item-left small color="warning" ></ion-icon>City is required!, Please select state to proceed</ion-item>
         <ion-item>
           <ion-label>Area</ion-label>
-          <ion-note item-end (click)="getArea($event);">
+          <ion-note item-end (click)="getArea($event);" color="primary">
             {{billing.area}}
           </ion-note>
         </ion-item>
         <ion-item no-lines *ngIf="!areaValid" class="error-font-size"><ion-icon name="alert" item-left small color="warning" ></ion-icon>Area is required!, Please select city to proceed</ion-item>
         <ion-item>
           <ion-label>Locality</ion-label>
-          <ion-note item-end (click)="getLocality($event);">
+          <ion-note item-end (click)="getLocality($event);" color="primary">
             {{billing.locality}}
           </ion-note>
         </ion-item>

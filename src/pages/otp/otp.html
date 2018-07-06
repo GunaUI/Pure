@@ -11,6 +11,7 @@
     <p>
     We have sent an OTP to your registered Email.
     </p>
+    <ion-item no-lines *ngIf="invalidOTP" class="error-font-size"><ion-icon name="alert" item-left small color="warning" ></ion-icon>Please enter valid OTP</ion-item>
   </ion-card-content>
   </ion-card>
 
@@ -18,9 +19,10 @@
     <ion-item>
       <ion-label floating>OTP</ion-label>
       <ion-input type="tel" [(ngModel)]="oneTimePwd"></ion-input>
+      
     </ion-item>
   </ion-list>
-  <button ion-button block color="primary" (click)="submit()">Next</button>
-  <button ion-button clear block color="primary" (click)="Resend()">Resend OTP</button>
+  <button ion-button block color="primary" (click)="submit()">Submit</button>
+  <button ion-button clear block color="primary" (click)="resendOTP()">Resend OTP</button>
 </ion-content>
 

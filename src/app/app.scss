@@ -15,3 +15,13 @@
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
 
+.item-input .label-md, .item-select .label-md, .item-datetime .label-md{
+        color: #000;
+    }
+    .formLabel{
+        color: #000;
+    }
+    .formInput{
+        color: #555;
+    }
+

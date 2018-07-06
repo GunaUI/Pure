@@ -1,3 +1,13 @@
 page-normal {
-
+    .qtyBtn{
+        z-index: 9999 !important;
+        font-size: 4rem !important;
+    }
+    .error-font-size {
+        font-size:1em;
+        color: #646464;
+        opacity: 0.85;
+        font-weight: 400;
+    }
+    
 }

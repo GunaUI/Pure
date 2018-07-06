@@ -1,5 +1,11 @@
 product {
- img{
+    img{
     min-height: 148px;
- }
+    }
+    ion-fab[top] {
+        top: 0px;
+    }
+    ion-fab[right] {
+        right: 0px;
+    }
 }

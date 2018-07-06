@@ -30,14 +30,14 @@
         <ion-item>      
           <ion-label> Order Qunatity</ion-label>
           <ion-input type="number" min="3" inputmode="numeric" pattern="[0-9]*"  required [(ngModel)]="model.qty" (keyup)="calculateOrder();"></ion-input>
-          <ion-icon name="remove-circle"  color="warning" item-end (click)="reduceQty('order');" style="z-index: 9999"></ion-icon>
-          <ion-icon name="add-circle" color="success" item-end (click)="increaseQty('order');" style="z-index: 9999"></ion-icon>
+          <ion-icon name="remove-circle"  color="warning" item-end (click)="reduceQty('order');" class="qtyBtn"></ion-icon>
+          <ion-icon name="add-circle" color="success" item-end (click)="increaseQty('order');" class="qtyBtn"></ion-icon>
         </ion-item>
         <ion-item>      
           <ion-label>Return Empty Can</ion-label>
           <ion-input type="number" min="0" inputmode="numeric" pattern="[0-9]*" required [(ngModel)]="model.emptyCan" (keyup)="calculateOrder();"></ion-input>
-          <ion-icon name="remove-circle"  color="warning" item-end (click)="reduceQty('return');" style="z-index: 9999"></ion-icon>
-          <ion-icon name="add-circle" color="success" item-end (click)="increaseQty('return');" style="z-index: 9999"></ion-icon>
+          <ion-icon name="remove-circle"  color="warning" item-end (click)="reduceQty('return');" class="qtyBtn"></ion-icon>
+          <ion-icon name="add-circle" color="success" item-end (click)="increaseQty('return');" class="qtyBtn"></ion-icon>
         </ion-item>
         <!--<ion-list-header> Delivery Details</ion-list-header>-->
         <ion-item>

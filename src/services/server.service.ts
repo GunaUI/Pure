@@ -75,8 +75,9 @@ export class ServerService {
       );
   }
   postData(URL,credentials) {
+    const headers = new Headers({'Content-Type': 'application/json'});
     return new Promise((resolve, reject) => {
-      let headers = new Headers();
+      // let headers = new Headers();
 
       this.http.post(URL, JSON.stringify(credentials), {headers: headers})
         .subscribe(res => {
@@ -112,5 +113,41 @@ export class ServerService {
         }
       );
     }
-  }
+  sendOTP(customerId,otp){
+    return this.http.get('/api/customer-otp?customerId='+customerId+'&otp='+otp)
+      .map(
+        (response: Response) => {
+          return response.json();
+        }
+      );
+    }
+    resendOTP(URL,customer){
+    const headers = new Headers({'Content-Type': 'application/json'});
+      return new Promise((resolve, reject) => {
+        this.http.post(URL, JSON.stringify(customer), {headers: headers})
+          .subscribe(res => {
+            resolve(res.json());
+          }, (err) => {
+            reject(err);
+          });
+      });
+    }
+
+    getUser(userId) {
+      return this.http.get('/api/customer?customerId='+userId)
+        .map(
+          (response: Response) => {
+            return response.json();
+          }
+        );
+    }
+    getDelivery() {
+      return this.http.get('/api/delivery-slot')
+        .map(
+          (response: Response) => {
+            return response.json();
+          }
+        );
+    }
+}
 

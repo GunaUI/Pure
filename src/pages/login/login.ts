@@ -26,35 +26,34 @@ export class LoginPage {
       this.toastCtrl.create({
         message:'Please enter login credentials to proceed!',
         duration: 3000
-      }).present()
+      }).present();
 
     }else{
         this.serverService.postData('/api/login',this.userData).then((result) => {
           console.log(result)
-          }, (err) => {
-            console.log('error',err)
-          });
-      let response = {'user':{'name':'Admin'}};
-      this.storage.set('userLoginInfo',response).then((data)=>{
-        this.alertCtrl.create({
-          title : "Login Successful",
-          message : "You have been logged in successfully!.",
-          buttons: [{
-            text: "OK",
-            handler: () => {
-              if(this.navParams.get('next')){
-                this.navCtrl.setRoot(this.navParams.get("next"));
-              }else{
-                this.events.publish('user:loggedin', response, Date.now());
-                this.navCtrl.setRoot("HomePage");  
-              }
-            }
-          }]
-        }).present()
-      });
-
-
-
+          if(result["status"]=='success'){
+            console.log(result["customerDetails"])
+            this.storage.set('userLoginInfo',result["customerDetails"]).then((data)=>{
+                this.alertCtrl.create({
+                  title : "Login Successful",
+                  message : "You have been logged in successfully!.",
+                  buttons: [{
+                    text: "OK",
+                    handler: () => {
+                      if(this.navParams.get('next')){
+                        this.navCtrl.setRoot(this.navParams.get("next"));
+                      }else{
+                        this.events.publish('user:loggedin', result["customerDetails"], Date.now());
+                        this.navCtrl.setRoot("HomePage");  
+                      }
+                    }
+                  }]
+                }).present()
+            });
+          }
+        }, (err) => {
+          console.log('error',err)
+        });
     }
   }
   
@@ -64,6 +63,14 @@ export class LoginPage {
     }if(pageName=='forgot'){
       this.modalCtrl.create("ForgotPasswordPage").present();
     }
+  }
+  ionViewDidEnter() {
+    this.storage.get('registrationVerifiction').then((registrationVerifiction)=>{
+      if(registrationVerifiction!=null){
+        console.log(registrationVerifiction);
+        this.modalCtrl.create("OtpPage").present();
+      }
+    })
   }
 
 }

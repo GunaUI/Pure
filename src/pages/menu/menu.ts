@@ -66,7 +66,7 @@ export class MenuPage {
         this.storage.get('userLoginInfo').then((userLoginInfo)=>{
           if (userLoginInfo!=null){
             this.loggedIn = true;
-            this.user = userLoginInfo.user;
+            this.user = userLoginInfo.customer_id;
           }else{
             this.loggedIn = false;
             this.user = null;
