@@ -1,13 +1,11 @@
 
 <ion-header>
-
   <ion-navbar color="primary">
     <ion-title>Checkout</ion-title>
   </ion-navbar>
-
 </ion-header>
-<ion-content>
-  <ion-item>
+
+  <!--<ion-item>
     <ion-avatar item-start>
       <img src="http://puredip.deforay.in/uploads/products/product_6/20l.png" alt="{{orderInfo.name}}">
     </ion-avatar>
@@ -67,5 +65,82 @@
     Zipcode : 
     <ion-note item-end class="formInput">{{orderInfo.zipcode}}</ion-note>
   </ion-item>
-  <button ion-button class = "button button-block" color="primary" (click)="openOrders();" >Confirm</button>
+  <button ion-button class = "button button-block" color="primary" (click)="openOrders();" >Confirm</button>-->
+<ion-content>
+    <form (ngSubmit)="confirmOrder()" #orderForm="ngForm">
+      <ion-list id="order-data" ngModelGroup="orderData" #orderData="ngModelGroup">
+        <ion-item-divider><i class="fa fa-truck" item-left></i>Shipping Details</ion-item-divider>
+        <ion-item>
+          <ion-label class="formLabel">Delivery Time</ion-label>
+          <ion-select [(ngModel)]="model.delivery" interface="popover" [ngModelOptions]="{standalone: true}" class="formInput" text-left>
+            <ion-option value="express">Express</ion-option>
+            <ion-option value="9AM to 12AM">9AM to 12AM</ion-option>
+            <ion-option value="1PM to 4PM">1PM to 4PM</ion-option>
+            <ion-option value="4PM to 7PM">4PM to 7PM</ion-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-label class="formLabel">Address</ion-label>
+          <ion-textarea maxlength="80" id="address" ngModel name="address" required #address="ngModel" class="formInput" text-right></ion-textarea>
+        </ion-item>
+        <ion-item no-lines *ngIf="!address.valid && address.touched" class="error-font-size"><ion-icon name="alert" item-left small color="warning" ></ion-icon>Billing address is required!</ion-item>
+        <ion-item>
+            <ion-label class="formLabel">Floor</ion-label>
+            <ion-input type="tel" name="floor" id="floor" ngModel  required  #floor="ngModel" class="formInput" text-right></ion-input>
+        </ion-item>
+
+        <ion-item no-lines *ngIf="!floor.valid && floor.touched" class="error-font-size"><ion-icon name="alert" item-left small color="warning" ></ion-icon>Billing floor is required!</ion-item>
+        <ion-item>
+            <ion-label class="formLabel">Lift Access</ion-label>
+            <ion-toggle color="success"  color="success" name="lift" id="lift" ngModel class="formInput"></ion-toggle>
+        </ion-item>
+        <ion-item>
+          <ion-label class="formLabel">Landmark</ion-label>
+          <ion-input type="text" name="landmark" id="landmark" ngModel class="formInput" text-right></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label class="formLabel">State</ion-label>
+          <ion-note item-end (click)="getState($event);" color="primary" >
+            {{model.state}}
+          </ion-note>
+        </ion-item>
+        <ion-item no-lines *ngIf="!stateValid" class="error-font-size"><ion-icon name="alert" item-left small color="warning" ></ion-icon>State is required!</ion-item>
+        <ion-item>
+          <ion-label class="formLabel">City</ion-label>
+          <ion-note item-end (click)="getCity($event);" color="primary">
+            {{model.city}}
+          </ion-note>
+        </ion-item>
+        <ion-item no-lines *ngIf="!cityValid" class="error-font-size"><ion-icon name="alert" item-left small color="warning" ></ion-icon>City is required!, Please select state to proceed</ion-item>
+        <ion-item>
+          <ion-label class="formLabel">Area</ion-label>
+          <ion-note item-end (click)="getArea($event);" color="primary">
+            {{model.area}}
+          </ion-note>
+        </ion-item>
+        <ion-item no-lines *ngIf="!areaValid" class="error-font-size"><ion-icon name="alert" item-left small color="warning" ></ion-icon>Area is required!, Please select city to proceed</ion-item>
+        <ion-item>
+          <ion-label class="formLabel">Locality</ion-label>
+          <ion-note item-end (click)="getLocality($event);" color="primary">
+            {{model.locality}}
+          </ion-note>
+        </ion-item>
+        <ion-item no-lines *ngIf="!localityValid" class="error-font-size"><ion-icon name="alert" item-left small color="warning" ></ion-icon>Locality is required!, Please select area to proceed</ion-item>
+        <ion-item>
+          <ion-label class="formLabel">Zipcode</ion-label>
+          <ion-input type="text" name="zipcode" id="zipcode" ngModel  required  #zipcode="ngModel" class="formInput" text-right></ion-input>
+        </ion-item>
+        <ion-item no-lines *ngIf="!zipcode.valid && zipcode.touched" class="error-font-size"><ion-icon name="alert" item-left small color="warning" ></ion-icon>Zipcode is required!</ion-item>
+        <ion-item-divider> <ion-icon name="cart"></ion-icon> Order Details</ion-item-divider>
+          <ion-item *ngFor="let orderdetails of orderInfo">
+            <ion-avatar item-start>
+              <img [src]="orderdetails.product_image">
+            </ion-avatar>
+            <h2>Finn</h2>
+            <h3>Don't Know What To Do!</h3>
+            <p>I've had a pretty messed up day. If we just...</p>
+          </ion-item>
+      </ion-list>
+      <button ion-button block color="primary" type="submit" [disabled]="model.subtotal<=0" (click)="orderForm.ngSubmit.emit()">Confirm</button>
+      </form>
 </ion-content>

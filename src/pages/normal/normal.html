@@ -1,10 +1,18 @@
 
 <ion-header>
   <ion-navbar color="primary">
-    <ion-buttons left (click)="backToHome();">
-      <button ion-button icon-only left><ion-icon name="arrow-round-back"></ion-icon></button>
+    <ion-buttons left>
+        <button ion-button icon-only (click)="backToHome();">
+          <ion-icon name="ios-arrow-back"></ion-icon> Back
+        </button>
     </ion-buttons>
     <ion-title>Normal Order</ion-title>
+    <ion-buttons right  *ngIf="cartCount>0" (click)="checkout();">
+        <button ion-button icon-only>
+        <ion-badge  color="danger">{{cartCount}}</ion-badge>
+        <ion-icon name="cart"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
@@ -12,32 +20,32 @@
   <ion-card>
     <ion-row col-12>
       <ion-col col-6>
-        <img src="http://puredip.deforay.in/uploads/products/product_6/20l.png" alt="{{productInfo.product_name}}"/>
+        <img [src]="productInfo.product_image" alt="{{productInfo.product_name}}"/>
       </ion-col> 
       <ion-col col-6>
-        <h2> {{productInfo.product_name}} <br> Rs.{{productInfo.mrp}}</h2>
+        <h2> {{productInfo.product_name}} <br> <i class="fa fa-rupee" style="font-weight:bold;"> {{productInfo.mrp}}</i></h2>
         <p>
           No matter what your drinking water needs are, You can always count on us!
         </p>
       </ion-col> 
     </ion-row>
   </ion-card>
-    <form (ngSubmit)="checkout()" #orderForm="ngForm">
+    <form (ngSubmit)="addToCart()" #orderForm="ngForm">
       <ion-list id="order-data" ngModelGroup="orderData" #orderData="ngModelGroup">
         <ion-item-divider color="primary"><ion-icon name="cart" item-left></ion-icon>Order Details</ion-item-divider>
         <ion-item>      
           <ion-label class="formLabel"> Order Qunatity</ion-label>
           <ion-input type="number" min="1" inputmode="numeric" pattern="[0-9]*"  required [(ngModel)]="model.qty" (keyup)="calculateOrder();" [ngModelOptions]="{standalone: true}" class="formInput" text-center></ion-input>
-          <ion-icon name="remove-circle"  color="warning" item-end (click)="reduceQty('order');" class="qtyBtn"></ion-icon>
-          <ion-icon name="add-circle" color="success" item-end (click)="increaseQty('order');"  class="qtyBtn"></ion-icon>
+          <ion-icon  color="warning" item-end (click)="reduceQty('order');" class="qtyBtn"> <i class="fa fa-minus-circle" aria-hidden="true"></i></ion-icon>
+          <ion-icon  color="success" item-end (click)="increaseQty('order');"  class="qtyBtn"><i class="fa fa-plus-circle" aria-hidden="true"></i></ion-icon>
         </ion-item>
         <ion-item>      
           <ion-label class="formLabel">Return Empty Can</ion-label>
           <ion-input type="number" min="0" inputmode="numeric" pattern="[0-9]*" required [(ngModel)]="model.emptyCan" (keyup)="calculateOrder();" [ngModelOptions]="{standalone: true}" class="formInput" text-center></ion-input>
-          <ion-icon name="remove-circle"  color="warning" item-end (click)="reduceQty('return');" class="qtyBtn"></ion-icon>
-          <ion-icon name="add-circle" color="success" item-end (click)="increaseQty('return');" class="qtyBtn"></ion-icon>
+          <ion-icon  color="warning" item-end (click)="reduceQty('return');" class="qtyBtn"><i class="fa fa-minus-circle" aria-hidden="true"></i></ion-icon>
+          <ion-icon color="success" item-end (click)="increaseQty('return');" class="qtyBtn"><i class="fa fa-plus-circle" aria-hidden="true"></i></ion-icon>
         </ion-item>
-        <ion-item>
+        <!--<ion-item>
           <ion-label class="formLabel">Delivery Time</ion-label>
           <ion-select [(ngModel)]="model.delivery" interface="popover" (ionChange)="calculateOrder();" [ngModelOptions]="{standalone: true}" class="formInput" text-left>
             <ion-option value="express">Express</ion-option>
@@ -97,16 +105,16 @@
           <ion-label class="formLabel">Zipcode</ion-label>
           <ion-input type="text" name="zipcode" id="zipcode" ngModel  required  #zipcode="ngModel" class="formInput" text-right></ion-input>
         </ion-item>
-        <ion-item no-lines *ngIf="!zipcode.valid && zipcode.touched" class="error-font-size"><ion-icon name="alert" item-left small color="warning" ></ion-icon>Zipcode is required!</ion-item>
+        <ion-item no-lines *ngIf="!zipcode.valid && zipcode.touched" class="error-font-size"><ion-icon name="alert" item-left small color="warning" ></ion-icon>Zipcode is required!</ion-item>-->
         <ion-item>
           <ion-label class="formLabel">Order Cost</ion-label>
-          <ion-note item-end class="formInput" >Rs.{{model.orderCost}}</ion-note>
+          <ion-note item-end class="formInput" ><i class="fa fa-rupee" style="font-weight:bold;"> {{model.orderCost}}</i></ion-note>
         </ion-item>
         <ion-item>
           <ion-label class="formLabel">Deposit Cost</ion-label>
-          <ion-note item-end class="formInput" >Rs.{{model.depositCost}}</ion-note>
+          <ion-note item-end class="formInput"> <i class="fa fa-rupee" style="font-weight:bold;"> {{model.depositCost}}</i></ion-note>
         </ion-item>
-        <ion-item>
+        <!--<ion-item>
           <ion-label>Express delivery charge <h6 ion-text color="success" style="font-size: 0.7em" ><ion-icon name="information-circle" color="warning"></ion-icon> Extra Rs 10 for express delivery</h6></ion-label>
           <ion-note item-end class="formInput" >Rs.{{model.expressCost}}</ion-note>
         </ion-item>
@@ -114,12 +122,14 @@
           <ion-label>No lift access <h6 ion-text color="success" style="font-size: 0.7em" ><ion-icon name="information-circle" color="warning"></ion-icon> Extra Rs 5 Per Floor</h6> </ion-label>
           
           <ion-note item-end class="formInput" >Rs.{{model.floorCharge}}</ion-note>
-        </ion-item>
+        </ion-item>-->
         <ion-item>
-          <ion-label>Total Cost</ion-label>
-          <ion-note item-end color="success" style="font-weight: bold; font-size: 1.5em">Rs.{{model.total}}</ion-note>
+          <ion-label>Sub Total</ion-label>
+          <ion-note item-end color="success" style="font-weight: bold; font-size: 1.5em"><i class="fa fa-rupee" style="font-weight:bold;"> </i> {{model.subtotal}}</ion-note>
         </ion-item>
       </ion-list>
       </form>
-      <button ion-button block color="primary" type="submit" [disabled]="!orderForm.valid || disableSubmit" (click)="orderForm.ngSubmit.emit()">Proceed</button>
+      <!--<button ion-button block color="primary" type="submit" [disabled]="!orderForm.valid || disableSubmit" (click)="orderForm.ngSubmit.emit()">Proceed</button>-->
+      <button ion-button block color="primary" type="submit" *ngIf="!productInfo.qty" [disabled]="model.subtotal<=0 && model.qty<=0" (click)="orderForm.ngSubmit.emit()">Add to cart</button>
+      <button ion-button block color="warning" type="submit" *ngIf="productInfo.qty" [disabled]="model.subtotal<=0 && model.qty<=0" (click)="updateCart(productInfo);">Update cart</button>
 </ion-content>

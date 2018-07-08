@@ -21,7 +21,7 @@ page-menu {
         color: #fff
     }
     .active-highlight{
-        color: map-get($colors , primary);
+        color: map-get($colors , danger);
     }
 
 }

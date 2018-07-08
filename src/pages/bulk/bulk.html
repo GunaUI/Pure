@@ -1,48 +1,53 @@
 
 <ion-header>
   <ion-navbar color="primary">
-    <ion-buttons left (click)="backToHome();">
-      <button ion-button icon-only left><ion-icon name="arrow-round-back"></ion-icon></button>
+    <ion-buttons left>
+        <button ion-button icon-only (click)="backToHome();">
+          <ion-icon name="ios-arrow-back"></ion-icon> Back
+        </button>
     </ion-buttons>
     <ion-title>Bulk Order</ion-title>
+    <ion-buttons right  *ngIf="cartCount>0" (click)="checkout();">
+        <button ion-button icon-only>
+        <ion-badge  color="danger">{{cartCount}}</ion-badge>
+        <ion-icon name="cart"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
-
 
 <ion-content>
   <ion-card>
     <ion-row col-12>
       <ion-col col-6>
-        <img [src]="productInfo.image_url" alt="productInfo.name"/>
+        <img [src]="productInfo.product_image" alt="{{productInfo.product_name}}"/>
       </ion-col> 
       <ion-col col-6>
-        <h1> {{productInfo.name}}</h1>
-        <h2> 20 Liter - {{productInfo.prod_cost}}</h2>
+        <h2> {{productInfo.product_name}} <br> <i class="fa fa-rupee" style="font-weight:bold;"> {{productInfo.bulk_price}}</i></h2>
         <p>
           No matter what your drinking water needs are, You can always count on us!
         </p>
       </ion-col> 
     </ion-row>
-    <ion-card-content>
-      
-      <ion-list>
-        <ion-list-header> Order Details</ion-list-header>
+  </ion-card>
+    <form (ngSubmit)="addToCart()" #orderForm="ngForm">
+      <ion-list id="order-data" ngModelGroup="orderData" #orderData="ngModelGroup">
+        <ion-item-divider color="primary"><ion-icon name="cart" item-left></ion-icon>Order Details</ion-item-divider>
         <ion-item>      
-          <ion-label> Order Qunatity</ion-label>
-          <ion-input type="number" min="3" inputmode="numeric" pattern="[0-9]*"  required [(ngModel)]="model.qty" (keyup)="calculateOrder();"></ion-input>
-          <ion-icon name="remove-circle"  color="warning" item-end (click)="reduceQty('order');" class="qtyBtn"></ion-icon>
-          <ion-icon name="add-circle" color="success" item-end (click)="increaseQty('order');" class="qtyBtn"></ion-icon>
+          <ion-label class="formLabel"> Order Qunatity</ion-label>
+          <ion-input type="number" min="3" inputmode="numeric" pattern="[0-9]*"  required [(ngModel)]="model.qty" (keyup)="calculateOrder();" [ngModelOptions]="{standalone: true}" class="formInput" text-center></ion-input>
+          <ion-icon  color="warning" item-end (click)="reduceQty('order');" class="qtyBtn"> <i class="fa fa-minus-circle" aria-hidden="true"></i></ion-icon>
+          <ion-icon  color="success" item-end (click)="increaseQty('order');"  class="qtyBtn"><i class="fa fa-plus-circle" aria-hidden="true"></i></ion-icon>
         </ion-item>
         <ion-item>      
-          <ion-label>Return Empty Can</ion-label>
-          <ion-input type="number" min="0" inputmode="numeric" pattern="[0-9]*" required [(ngModel)]="model.emptyCan" (keyup)="calculateOrder();"></ion-input>
-          <ion-icon name="remove-circle"  color="warning" item-end (click)="reduceQty('return');" class="qtyBtn"></ion-icon>
-          <ion-icon name="add-circle" color="success" item-end (click)="increaseQty('return');" class="qtyBtn"></ion-icon>
+          <ion-label class="formLabel">Return Empty Can</ion-label>
+          <ion-input type="number" min="0" inputmode="numeric" pattern="[0-9]*" required [(ngModel)]="model.emptyCan" (keyup)="calculateOrder();" [ngModelOptions]="{standalone: true}" class="formInput" text-center></ion-input>
+          <ion-icon  color="warning" item-end (click)="reduceQty('return');" class="qtyBtn"><i class="fa fa-minus-circle" aria-hidden="true"></i></ion-icon>
+          <ion-icon color="success" item-end (click)="increaseQty('return');" class="qtyBtn"><i class="fa fa-plus-circle" aria-hidden="true"></i></ion-icon>
         </ion-item>
-        <!--<ion-list-header> Delivery Details</ion-list-header>-->
-        <ion-item>
-          <ion-label>Delivery Time</ion-label>
-          <ion-select [(ngModel)]="model.delivery" interface="popover" (ionChange)="calculateOrder();">
+        <!--<ion-item>
+          <ion-label class="formLabel">Delivery Time</ion-label>
+          <ion-select [(ngModel)]="model.delivery" interface="popover" (ionChange)="calculateOrder();" [ngModelOptions]="{standalone: true}" class="formInput" text-left>
             <ion-option value="express">Express</ion-option>
             <ion-option value="9AM to 12AM">9AM to 12AM</ion-option>
             <ion-option value="1PM to 4PM">1PM to 4PM</ion-option>
@@ -50,60 +55,81 @@
           </ion-select>
         </ion-item>
         <ion-item>
-          <ion-label>Order Cost</ion-label>
-          <ion-note item-end >Rs.{{model.orderCost}}</ion-note>
+          <ion-label class="formLabel">Address</ion-label>
+          <ion-textarea maxlength="80" id="address" ngModel name="address" required #address="ngModel" class="formInput" text-right></ion-textarea>
+        </ion-item>
+        <ion-item no-lines *ngIf="!address.valid && address.touched" class="error-font-size"><ion-icon name="alert" item-left small color="warning" ></ion-icon>Billing address is required!</ion-item>
+        <ion-item>
+            <ion-label class="formLabel">Floor</ion-label>
+            <ion-input type="tel" name="floor" id="floor" ngModel  required  #floor="ngModel" class="formInput" text-right></ion-input>
+        </ion-item>
+
+        <ion-item no-lines *ngIf="!floor.valid && floor.touched" class="error-font-size"><ion-icon name="alert" item-left small color="warning" ></ion-icon>Billing floor is required!</ion-item>
+        <ion-item>
+            <ion-label class="formLabel">Lift Access</ion-label>
+            <ion-toggle color="success"  color="success" name="lift" id="lift" ngModel class="formInput"></ion-toggle>
         </ion-item>
         <ion-item>
-          <ion-label>Deposit Cost</ion-label>
-          <ion-note item-end >Rs.{{model.depositCost}}</ion-note>
+          <ion-label class="formLabel">Landmark</ion-label>
+          <ion-input type="text" name="landmark" id="landmark" ngModel class="formInput" text-right></ion-input>
         </ion-item>
         <ion-item>
+          <ion-label class="formLabel">State</ion-label>
+          <ion-note item-end (click)="getState($event);" color="primary" >
+            {{model.state}}
+          </ion-note>
+        </ion-item>
+        <ion-item no-lines *ngIf="!stateValid" class="error-font-size"><ion-icon name="alert" item-left small color="warning" ></ion-icon>State is required!</ion-item>
+        <ion-item>
+          <ion-label class="formLabel">City</ion-label>
+          <ion-note item-end (click)="getCity($event);" color="primary">
+            {{model.city}}
+          </ion-note>
+        </ion-item>
+        <ion-item no-lines *ngIf="!cityValid" class="error-font-size"><ion-icon name="alert" item-left small color="warning" ></ion-icon>City is required!, Please select state to proceed</ion-item>
+        <ion-item>
+          <ion-label class="formLabel">Area</ion-label>
+          <ion-note item-end (click)="getArea($event);" color="primary">
+            {{model.area}}
+          </ion-note>
+        </ion-item>
+        <ion-item no-lines *ngIf="!areaValid" class="error-font-size"><ion-icon name="alert" item-left small color="warning" ></ion-icon>Area is required!, Please select city to proceed</ion-item>
+        <ion-item>
+          <ion-label class="formLabel">Locality</ion-label>
+          <ion-note item-end (click)="getLocality($event);" color="primary">
+            {{model.locality}}
+          </ion-note>
+        </ion-item>
+        <ion-item no-lines *ngIf="!localityValid" class="error-font-size"><ion-icon name="alert" item-left small color="warning" ></ion-icon>Locality is required!, Please select area to proceed</ion-item>
+        <ion-item>
+          <ion-label class="formLabel">Zipcode</ion-label>
+          <ion-input type="text" name="zipcode" id="zipcode" ngModel  required  #zipcode="ngModel" class="formInput" text-right></ion-input>
+        </ion-item>
+        <ion-item no-lines *ngIf="!zipcode.valid && zipcode.touched" class="error-font-size"><ion-icon name="alert" item-left small color="warning" ></ion-icon>Zipcode is required!</ion-item>-->
+        <ion-item>
+          <ion-label class="formLabel">Order Cost</ion-label>
+          <ion-note item-end class="formInput" ><i class="fa fa-rupee" style="font-weight:bold;"> {{model.orderCost}}</i></ion-note>
+        </ion-item>
+        <ion-item>
+          <ion-label class="formLabel">Deposit Cost</ion-label>
+          <ion-note item-end class="formInput"> <i class="fa fa-rupee" style="font-weight:bold;"> {{model.depositCost}}</i></ion-note>
+        </ion-item>
+        <!--<ion-item>
           <ion-label>Express delivery charge <h6 ion-text color="success" style="font-size: 0.7em" ><ion-icon name="information-circle" color="warning"></ion-icon> Extra Rs 10 for express delivery</h6></ion-label>
-          <ion-note item-end >Rs.{{model.expressCost}}</ion-note>
+          <ion-note item-end class="formInput" >Rs.{{model.expressCost}}</ion-note>
         </ion-item>
         <ion-item>
           <ion-label>No lift access <h6 ion-text color="success" style="font-size: 0.7em" ><ion-icon name="information-circle" color="warning"></ion-icon> Extra Rs 5 Per Floor</h6> </ion-label>
           
-          <ion-note item-end >Rs.{{model.floorCharge}}</ion-note>
-        </ion-item>
-        <ion-item>
-          <ion-label>Total Cost</ion-label>
-          <ion-note item-end color="success" style="font-weight: bold; font-size: 1.5em">Rs.{{model.total}}</ion-note>
-        </ion-item>
-        <!--<ion-item>
-          <ion-label>Flat No.</ion-label>
-          <ion-input type="text" [(ngModel)]="model.flat"></ion-input>
-        </ion-item>
-
-        <ion-item>
-          <ion-label>Floor</ion-label>
-          <ion-input type="text" [(ngModel)]="model.floor"></ion-input>
-        </ion-item>
-        
-        <ion-item>
-          <ion-label>Address</ion-label>
-          <ion-textarea maxlength="80" [(ngModel)]="model.address" ></ion-textarea>
-        </ion-item>
-
-        <ion-item>
-          <ion-label>Lift Access</ion-label>
-          <ion-toggle color="success"></ion-toggle>
-        </ion-item>
-
-        <ion-item>
-          <ion-label>Landmark</ion-label>
-          <ion-input type="text" [(ngModel)]="model.landmark"></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label>City</ion-label>
-          <ion-input type="text" [(ngModel)]="model.city"></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label>Zipcode</ion-label>
-          <ion-input type="text" [(ngModel)]="model.zipcode"></ion-input>
+          <ion-note item-end class="formInput" >Rs.{{model.floorCharge}}</ion-note>
         </ion-item>-->
-        <button ion-button class = "button button-block" color="primary" (click)="checkout()">Proceed</button>
+        <ion-item>
+          <ion-label>Sub Total</ion-label>
+          <ion-note item-end color="success" style="font-weight: bold; font-size: 1.5em"><i class="fa fa-rupee" style="font-weight:bold;"> </i> {{model.subtotal}}</ion-note>
+        </ion-item>
       </ion-list>
-    </ion-card-content>
-  </ion-card>
+      </form>
+      <!--<button ion-button block color="primary" type="submit" [disabled]="!orderForm.valid || disableSubmit" (click)="orderForm.ngSubmit.emit()">Proceed</button>-->
+      <button ion-button block color="primary" type="submit" *ngIf="!productInfo.qty" [disabled]="model.subtotal<=0 && model.qty<=3" (click)="orderForm.ngSubmit.emit()">Add to cart</button>
+      <button ion-button block color="warning" type="submit" *ngIf="productInfo.qty" [disabled]="model.subtotal<=0 && model.qty<=3" (click)="updateCart(productInfo);">Update cart</button>
 </ion-content>

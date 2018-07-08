@@ -1,4 +1,4 @@
 <ion-tabs [selectedIndex]="myIndex" color="primary">
-  <ion-tab [root]="tab1Root" tabTitle="Normal" tabIcon="cart" [rootParams]="navParams.get('productInfo')"></ion-tab>
-  <ion-tab [root]="tab2Root" tabTitle="Bulk" tabIcon="cart" [rootParams]="navParams.get('productInfo')"></ion-tab>
+  <ion-tab [root]="tab1Root" tabTitle="Normal" tabIcon="cart" [rootParams]="productInfo" editParam="navParams.get('productInfo')"></ion-tab>
+  <ion-tab [root]="tab2Root" tabTitle="Bulk" tabIcon="cart" [rootParams]="productInfo"></ion-tab>
 </ion-tabs>

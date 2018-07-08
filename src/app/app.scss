@@ -17,11 +17,64 @@
 
 .item-input .label-md, .item-select .label-md, .item-datetime .label-md{
         color: #000;
+}
+.formLabel{
+    color: #000;
+}
+.formInput{
+    color: #666;
+}
+.toast-success{
+    .toast-wrapper {
+        .toast-container{
+            background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAABWzo5XAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAMhJREFUeNpinH02QYCBgaEeiAsYyAMTgLiRhUJDGGB6mSg0BG4YEwOVADkGfQDiQCDeQKlBianGC0CGKFBi0ASQIcCY7geyDfAZBHL2ARyGXAAaUgg0JABbBKEbtAGo2BHkfCwWOAINAXlnPjGBnQBUnAA0bAGaYYFAMZBh64FYAJtBLFjE5gMNYwAZBqJBGoHsA9jChZBBKIaBOLjChRiDYIbpA+mFuMKFlOgHueI8rnChNEHS3qAJVDBnAsigRgoNAxdsAAEGAJA2PkxT31GFAAAAAElFTkSuQmCC") !important;
+            background-repeat: no-repeat;
+            background-position: left;
+            margin-left: 9px;
+            .toast-message{
+                margin-left: 10px;
+                // color: map-get($colors, success);
+            }
+        }
     }
-    .formLabel{
-        color: #000;
+}
+.toast-error{
+    .toast-wrapper {
+        .toast-container{
+            background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAABWzo5XAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAPJJREFUeNpiZICC18oMBkBqPxALMBAHPgCxo+hdhgsgDiOZhmAYxkiBISiGMWEx5AEU4wMHkNggvfuZ0A0BOlMRSBsC8QUchiQC1TgC6UJkw5jQVQG9KgBUCHYuFsNAhixAcgkcoBukAHImDsPghgDlE4BUPbJGUGD/x+L8C9DY+AAyFMh2ALI3IBkyH10DLoNQDEPyNlZDsHkNGYCShQOaWD4uxfgMSoR5Bwk44opNJjyGwAMWiM8TiE2sBqHHznyoN/fjMwzdoANYDEEOM2TDNqLH2nu0xFUI5dfjic2J0IA3gOU3qmVa6hUj1CrYAAIMAFbcaQvFeKkZAAAAAElFTkSuQmCC") !important;
+            background-repeat: no-repeat;
+            background-position: left;
+            margin-left: 9px;
+            .toast-message{
+                margin-left: 10px;
+                // color: map-get($colors, error);
+            }
+        }
     }
-    .formInput{
-        color: #555;
+}
+.toast-warning{
+    .toast-wrapper {
+        .toast-container{
+            background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAABWzo5XAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAPJJREFUeNpiYKAH+H+GwQCI9wPxehAbn1oWAmb1A7EDlC0AxI64FDLhcU0CkiEg4AAVwwoYcRgCsv0+1BUXoMIgr30AYkVGEzBNlIvqoYZsAGoyBGEQGypWT5TXoIFaAOVeRJKCsQuwBTwTjgCGAXkktj4ONZgGYQlgBSS2AL6AZ0ILYHSbBHCwwa6C6sFwUT0WxaAEKQDECtBYQ7ekHiX6oYF3HkcMLoDSuNIQKFYvsOAKPCQQQETqd2SEBtp8HIoegGyEss+jBT4ySGQi4BqI/7GkZHRXgVz0n4CiB1iSAtbcPwFLjOAzEBu4QLWyCyDAAAMPQ9TofvX8AAAAAElFTkSuQmCC") !important;
+            background-repeat: no-repeat;
+            background-position: left;
+            margin-left: 9px;
+            .toast-message{
+                margin-left: 10px;
+                // color: map-get($colors, warning);
+            }
+        }
     }
+}
+button {
+        ion-badge {
+            position: absolute;
+            top: -0.2rem;
+            right: -0.2rem;
+            opacity: 0.9;
 
+            & ~ ion-icon {
+                margin-right: 1.2rem;
+            }
+        }
+    }

@@ -2,8 +2,9 @@
 <ion-col>
     <ion-card>
         <ion-fab top right >
-            <button ion-fab mini color="secondary"><i class="fa fa-rupee" style="font-weight:bold;color:#EA2027;"> {{productInfo.mrp}} </i> </button>
+            <button ion-fab mini color="warning"><i class="fa fa-rupee" style="font-weight:bold;"> {{productInfo.mrp}} </i> </button>
         </ion-fab>
+        
         <!--<ion-fab top left >
             <button ion-fab mini color="secondary"><ion-icon name="notifications" color="success"></ion-icon></button>
         </ion-fab>-->
@@ -12,10 +13,12 @@
             <ion-col col-4></ion-col>
             <ion-badge class="cost_badge" color="danger" col-4>{{productInfo.mrp}}</ion-badge>
         </ion-row>-->
-        <img src="http://puredip.deforay.in/uploads/products/product_6/20l.png" alt="productInfo.product_name" />
+        <img [src]="productInfo.product_image" alt="productInfo.product_name" />
         <ion-card-content (click)="getProductInfo(productInfo);">
             <ion-card-title>
+                <i class="fa fa-hand-pointer-o" aria-hidden="true"></i>
                 Buy {{productInfo.product_name}}
+                
             </ion-card-title>
         </ion-card-content>
     </ion-card>

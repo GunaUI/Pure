@@ -3,6 +3,12 @@
   <ion-navbar color="primary">
     <button ion-button icon-only start menuToggle><ion-icon name="menu"></ion-icon></button>
     <ion-title>Puredip</ion-title>
+     <ion-buttons right  *ngIf="cartCount>0" (click)="checkout();">
+        <button ion-button icon-only>
+        <ion-badge  color="danger">{{cartCount}}</ion-badge>
+        <ion-icon name="cart"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
