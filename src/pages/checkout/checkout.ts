@@ -5,23 +5,28 @@ import { Storage } from '@ionic/storage'
 import { NgForm } from '@angular/forms';
 import { ServerService } from "../../services/server.service";
 
-
 @IonicPage()
 @Component({
   selector: 'page-checkout',
   templateUrl: 'checkout.html',
 })
 export class CheckoutPage {
+  @ViewChild('map') mapRef: ElementRef;
   orderInfo : any
   @ViewChild('orderForm') orderForm: NgForm;
-  @ViewChild('map') mapRef: ElementRef;
+  google: google;
   localityValid=true;
   stateValid=true;
   cityValid=true;
   areaValid=true;
   disableSubmit=true;
-  deliveryData= [];
-  google: google;
+  deliveryData : any = '';
+  grandTotal : number;
+  totalOrderQuantity : number;
+  totalReturnQuantity : number;
+  totalOrderCost : number;
+  totalDepositCost : number;
+  totalServiceCost : number = 0;
   
 
   model: any = {
@@ -39,24 +44,34 @@ export class CheckoutPage {
     locality_id:0
   };
   order :any = {};
-  
+
   constructor(public navCtrl: Nav, public navParams: NavParams, private alertCtrl : AlertController, private storage: Storage,private serverService: ServerService,public popoverCtrl: PopoverController) {
   }
-  ionViewDidEnter() {
+
+
+  ionViewWillLoad() {
     this.storage.get('userLoginInfo').then((userLoginInfo) => {
-       console.log("userLoginInfo#####",userLoginInfo);
+      this.getDelivery();
       if (userLoginInfo != null) {
         var ctrl = this;
         this.serverService.getUser(userLoginInfo["customer_id"])
         .subscribe(user => {
-          console.log("user#####",user);
+          //console.log('lift_access',user["customer"]["lift_access"]);
+          const location = new google.maps.LatLng(user["customer"]["latitude"], user["customer"]["longitude"]);
+          const options = {
+            center:location,
+            zoom : 13
+          }
+          const map = new google.maps.Map(this.mapRef.nativeElement, options);
+          this.addMarker(location, map)
+
           ctrl.orderForm.form.patchValue({
             orderData: {
               expressCost : 0,
               floorCharge : 5,
               address: user["customer"]["address"],
               floor: user["customer"]["floor_number"],
-              lift: user["customer"]["lift_access"],
+              lift: false,
               state: user["customer"]["state_name"],
               state_id: user["customer"]["state_id"],
               city: user["customer"]["city_name"],
@@ -79,61 +94,33 @@ export class CheckoutPage {
           ctrl.model.locality = user["customer"]["locality_name"];
           ctrl.model.locality_id = user["customer"]["locality_id"];
           ctrl.model.zipcode = user["customer"]["pincode"];
+
+          ctrl.model.customer_id = userLoginInfo["customer_id"];
           if(user["customer"]["state_id"]!=0 && user["customer"]["city_id"]!=0 && user["customer"]["area_id"]!=0 && user["customer"]["locality_id"]!=0){
             ctrl.disableSubmit = false;
           }
+          
+        });
+        ctrl.storage.get('cartData').then((data) => {
+            if(data!=null){
+              ctrl.orderInfo = data;
+              ctrl.totalOrderQuantity = data.totalOrderQuantity;
+              ctrl.totalReturnQuantity = data.totalReturnQuantity;
+              ctrl.totalOrderCost = data.totalOrderCost;
+              ctrl.totalDepositCost = data.totalDepositCost;
+              ctrl.grandTotal = data.grandOrderTotal;
+            }
         });
       } else {
-      console.log('test');
-      }
-    })
-  }
-  ionViewWillLoad() {
-    // this.orderInfo = this.navParams.get('orderInfo');
-    // const location = new google.maps.LatLng(this.orderInfo.latitude, this.orderInfo.longitude);
-    // const options = {
-    //   center:location,
-    //   zoom : 13
-    // }
-    // const map = new google.maps.Map(this.mapRef.nativeElement, options);
-    // this.addMarker(location, map)
-
-    this.storage.get('cartData').then((data) => {
-      if(data!=null){
-        this.orderInfo = data;
-        console.log(data) 
-      }else{
-        this.navCtrl.setRoot('HomePage');
+        console.log('test');
       }
     });
-    this.getDelivery();
   }
-  // addMarker(position, map){
-  //   return new google.maps.Marker({
-  //     position,
-  //     map
-  //   });
-  // }
-
-  confirmOrder(){
-      this.model.address = this.orderForm.value.orderData.address;
-      this.model.floor = this.orderForm.value.orderData.floor;
-      this.model.landmark = this.orderForm.value.orderData.landmark;
-      this.model.lift = this.orderForm.value.orderData.lift;
-      this.model.zipcode = this.orderForm.value.orderData.zipcode;
-      this.order.totalOrderQuantity = '1';
-      this.order.totalReturnQuantity = '1';
-      this.order.totalDepositCost = '100';
-      this.order.totalOrderCost = '2';
-      this.order.grandOrderTotal = '100';
-
-    // console.log(this.orderForm.value.orderData);
-    // console.log(this.model);
-    // console.log(this.orderInfo);
-    this.order.shipping =this.model;
-    this.order.order =this.orderInfo;
-    
-    console.log(JSON.stringify(this.order));
+  addMarker(position, map){
+    return new google.maps.Marker({
+      position,
+      map
+    });
   }
   getState(ev){
       var ctrl = this; 
@@ -149,7 +136,7 @@ export class CheckoutPage {
             ctrl.model.state=data.state_name;
             ctrl.model.state_id=data.state_id;
             this.stateValid = true;
-          }else{
+          }else if(ctrl.model.state_id=='' || ctrl.model.state_id==null){
             this.stateValid = false;
             this.disableSubmit = true;
           }
@@ -175,7 +162,7 @@ export class CheckoutPage {
           }
         })
       });
-    }else{
+    }else if(ctrl.model.city_id=='' || ctrl.model.city_id==null){
       this.cityValid = false;
       this.disableSubmit = true;
     }
@@ -199,7 +186,7 @@ export class CheckoutPage {
           }
         })
       });
-    }else{
+    }else if(ctrl.model.area_id=='' || ctrl.model.area_id==null){
       this.areaValid = false;
       this.disableSubmit = true;
     }
@@ -224,18 +211,71 @@ export class CheckoutPage {
           }
         })
       });
-    }else{
+    }else if(ctrl.model.locality_id=='' || ctrl.model.locality_id==null){
       this.disableSubmit = true;
       this.localityValid = false;
     }
   }
-
   getDelivery(){
-    //  this.serverService.getDelivery()
-    //  .subscribe(data =>{
-    //     this.deliveryData=data.deliverySlot;
-    //  });
-    //  console.log(this.deliveryData);
+      var ctrl = this; 
+      this.serverService.getDelivery()
+        .subscribe( data => {
+          this.deliveryData = [{"id":"2018-07-10##9:00-AM-to-12:00-PM","name":"Tomorrow(9:00 AM to 12:00 PM)"},{"id":"2018-07-10##1:00-PM-to-4:00-PM","name":"Tomorrow(1:00 PM to 4:00 PM)"},{"id":"2018-07-10##5:00-PM-to-9:00-PM","name":"Tomorrow(5:00 PM to 9:00 PM)"}]
+          ctrl.model.delivery = this.deliveryData[0]["id"];
+      });
+      
+  }
+  liftAvailability(){
+    if(!this.orderForm.form.value.orderData.lift && parseInt(this.orderForm.form.value.orderData.floor)>0){
+      this.totalServiceCost = (parseInt(this.orderForm.form.value.orderData.floor) * (this.totalOrderQuantity) *5);
+      this.grandTotal = this.orderInfo.grandOrderTotal + (parseInt(this.orderForm.form.value.orderData.floor) * (this.totalOrderQuantity) *5);
+    }else{
+      this.grandTotal = this.orderInfo.grandOrderTotal;
+      this.totalServiceCost = 0;
+    }
+  }
+  homePage(){
+
+  }
+  confirmOrder(){
+    const confirm = this.alertCtrl.create({
+      title: 'Are you sure?',
+      message: 'Do you agree to proceed this order?',
+      buttons: [
+        {
+          text: 'Disagree',
+          handler: () => {
+            console.log('Disagree clicked');
+          }
+        },
+        {
+          text: 'Agree',
+          handler: () => {
+                var shipping = {
+                    customerId : this.model.customer_id,
+                    stateId:this.model.state_id,
+                    cityId:this.model.city_id,
+                    areaId:this.model.area_id,
+                    locality_id: this.model.locality_id,
+                    customerAddress: this.orderForm.form.value.orderData.address,
+                    floorNumber: this.orderForm.form.value.orderData.floor,
+                    liftAccess: this.orderForm.form.value.orderData.lift
+                }
+                var data={
+                  deliveryTimeSlot:this.model.delivery,
+                  paymentType:'cod',
+                  totalDepositAmount:this.totalDepositCost,
+                  totalAmount: this.totalOrderCost,
+                  serviceCharge:this.totalServiceCost,
+                  shipping:shipping,
+                  order:this.orderInfo
+                }
+                console.log(data)
+          }
+        }
+      ]
+    });
+    confirm.present();
   }
 
 }

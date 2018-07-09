@@ -8,6 +8,9 @@ import { Storage } from '@ionic/storage'
   templateUrl: 'cart.html',
 })
 export class CartPage {
+  checkoutPage : any ={
+    type : 'checkout'
+  }
   orderInfo : any;
   grandTotal : number;
   constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController, private storage: Storage, private alertCtrl : AlertController) {
@@ -61,6 +64,9 @@ export class CartPage {
   editItem(index,productDetails){
     productDetails.cartId=index;
     this.viewCtrl.dismiss(productDetails);
+  }
+  checkout(){
+    this.viewCtrl.dismiss(this.checkoutPage);
   }
 
 }

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, Nav, NavParams, Events, ToastController, ModalController } from 'ionic-angular';
-import { Product } from '../../models/product.interface';
+// import { Product } from '../../models/product.interface';
 // import { ProductServiceProvider } from '../../providers/product-service/product.service';
 import { ServerService } from "../../services/server.service";
 import {
@@ -15,8 +15,8 @@ import {
 
 export class HomePage {
   cartCount:any
-  products : Product[];
-  productDetail : Product;
+  products : any;
+  productDetail : any;
   constructor(public navCtrl: Nav, public navParams: NavParams, public events: Events ,private serverService: ServerService, private storage: Storage, private toastCtrl: ToastController, public modalCtrl: ModalController) {}
 
   getProducts(): void{
@@ -55,8 +55,13 @@ export class HomePage {
             if(response!=undefined){
               if(response.type=='bulk'){
                 this.navCtrl.setRoot('BulkPage',response);
-              }else{
+              }else if(response.type=='checkout'){
+                this.navCtrl.setRoot('CheckoutPage',response);
+              }
+              else if(response.type=='normal'){
                 this.navCtrl.setRoot('NormalPage',response);
+              }else{
+                this.navCtrl.setRoot('HomePage')
               }
             }else{
                 this.storage.get('cartData').then((data) => {

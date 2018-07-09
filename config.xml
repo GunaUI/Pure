@@ -3,7 +3,7 @@
     <name>Puredip</name>
     <description>An awesome Ionic/Cordova app.</description>
     <author email="hi@ionicframework" href="http://ionicframework.com/">Ionic Framework Team</author>
-    <content original-src="index.html" src="http://173.39.64.13:8101" />
+    <content original-src="index.html" src="http://173.39.64.67:8101" />
     <access origin="*" />
     <allow-navigation href="http://*/*" />
     <allow-intent href="http://*/*" />
@@ -89,6 +89,7 @@
     <plugin name="cordova-plugin-document-viewer" spec="~0.9.10" />
     <allow-navigation href="http://173.39.64.13:8100" />
     <allow-navigation href="http://173.39.64.13:8101" />
+    <allow-navigation href="http://173.39.64.67:8101" />
     <engine name="ios" spec="^4.5.4" />
     <engine name="android" spec="^7.0.0" />
 </widget>

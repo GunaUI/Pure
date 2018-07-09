@@ -74,7 +74,7 @@
           <button ion-button color="primary" outline block (click)="closeModal()" >Back</button>
         </ion-col>
         <ion-col>
-          <button ion-button color="primary" [disabled]="grandTotal<=0" block >Checkout</button>
+          <button ion-button color="primary" [disabled]="grandTotal<=0" block (click)="checkout()">Checkout</button>
         </ion-col>
       </ion-row>
     </ion-grid>
