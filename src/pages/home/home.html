@@ -1,21 +1,19 @@
-
 <ion-header>
   <ion-navbar color="primary">
     <button ion-button icon-only start menuToggle><ion-icon name="menu"></ion-icon></button>
     <ion-title>Puredip</ion-title>
-     <ion-buttons right  *ngIf="cartCount>0" (click)="checkout();">
-        <button ion-button icon-only>
+    <ion-buttons right *ngIf="cartCount>0" (click)="checkout();">
+      <button ion-button icon-only>
         <ion-badge  color="danger">{{cartCount}}</ion-badge>
         <ion-icon name="cart"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>
-
 <ion-content>
   <ion-grid>
     <ion-row>
-      <product *ngFor="let productDetails of products" [productInfo]="productDetails" col-6 style="padding-top:0px !important;padding-bottom:0px !important;" ></product>
+      <product *ngFor="let productDetails of products" [productInfo]="productDetails" col-6 style="padding-top:0px !important;padding-bottom:0px !important;"></product>
     </ion-row>
   </ion-grid>
 </ion-content>

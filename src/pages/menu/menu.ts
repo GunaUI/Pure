@@ -1,8 +1,16 @@
-import { Component, ViewChild } from '@angular/core';
-import { IonicPage, Nav, NavParams, Events } from 'ionic-angular';
+import {
+  Component,
+  ViewChild
+} from '@angular/core';
+import {
+  IonicPage,
+  Nav,
+  Events
+} from 'ionic-angular';
 
-import { Storage } from '@ionic/storage';
-
+import {
+  Storage
+} from '@ionic/storage';
 
 @IonicPage()
 @Component({
@@ -10,15 +18,12 @@ import { Storage } from '@ionic/storage';
   templateUrl: 'menu.html',
 })
 export class MenuPage {
+  @ViewChild('content') nav: Nav;
   activePage: any;
   rootPage = 'HomePage';
- 
-  @ViewChild('content') nav: Nav;
-
-  loggedIn : boolean;
-  user : any;
-
-  constructor(public navCtrl: Nav, public navParams: NavParams, public storage: Storage, public events: Events) {
+  loggedIn: boolean;
+  user: any;
+  constructor(public navCtrl: Nav, public storage: Storage, public events: Events) {
     this.user = {};
     this.activePage = 'home';
     events.subscribe('user:loggedin', (user, time) => {
@@ -26,33 +31,29 @@ export class MenuPage {
       this.getLoggedInfo()
     });
   }
-  checkActive(page){
+  checkActive(page) {
     return page == this.activePage;
   }
-
   openPage(page) {
     this.activePage = page;
-    if(page=='signup'){
+    if (page == 'signup') {
       this.nav.setRoot('SignupPage');
-    }else if(page=='login'){
+    } else if (page == 'login') {
       this.nav.setRoot("LoginPage");
-    }else if(page=='profile'){
+    } else if (page == 'profile') {
       this.nav.setRoot("ProfilePage");
-    }
-    else if(page=='orders'){
+    } else if (page == 'orders') {
       this.nav.setRoot("OrdersPage");
-    }
-    else if(page=='subscription'){
+    } else if (page == 'subscription') {
       this.nav.setRoot("SubscriptionPage");
-    }
-    else if(page=='logout'){
-      this.storage.remove('userLoginInfo').then(()=>{
+    } else if (page == 'logout') {
+      this.storage.remove('userLoginInfo').then(() => {
         this.loggedIn = false;
         this.user = null;
       })
       this.activePage = 'home';
       this.nav.setRoot("HomePage");
-    }else{
+    } else {
       this.activePage = 'home';
       this.nav.setRoot("HomePage");
     }
@@ -60,19 +61,17 @@ export class MenuPage {
   ionViewDidEnter() {
     this.getLoggedInfo()
   }
-
-  getLoggedInfo(){
+  getLoggedInfo() {
     this.storage.ready().then(() => {
-        this.storage.get('userLoginInfo').then((userLoginInfo)=>{
-          if (userLoginInfo!=null){
-            this.loggedIn = true;
-            this.user = userLoginInfo.customer_id;
-          }else{
-            this.loggedIn = false;
-            this.user = null;
-          }
-        })
-      });
+      this.storage.get('userLoginInfo').then((userLoginInfo) => {
+        if (userLoginInfo != null) {
+          this.loggedIn = true;
+          this.user = userLoginInfo.customer_id;
+        } else {
+          this.loggedIn = false;
+          this.user = null;
+        }
+      })
+    });
   }
-
 }

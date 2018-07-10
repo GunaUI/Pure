@@ -1,5 +1,5 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { IonicPage, Nav, NavParams, AlertController, PopoverController } from 'ionic-angular';
+import { IonicPage, AlertController, PopoverController, LoadingController, Nav, ToastController } from 'ionic-angular';
 import { google } from "google-maps";
 import { Storage } from '@ionic/storage'
 import { NgForm } from '@angular/forms';
@@ -45,7 +45,7 @@ export class CheckoutPage {
   };
   order :any = {};
 
-  constructor(public navCtrl: Nav, public navParams: NavParams, private alertCtrl : AlertController, private storage: Storage,private serverService: ServerService,public popoverCtrl: PopoverController) {
+  constructor(public navCtrl: Nav,private alertCtrl : AlertController, private storage: Storage,private serverService: ServerService,public popoverCtrl: PopoverController,private loadingCtrl: LoadingController, private toastCtrl: ToastController) {
   }
 
 
@@ -56,7 +56,6 @@ export class CheckoutPage {
         var ctrl = this;
         this.serverService.getUser(userLoginInfo["customer_id"])
         .subscribe(user => {
-          //console.log('lift_access',user["customer"]["lift_access"]);
           const location = new google.maps.LatLng(user["customer"]["latitude"], user["customer"]["longitude"]);
           const options = {
             center:location,
@@ -77,6 +76,8 @@ export class CheckoutPage {
               city: user["customer"]["city_name"],
               city_id: user["customer"]["city_id"],
               // landmark:  user["landmark"],
+              customerName : user["customer"]["customer_name"],
+              contactNumber : user["customer"]["mobile"],
               area: user["customer"]["area_name"],
               area_id: user["customer"]["area_id"],
               locality: user["customer"]["locality_name"],
@@ -127,7 +128,7 @@ export class CheckoutPage {
       this.serverService.getState()
         .subscribe( states => {
         let listData = states.state 
-        let popover = this.popoverCtrl.create('SearchSelectPage', {listData, fromPage: 'state'});
+        let popover = this.popoverCtrl.create('SearchSelectPage', {listData, fromPage: 'state'}, {cssClass: 'custom-popover'});
         popover.present({
         ev: ev
         });
@@ -150,7 +151,7 @@ export class CheckoutPage {
       this.serverService.getCityById(this.model.state_id,'')
         .subscribe( city => {
         let listData = city.city 
-        let popover = this.popoverCtrl.create('SearchSelectPage', {listData, fromPage: 'city', pageId: this.model.state_id});
+        let popover = this.popoverCtrl.create('SearchSelectPage', {listData, fromPage: 'city', pageId: this.model.state_id}, {cssClass: 'custom-popover'});
         popover.present({
         ev: ev
         });
@@ -174,7 +175,7 @@ export class CheckoutPage {
       this.serverService.getAreaById(this.model.city_id,'')
         .subscribe( area => {
         let listData = area.area 
-        let popover = this.popoverCtrl.create('SearchSelectPage', {listData, fromPage: 'area', pageId: this.model.city_id});
+        let popover = this.popoverCtrl.create('SearchSelectPage', {listData, fromPage: 'area', pageId: this.model.city_id}, {cssClass: 'custom-popover'});
         popover.present({
         ev: ev
         });
@@ -198,7 +199,7 @@ export class CheckoutPage {
       this.serverService.getLocationById(this.model.area_id,'')
         .subscribe( locality => {
         let listData = locality.location 
-        let popover = this.popoverCtrl.create('SearchSelectPage', {listData, fromPage: 'locality', pageId: this.model.area_id});
+        let popover = this.popoverCtrl.create('SearchSelectPage', {listData, fromPage: 'locality', pageId: this.model.area_id}, {cssClass: 'custom-popover'});
         popover.present({
         ev: ev
         });
@@ -220,10 +221,9 @@ export class CheckoutPage {
       var ctrl = this; 
       this.serverService.getDelivery()
         .subscribe( data => {
-          this.deliveryData = [{"id":"2018-07-10##9:00-AM-to-12:00-PM","name":"Tomorrow(9:00 AM to 12:00 PM)"},{"id":"2018-07-10##1:00-PM-to-4:00-PM","name":"Tomorrow(1:00 PM to 4:00 PM)"},{"id":"2018-07-10##5:00-PM-to-9:00-PM","name":"Tomorrow(5:00 PM to 9:00 PM)"}]
-          ctrl.model.delivery = this.deliveryData[0]["id"];
+          this.deliveryData =data.deliverySlot;
+          ctrl.model.delivery = this.deliveryData[0].id;
       });
-      
   }
   liftAvailability(){
     if(!this.orderForm.form.value.orderData.lift && parseInt(this.orderForm.form.value.orderData.floor)>0){
@@ -235,9 +235,29 @@ export class CheckoutPage {
     }
   }
   homePage(){
-
+    this.navCtrl.setRoot("HomePage");
+  }
+  validateService(){
+    if(this.orderForm.form.value.orderData.zipcode!='' || this.orderForm.form.value.orderData.zipcode!=null){
+        this.serverService.validateZip(this.orderForm.form.value.orderData.zipcode)
+        .subscribe( response => {
+          if(response["status"]=='fail'){
+            this.disableSubmit = false;
+            this.toastCtrl.create({
+                message: 'Sorry we are not servicing for this zipcode',
+                duration: 2000,
+                position: 'middle',
+                showCloseButton: true,
+                closeButtonText: 'Done',
+                dismissOnPageChange: true,
+                cssClass: "toast-error"
+            }).present();
+          }
+      });
+    }
   }
   confirmOrder(){
+    var ctrl =this;
     const confirm = this.alertCtrl.create({
       title: 'Are you sure?',
       message: 'Do you agree to proceed this order?',
@@ -251,26 +271,80 @@ export class CheckoutPage {
         {
           text: 'Agree',
           handler: () => {
+            const loader = this.loadingCtrl.create({
+              content: "Please wait..."
+            });
+            loader.present();
                 var shipping = {
-                    customerId : this.model.customer_id,
+                    customerID : this.model.customer_id,
+                    customerName : this.orderForm.form.value.orderData.customerName,
+                    contactNumber : this.orderForm.form.value.orderData.contactNumber,
                     stateId:this.model.state_id,
                     cityId:this.model.city_id,
                     areaId:this.model.area_id,
-                    locality_id: this.model.locality_id,
+                    localityId: this.model.locality_id,
                     customerAddress: this.orderForm.form.value.orderData.address,
                     floorNumber: this.orderForm.form.value.orderData.floor,
                     liftAccess: this.orderForm.form.value.orderData.lift
                 }
-                var data={
+                var orderItems = this.orderInfo.map(item => ({
+                    bulk_price: item.bulk_price,
+                    category_name: item.category_name,
+                    dealer_price: item.dealer_price,
+                    depositCost: item.depositCost,
+                    depositedAmt: item.deposited_amount,
+                    returnQty: item.emptyCan,
+                    mrp: item.mrp,
+                    orderPrice: item.orderCost,
+                    product_category_id: item.product_category_id,
+                    productId: item.product_id,
+                    product_image: item.product_image,
+                    product_name: item.product_name,
+                    orderQty: item.qty,
+                    lineTotal: item.subtotal,
+                    type: item.type
+                }));
+                var data = {
                   deliveryTimeSlot:this.model.delivery,
                   paymentType:'cod',
+                  orderStatus:'ordered',
+                  orderType: 'normal',
                   totalDepositAmount:this.totalDepositCost,
                   totalAmount: this.totalOrderCost,
                   serviceCharge:this.totalServiceCost,
                   shipping:shipping,
-                  order:this.orderInfo
+                  order:orderItems
                 }
-                console.log(data)
+                ctrl.serverService.postData('/api/order', data).then((response) => {
+                  loader.dismiss();
+                  if(response["status"]='success'){
+                    this.alertCtrl.create({
+                      title: "Order Successful",
+                      message: "Your order placed successfully!.",
+                      buttons: [{
+                        text: "Done",
+                        handler: () => {
+                            ctrl.storage.remove('cartData').then((data) => {
+                              ctrl.navCtrl.setRoot("OrdersPage");
+                            });
+                        }
+                      }]
+                    }).present()
+                  }else{
+                      this.toastCtrl.create({
+                          message: 'Purchase Order Failure!, Please try again or contact admin.',
+                          duration: 2000,
+                          position: 'middle',
+                          showCloseButton: true,
+                          closeButtonText: 'Done',
+                          dismissOnPageChange: true,
+                          cssClass: "toast-error"
+                      }).present();
+                  }
+                  }, (err) => {
+                    console.log('error', err)
+                    loader.dismiss();
+                  });
           }
         }
       ]

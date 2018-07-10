@@ -1,23 +1,22 @@
 page-home {
-    ion-card{
+    ion-card {
         text-align: center;
         border-radius: 10px !important;
         width: 100% !important;
-        margin : 0px !important;
+        margin: 0px !important;
     }
-    ion-card-content{
-            background-color: #1CA0D7;
+    ion-card-content {
+        background-color: #1CA0D7;
     }
-    ion-card-title{
+    ion-card-title {
         position: relative !important;
         font-size: 1em !important;
         color: #fff !important;
     }
-    .cost_badge{
+    .cost_badge {
         font-size: 10px;
     }
-    .qty_badge{
+    .qty_badge {
         font-size: 10px;
     }
-    
 }

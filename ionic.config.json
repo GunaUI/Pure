@@ -7,8 +7,8 @@
   },
 "proxies": [
     {
-      "path": "/api/",
-      "proxyUrl": "http://puredip.deforay.in/api/"
+      "path": "*/puredip",
+      "proxyUrl": "http://puredip.deforay.in"
     }
   ]
 }

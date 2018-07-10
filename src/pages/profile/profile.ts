@@ -32,6 +32,7 @@ import {
 export class ProfilePage {
 
   @ViewChild('updateProfileForm') updateProfileForm: NgForm;
+  google: google;
   submitted = false;
   localityValid = true;
   stateValid = true;
@@ -50,22 +51,13 @@ export class ProfilePage {
     locality_id: 0,
     customer_id:0
   };
-
-  google: google;
-
-
-
   constructor(private navCtrl: Nav, private toastCtrl: ToastController, private loadingCtrl: LoadingController, private serverService: ServerService, public popoverCtrl: PopoverController, public modalCtrl: ModalController, private alertCtrl: AlertController, private storage: Storage) {}
-
-
   ionViewDidEnter() {
     this.storage.get('userLoginInfo').then((userLoginInfo) => {
       if (userLoginInfo != null) {
         var ctrl = this;
         this.serverService.getUser(userLoginInfo["customer_id"])
           .subscribe(user => {
-            console.log('user', user["customer"]);
-
             ctrl.updateProfileForm.form.patchValue({
               userData: {
                 firstName: user["customer"]["customer_name"],
@@ -110,7 +102,6 @@ export class ProfilePage {
       }
     })
   }
-
   updateProfile() {
     var ctrl = this;
     const loader = this.loadingCtrl.create({
@@ -118,7 +109,7 @@ export class ProfilePage {
     });
     loader.present();
     setTimeout(() => {
-      this.serverService.checkExistingUser(this.updateProfileForm.value.userData.phone)
+      this.serverService.checkExistingUser(this.updateProfileForm.value.userData.phone,ctrl.billing.customer_id)
         .subscribe(user => {
           if (user.status != "fail") {
             var geocoder = new google.maps.Geocoder();
@@ -128,9 +119,6 @@ export class ProfilePage {
               if (results[0] != undefined) {
                 ctrl.updateProfileForm.value.billingData.latitude = results[0].geometry.location.lat();
                 ctrl.updateProfileForm.value.billingData.longitude = results[0].geometry.location.lng();
-                console.log(results[0].geometry.location.lat());
-                console.log(results[0].geometry.location.lng());
-
                 if (results[0].geometry.location.lat() && results[0].geometry.location.lng()) {
                   this.registerData = {
                     customerName: ctrl.updateProfileForm.value.userData.firstName,
@@ -147,16 +135,15 @@ export class ProfilePage {
                     longitude: results[0].geometry.location.lng(),
                     customerId:ctrl.billing.customer_id,
                   }
-                  console.log(this.registerData);
                   ctrl.serverService.postData('/api/customer', this.registerData).then((response) => {
-                    console.log(response);
                     if (response["pinService"]) {
                       loader.dismiss();
                       let toast = ctrl.toastCtrl.create({
                         message: 'Your details updated Successfully',
                         duration: 3000
                       });
-                      
+                      toast.present();
+                      loader.dismiss();
                     } else {
                       let toast = ctrl.toastCtrl.create({
                         message: 'We are not serving for zipcode ' + ctrl.updateProfileForm.value.billingData.zipcode + ', We will get back to you soon. ',
@@ -206,7 +193,6 @@ export class ProfilePage {
         });
     }, 100);
   }
-
   getState(ev) {
     var ctrl = this;
     this.serverService.getState()
@@ -215,7 +201,7 @@ export class ProfilePage {
         let popover = this.popoverCtrl.create('SearchSelectPage', {
           listData,
           fromPage: 'state'
-        });
+        }, {cssClass: 'custom-popover'});
         popover.present({
           ev: ev
         });
@@ -231,7 +217,6 @@ export class ProfilePage {
         })
       });
   }
-
   getCity(ev) {
     if (this.billing.state_id != 0 && this.billing.state_id != null) {
       var ctrl = this;
@@ -242,7 +227,7 @@ export class ProfilePage {
             listData,
             fromPage: 'city',
             pageId: this.billing.state_id
-          });
+          }, {cssClass: 'custom-popover'});
           popover.present({
             ev: ev
           });
@@ -259,7 +244,6 @@ export class ProfilePage {
       this.disableSubmit = true;
     }
   }
-
   getArea(ev) {
     if (this.billing.city_id != 0 && this.billing.city_id != null) {
       var ctrl = this;
@@ -270,7 +254,7 @@ export class ProfilePage {
             listData,
             fromPage: 'area',
             pageId: this.billing.city_id
-          });
+          }, {cssClass: 'custom-popover'});
           popover.present({
             ev: ev
           });
@@ -298,7 +282,7 @@ export class ProfilePage {
             listData,
             fromPage: 'locality',
             pageId: this.billing.area_id
-          });
+          }, {cssClass: 'custom-popover'});
           popover.present({
             ev: ev
           });
@@ -316,9 +300,8 @@ export class ProfilePage {
       this.localityValid = false;
     }
   }
-
   checkExistingUser() {
-    this.serverService.checkExistingUser(this.updateProfileForm.value.userData.phone)
+    this.serverService.checkExistingUser(this.updateProfileForm.value.userData.phone,this.billing.customer_id)
       .subscribe(user => {
         if (user.status == "fail") {
           const confirm = this.alertCtrl.create({

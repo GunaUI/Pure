@@ -1,7 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, Nav, NavParams, Events, ToastController, ModalController } from 'ionic-angular';
-// import { Product } from '../../models/product.interface';
-// import { ProductServiceProvider } from '../../providers/product-service/product.service';
+import { IonicPage, Nav, NavParams, Events, ModalController } from 'ionic-angular';
 import { ServerService } from "../../services/server.service";
 import {
   Storage
@@ -17,11 +15,9 @@ export class HomePage {
   cartCount:any
   products : any;
   productDetail : any;
-  constructor(public navCtrl: Nav, public navParams: NavParams, public events: Events ,private serverService: ServerService, private storage: Storage, private toastCtrl: ToastController, public modalCtrl: ModalController) {}
+  constructor(public navCtrl: Nav, public navParams: NavParams, public events: Events ,private serverService: ServerService, private storage: Storage, public modalCtrl: ModalController) {}
 
   getProducts(): void{
-    // this.prodService.mockgetProduct().subscribe((data : Product[]) => this.products = data);
-
       this.serverService.getProducts()
         .subscribe( data => {
           if(data.status=='success'){

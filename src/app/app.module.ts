@@ -7,14 +7,11 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { IonicStorageModule } from '@ionic/storage';
 
-import { File } from '@ionic-native/file';
-import { DocumentViewer, DocumentViewerOptions } from '@ionic-native/document-viewer';
-import { FileTransfer } from '@ionic-native/file-transfer';
-
-
+// import { File } from '@ionic-native/file';
+// import { DocumentViewer, DocumentViewerOptions } from '@ionic-native/document-viewer';
+// import { FileTransfer } from '@ionic-native/file-transfer';
 
 import { MyApp } from './app.component';
-import { ProductServiceProvider } from '../providers/product-service/product.service';
 import { ServerService } from "../services/server.service";
 
 @NgModule({
@@ -36,10 +33,9 @@ import { ServerService } from "../services/server.service";
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    ProductServiceProvider,
-    File,
-    DocumentViewer,
-    FileTransfer,
+    // File,
+    // DocumentViewer,
+    // FileTransfer,
     ServerService
   ]
 })

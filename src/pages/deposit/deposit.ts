@@ -1,12 +1,14 @@
-import { Component, ViewChild } from '@angular/core';
-import { IonicPage, Nav, NavController, NavParams, ViewController } from 'ionic-angular';
-
-/**
- * Generated class for the DepositPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import {
+  Component,
+  ViewChild
+} from '@angular/core';
+import {
+  IonicPage,
+  Nav,
+  NavController,
+  NavParams,
+  ViewController
+} from 'ionic-angular';
 
 @IonicPage()
 @Component({
@@ -14,21 +16,16 @@ import { IonicPage, Nav, NavController, NavParams, ViewController } from 'ionic-
   templateUrl: 'deposit.html',
 })
 export class DepositPage {
-  
+
   @ViewChild('content') nav: Nav;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl : ViewController) {
-  }
+  constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController) {}
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad DepositPage');
   }
-  closeModal(){
+  closeModal() {
     this.viewCtrl.dismiss();
   }
-  // openOrders(){
-  //   this.viewCtrl.dismiss();
-  //   this.navCtrl.setRoot("OrdersPage");
-  // }
 
 }

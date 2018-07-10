@@ -1,6 +1,12 @@
-import { NgModule } from '@angular/core';
-import { IonicPageModule } from 'ionic-angular';
-import { DepositPage } from './deposit';
+import {
+  NgModule
+} from '@angular/core';
+import {
+  IonicPageModule
+} from 'ionic-angular';
+import {
+  DepositPage
+} from './deposit';
 
 @NgModule({
   declarations: [

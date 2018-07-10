@@ -1,49 +1,16 @@
 import { Injectable } from '@angular/core';
 import { Headers, Http, Response } from '@angular/http';
 import 'rxjs/Rx';
-import { Observable } from 'rxjs/Observable';
+// import { Observable } from 'rxjs/Observable';
+import { SERVER_URL } from './constants';
 
-let apiUrl = 'http://puredip.deforay.in';
 @Injectable()
-export class ServerService {
-  constructor(private http: Http) {}
-  // storeServers(servers: any[]) {
-  //   const headers = new Headers({'Content-Type': 'application/json'});
-  //   // return this.http.post('https://udemy-ng-http.firebaseio.com/data.json',
-  //   //   servers,
-  //   //   {headers: headers});
-  //   return this.http.put('https://udemy-ng-http.firebaseio.com/data.json',
-  //     servers,
-  //     {headers: headers});
-  // }
-  // getServers() {
-  //   return this.http.get('https://udemy-ng-http.firebaseio.com/data')
-  //     .map(
-  //       (response: Response) => {
-  //         const data = response.json();
-  //         for (const server of data) {
-  //           server.name = 'FETCHED_' + server.name;
-  //         }
-  //         return data;
-  //       }
-  //     )
-  //     .catch(
-  //       (error: Response) => {
-  //         return Observable.throw('Something went wrong');
-  //       }
-  //     );
-  // }
-  // getAppName() {
-  //   return this.http.get('https://udemy-ng-http.firebaseio.com/appName.json')
-  //     .map(
-  //       (response: Response) => {
-  //         return response.json();
-  //       }
-  //     );
-  // }
 
+export class ServerService {
+  constructor(private http: Http) {
+  }
   getState() {
-    return this.http.get('/api/location?state=all')
+    return this.http.get(SERVER_URL+'/api/location?state=all')
       .map(
         (response: Response) => {
           return response.json();
@@ -51,7 +18,7 @@ export class ServerService {
       );
   }
   getCityById(stateId,searchString) {
-    return this.http.get('/api/location?state='+stateId+'&cityStr='+searchString)
+    return this.http.get(SERVER_URL+'/api/location?state='+stateId+'&cityStr='+searchString)
       .map(
         (response: Response) => {
           return response.json();
@@ -59,7 +26,7 @@ export class ServerService {
       );
   }
   getAreaById(cityId,searchString) {
-    return this.http.get('/api/location?city='+cityId+'&areaStr='+searchString)
+    return this.http.get(SERVER_URL+'/api/location?city='+cityId+'&areaStr='+searchString)
       .map(
         (response: Response) => {
           return response.json();
@@ -67,7 +34,7 @@ export class ServerService {
       );
   }
   getLocationById(areaId,searchString) {
-    return this.http.get('/api/location?area='+areaId+'&locStr='+searchString)
+    return this.http.get(SERVER_URL+'/api/location?area='+areaId+'&locStr='+searchString)
       .map(
         (response: Response) => {
           return response.json();
@@ -79,7 +46,7 @@ export class ServerService {
     return new Promise((resolve, reject) => {
       // let headers = new Headers();
 
-      this.http.post(URL, JSON.stringify(credentials), {headers: headers})
+      this.http.post(SERVER_URL+URL, JSON.stringify(credentials), {headers: headers})
         .subscribe(res => {
           resolve(res.json());
         }, (err) => {
@@ -88,16 +55,34 @@ export class ServerService {
     });
   }
 
-  checkExistingUser(mobile) {
-    return this.http.get('/api/customer/'+mobile)
+  checkExistingUser(mobile,customerId) {
+    if(customerId!=''){
+      return this.http.get(SERVER_URL+'/api/customer?customerId='+customerId+'&mobileNo='+mobile)
+      .map(
+        (response: Response) => {
+          return response.json();
+        }
+      );
+
+    }else{
+        return this.http.get(SERVER_URL+'/api/customer/'+mobile)
+      .map(
+        (response: Response) => {
+          return response.json();
+        }
+      );
+    }
+  }
+  getProducts() {
+    return this.http.get(SERVER_URL+'/api/product')
       .map(
         (response: Response) => {
           return response.json();
         }
       );
   }
-  getProducts() {
-    return this.http.get('/api/product')
+  forgotPassword(username) {
+    return this.http.get(SERVER_URL+'/api/password/'+username)
       .map(
         (response: Response) => {
           return response.json();
@@ -105,7 +90,7 @@ export class ServerService {
       );
   }
   getProxyURL(){
-    return this.http.get('/api/')
+    return this.http.get('/puredip')
       .map(
         (response: Response) => {
           console.log("######",response)
@@ -114,7 +99,7 @@ export class ServerService {
       );
     }
   sendOTP(customerId,otp){
-    return this.http.get('/api/customer-otp?customerId='+customerId+'&otp='+otp)
+    return this.http.get(SERVER_URL+'/api/customer-otp?customerId='+customerId+'&otp='+otp)
       .map(
         (response: Response) => {
           return response.json();
@@ -124,7 +109,7 @@ export class ServerService {
     resendOTP(URL,customer){
     const headers = new Headers({'Content-Type': 'application/json'});
       return new Promise((resolve, reject) => {
-        this.http.post(URL, JSON.stringify(customer), {headers: headers})
+        this.http.post(SERVER_URL+URL, JSON.stringify(customer), {headers: headers})
           .subscribe(res => {
             resolve(res.json());
           }, (err) => {
@@ -134,7 +119,7 @@ export class ServerService {
     }
 
     getUser(userId) {
-      return this.http.get('/api/customer?customerId='+userId)
+      return this.http.get(SERVER_URL+'/api/customer?customerId='+userId)
         .map(
           (response: Response) => {
             return response.json();
@@ -142,7 +127,15 @@ export class ServerService {
         );
     }
     getDelivery() {
-      return this.http.get('/api/delivery-slot')
+      return this.http.get(SERVER_URL+'/api/delivery-slot')
+        .map(
+          (response: Response) => {
+            return response.json();
+          }
+        );
+    }
+    validateZip(zipcode) {
+      return this.http.get(SERVER_URL+'/api/location/'+zipcode)
         .map(
           (response: Response) => {
             return response.json();
