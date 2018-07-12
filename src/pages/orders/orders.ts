@@ -4,8 +4,10 @@ import {
 import {
   IonicPage,
   //Platform,
+  Nav,
   AlertController,
-  ToastController
+  ToastController,
+  ModalController
 } from 'ionic-angular';
 // import {
 //   File
@@ -15,66 +17,60 @@ import {
 import {
   MenuPage
 } from '../menu/menu'
+import {
+  ServerService
+} from "../../services/server.service";
+import {
+  Storage
+} from '@ionic/storage'
 @IonicPage()
 @Component({
   selector: 'page-orders',
   templateUrl: 'orders.html',
 })
 export class OrdersPage {
-  constructor(
-    // private document: DocumentViewer, private file: File, private transfer: FileTransfer, private platform: Platform, 
-    private menuPage: MenuPage, public alertCtrl: AlertController, private toastCtrl: ToastController) {}
-  ionViewDidLoad() {
-    this.menuPage.activePage = 'orders';
-    console.log('ionViewDidLoad OrdersPage');
+
+  constructor(public navCtrl: Nav,private toastCtrl: ToastController, private serverService: ServerService, private alertCtrl: AlertController, private storage: Storage, public modalCtrl: ModalController) {
+    this.getOrders() 
   }
-  openInvoice() {
-    // const options: DocumentViewerOptions = {
-    //   title: 'Invoice',
-    //   documentView: { closeLabel: '' },
-    //   navigationView: { closeLabel: '' },
-    //   email: { enabled: true },
-    //   print: { enabled: true },
-    //   openWith: { enabled: true },
-    //   bookmarks: { enabled: true },
-    //   search: { enabled: false },
-    //   autoClose: { onPause: false }
-    // }
-    // let path = null;
-    // if (this.platform.is('ios')) {
-    //   path = this.file.documentsDirectory;
-    // } else if (this.platform.is('android')) {
-    //   path = this.file.dataDirectory;
-    // }
-    // const transfer = this.transfer.create();
-    // transfer.download('https://devdactic.com/html/5-simple-hacks-LBT.pdf', path + 'invoice.pdf').then(entry => {
-    //   let url = entry.toURL();
-    //   this.document.viewDocument(url, 'application/pdf', options);
-    // });
+  orderList : any ;
+  orderCount : any ;
+  searchQuery: string = '';
+
+  getOrders() {
+    var ctrl = this;
+    this.storage.get('userLoginInfo').then((userLoginInfo) => {
+      if (userLoginInfo != null) {
+        this.serverService.getAllOrders(userLoginInfo["customer_id"])
+        .subscribe(orders => {
+          this.orderList = orders.product;
+          this.orderCount =orders.product.length;
+          console.log(orders.product.length);
+        });
+      };
+    })
   }
-  deleteOrder(orderId) {
-    const confirm = this.alertCtrl.create({
-      title: 'Are you sure?',
-      message: `Do you agree to cancel ${orderId}?`,
-      buttons: [{
-          text: 'Disagree',
-          handler: () => {
-            console.log('Disagree clicked');
-          }
-        },
-        {
-          text: 'Agree',
-          handler: () => {
-            this.toastCtrl.create({
-              message: `Order: ${orderId} deleted successfully `,
-              position: 'bottom',
-              duration: 2500,
-              showCloseButton: true
-            }).present();
-          }
-        }
-      ]
+
+  getItems(ev: any) {
+    // Reset items back to all of the items
+
+    // set val to the value of the searchbar
+    const val = ev.target.value;
+    if(!val) this.getOrders();
+
+    // if the value is an empty string don't filter the items
+    if (val && val.trim() != '') {
+      this.orderList = this.orderList.filter((item) => {
+        return (item.order_no.toLowerCase().indexOf(val.toLowerCase()) > -1 || item.order_status.toLowerCase().indexOf(val.toLowerCase()) > -1 || item.added_on.toLowerCase().indexOf(val.toLowerCase()) > -1 || item.delivery_date.toLowerCase().indexOf(val.toLowerCase()) > -1 || item.payment_status.toLowerCase().indexOf(val.toLowerCase()) > -1 || item.total_amount.toLowerCase().indexOf(val.toLowerCase()) > -1 );
+      })
+    }
+  }
+  getOrderDetails(orderId){
+    let orderModal = this.modalCtrl.create("OrderinfoPage",{orderId : orderId});
+    orderModal.onDidDismiss((response) => {
+        this.navCtrl.setRoot('OrdersPage');
     });
-    confirm.present();
+    orderModal.present();
   }
+  
 }

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Headers, Http, Response } from '@angular/http';
-import 'rxjs/Rx';
+import 'rxjs/add/operator/map';
 // import { Observable } from 'rxjs/Observable';
 import { SERVER_URL } from './constants';
 
@@ -136,6 +136,22 @@ export class ServerService {
     }
     validateZip(zipcode) {
       return this.http.get(SERVER_URL+'/api/location/'+zipcode)
+        .map(
+          (response: Response) => {
+            return response.json();
+          }
+        );
+    }
+    getAllOrders(customerId){
+      return this.http.get(SERVER_URL+'/api/order?customerId='+customerId)
+        .map(
+          (response: Response) => {
+            return response.json();
+          }
+        );
+    }
+    getOrderById(orderId){
+      return this.http.get(SERVER_URL+'/api/order/'+orderId)
         .map(
           (response: Response) => {
             return response.json();

@@ -1,9 +1,15 @@
 <ion-col>
     <ion-card>
-    <ion-fab top right>
-        <button ion-fab mini color="warning"><i class="fa fa-rupee" style="font-weight:bold;"> {{productInfo.mrp}} </i> </button>
+    <ion-fab top left>
+        <button ion-fab mini color="primary"><ion-icon name="notifications" color="secondary"></ion-icon></button>
     </ion-fab>
-    <img [src]="productInfo.product_image" alt="productInfo.product_name" />
+    <ion-thumbnail item-left class="item-ribbon">
+        <span class="ribbon sale">
+          <span><i class="fa fa-rupee" style="font-weight:bold;"> {{productInfo.mrp}} </i></span>
+        </span>
+        <img [src]="productInfo.product_image" alt="productInfo.product_name" />
+      </ion-thumbnail>
+    <!--<img [src]="productInfo.product_image" alt="productInfo.product_name" />-->
     <ion-card-content (click)="getProductInfo(productInfo);">
         <ion-card-title>
         <i class="fa fa-hand-pointer-o" aria-hidden="true"></i> Buy {{productInfo.product_name}}

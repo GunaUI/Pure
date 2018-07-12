@@ -96,6 +96,9 @@ export class CheckoutPage {
           ctrl.model.locality_id = user["customer"]["locality_id"];
           ctrl.model.zipcode = user["customer"]["pincode"];
 
+          ctrl.model.latitude = user["customer"]["latitude"];
+          ctrl.model.longitude = user["customer"]["longitude"];
+
           ctrl.model.customer_id = userLoginInfo["customer_id"];
           if(user["customer"]["state_id"]!=0 && user["customer"]["city_id"]!=0 && user["customer"]["area_id"]!=0 && user["customer"]["locality_id"]!=0){
             ctrl.disableSubmit = false;
@@ -275,6 +278,24 @@ export class CheckoutPage {
               content: "Please wait..."
             });
             loader.present();
+
+              var geocoder = new google.maps.Geocoder();
+                    geocoder.geocode({
+                      "address": `${ctrl.orderForm.form.value.orderData.address} ${ctrl.model.locality}  ${ctrl.model.area} ${ctrl.model.city} ${ctrl.model.state} ${ctrl.orderForm.form.value.orderData.zipcode}`
+                    }, function(results) {
+                      if(results[0]!=undefined){
+                        ctrl.model.latitude = results[0].geometry.location.lat();
+                        ctrl.model.longitude = results[0].geometry.location.lng();
+                      }else{
+                        loader.dismiss();
+                        let toast = ctrl.toastCtrl.create({
+                            message: 'Please enter valid delivery address',
+                            duration: 3000
+                        });
+                        toast.present();
+                        return false;
+                      }
+                    });
                 var shipping = {
                     customerID : this.model.customer_id,
                     customerName : this.orderForm.form.value.orderData.customerName,
@@ -285,14 +306,15 @@ export class CheckoutPage {
                     localityId: this.model.locality_id,
                     customerAddress: this.orderForm.form.value.orderData.address,
                     floorNumber: this.orderForm.form.value.orderData.floor,
-                    liftAccess: this.orderForm.form.value.orderData.lift
+                    latitude: this.model.latitude,
+                    longitude: this.model.longitude
                 }
                 var orderItems = this.orderInfo.map(item => ({
                     bulk_price: item.bulk_price,
                     category_name: item.category_name,
                     dealer_price: item.dealer_price,
                     depositCost: item.depositCost,
-                    depositedAmt: item.deposited_amount,
+                    depositAmt: item.deposited_amount,
                     returnQty: item.emptyCan,
                     mrp: item.mrp,
                     orderPrice: item.orderCost,

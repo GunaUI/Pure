@@ -1,0 +1,121 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-buttons right>
+      <button color="primary" ion-button icon-only (click)="backToOrder();">
+        <ion-icon name="ios-arrow-back"></ion-icon> Back
+      </button>
+    </ion-buttons>
+    <ion-title>Order #{{orderData.order_no}}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content>
+<div #map id="map"></div>
+    <accordion-list [title]="'Shipping details'" textColor="#FFF" hasMargin="false" headerColor="#1CA0D7" [expanded]=false [rightIcon]="'bus'">
+      <ion-list>
+        <ion-item>
+          <ion-label class="formLabel">Name</ion-label>
+          <ion-note item-end class="formInput">{{orderData.customer_name}}</ion-note>
+        </ion-item>
+        <ion-item>
+          <ion-label class="formLabel">Contact Number</ion-label>
+          <ion-note item-end class="formInput">{{orderData.contact_number}}</ion-note>
+        </ion-item>
+        <ion-item>
+          <ion-label class="formLabel">Address</ion-label>
+          <ion-note item-end class="formInput">{{orderData.customer_address}}</ion-note>
+        </ion-item>
+        <ion-item>
+          <ion-label class="formLabel">Floor</ion-label>
+          <ion-note item-end class="formInput">{{orderData.floor_number}}</ion-note>
+        </ion-item>
+        <ion-item>
+          <ion-label class="formLabel">Lift Access</ion-label>
+          <ion-note item-end class="formInput">{{orderData.lift_access}}</ion-note>
+        </ion-item>
+        <ion-item>
+          <ion-label class="formLabel">State</ion-label>
+          <ion-note item-end class="formInput">{{orderData.state_name}}</ion-note>
+        </ion-item>
+        <ion-item>
+          <ion-label class="formLabel">City</ion-label>
+          <ion-note item-end class="formInput">{{orderData.city_name}}</ion-note>
+        </ion-item>
+        <ion-item>
+          <ion-label class="formLabel">Area</ion-label>
+          <ion-note item-end class="formInput">{{orderData.area_name}}</ion-note>
+        </ion-item>
+        <ion-item>
+          <ion-label class="formLabel">Locality</ion-label>
+          <ion-note item-end class="formInput">{{orderData.locality_name}}</ion-note>
+        </ion-item>
+        <ion-item>
+          <ion-label class="formLabel">Delivery Time</ion-label>
+          <ion-note item-end class="formInput">{{orderData.delivery_time_slot}}</ion-note>
+        </ion-item>
+      </ion-list>
+    </accordion-list>
+    <accordion-list [title]="'Order details'" textColor="#FFF" hasMargin="false" headerColor="#1CA0D7" [expanded]=false [rightIcon]="'list-box'">
+      <ion-list>
+        <ion-item *ngFor="let orderdetails of orderData.orderDetails index as i">
+          <ion-thumbnail item-start>
+            <img [src]="orderdetails.product_image">
+          </ion-thumbnail>
+          <h3 class="formLabel"><b>{{orderdetails.product_name}}</b></h3>
+          <p><span class="formLabel">Total order/return can : </span><span> {{orderdetails.order_quantity}} /  {{orderdetails.return_quantity}}</span></p>
+          <p><span class="formLabel">Order Cost : </span> <i class="fa fa-rupee" aria-hidden="true"></i> {{orderdetails.base_rate}}
+            </p>
+          <p><span class="formLabel">Deposit Cost : </span> <i class="fa fa-rupee" aria-hidden="true"></i> {{orderdetails.deposit_amount}}
+            </p>
+          <p><span class="formLabel">Subtotal : </span><span style="color:#81B94A"><i class="fa fa-rupee" aria-hidden="true"></i> {{orderdetails.line_total}} </span></p>
+        </ion-item>
+      </ion-list>
+    </accordion-list>
+    <ion-item>
+      <ion-label class="formLabel">Total Order/Return Can</ion-label>
+      <ion-note item-end class="formLabel">
+        2 / 3
+      </ion-note>
+    </ion-item>
+    <ion-item>
+      <ion-label class="formLabel">Total Order Cost</ion-label>
+      <ion-note item-end class="formLabel">
+        <i class="fa fa-rupee" aria-hidden="true"></i> {{orderData.total_amount}}
+      </ion-note>
+    </ion-item>
+    <ion-item>
+      <ion-label class="formLabel">Total Deposit Cost</ion-label>
+      <ion-note item-end class="formLabel">
+        <i class="fa fa-rupee" aria-hidden="true"></i> {{orderData.total_deposit_amount}}
+      </ion-note>
+    </ion-item>
+    <ion-item>
+      <ion-label class="formLabel">Service Cost</ion-label>
+      <ion-note item-end class="formLabel">
+        <i class="fa fa-rupee" aria-hidden="true"></i> {{orderData.service_charge}}
+      </ion-note>
+    </ion-item>
+    <ion-toolbar>
+      <ion-grid>
+        <ion-row>
+          <ion-col col-2>
+          </ion-col>
+          <ion-col col-4>
+            <b><ion-label color="danger">Grand Total</ion-label></b>
+          </ion-col>
+          <ion-col col-3>
+          </ion-col>
+          <ion-col col-3 style="text-align: right;">
+            <b><ion-label color="danger"><i class="fa fa-rupee" aria-hidden="true"></i> {{grandCost}}</ion-label></b>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <button ion-button color="primary" outline block (click)="backToOrder();" >Back</button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-toolbar>
+</ion-content>

@@ -1,4 +1,4 @@
-<ion-header>
+<!--<ion-header>
   <ion-navbar>
     <ion-buttons left>
       <button color="primary" ion-button icon menuToggle>
@@ -147,4 +147,43 @@
       </ion-item-options>
     </ion-item-sliding>
   </ion-list>
+</ion-content>-->
+
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-buttons left>
+      <button ion-button icon menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>Orders</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+  <div class="body">
+    <div class="orderList"  *ngIf="orderCount > 0">
+      <ion-searchbar (ionInput)="getItems($event)"></ion-searchbar>
+      <ion-row class="order" *ngFor="let order of orderList" (click)="getOrderDetails(order.order_id);"> 
+        <ion-col col-6 class="text">
+          <p style="color:#fff; font-size: 13px;">#{{order.order_no}} - {{order.order_status}}</p>
+          <p class="grand">Grand Total:</p>
+          <p class="delivery">Delivery date:</p>
+          <p class="grand">Payment Status:</p>
+        </ion-col>
+        <ion-col col-6 class="text">
+          <p class="delivery">{{order.added_on}}</p>
+          <p class="evolution"><i class="fa fa-rupee" aria-hidden="true"></i> {{order.total_amount}}</p>
+          <p class="grand">{{order.delivery_date}}</p>
+          <p class="delivery">{{order.payment_status}}</p>
+        </ion-col>
+      </ion-row>
+    </div>
+     <div class="orderList"  *ngIf="orderCount==0">
+      <ion-row class="order"> 
+        <ion-col class="text" style="color:#fff; font-size: 13px;">
+          No orders found
+        </ion-col>
+      </ion-row>
+    </div>
+  </div>
 </ion-content>

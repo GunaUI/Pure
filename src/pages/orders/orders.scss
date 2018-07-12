@@ -1,5 +1,40 @@
 page-orders {
-    ion-note{
-        font-size: 12px;
+  p{
+    margin:0;
+  }
+  .body {
+    .orderList {
+      .order {
+        background: linear-gradient(45deg, #5e6d8c, #384662);
+        padding: 10px;
+        border-radius: 2px;
+        margin: 5px auto;
+
+        .text {
+          .grand {
+            color: #BCC6D4;
+            font-size: 13px;
+            font-weight: 400;
+          }
+
+          .delivery {
+            color: #8b9bbd;
+            font-size: 13px;
+            font-weight: 400;
+          }
+
+          .ordercls{
+            color: #BCC6D4;
+            font-size: 13px;
+          }
+
+          .evolution{
+            color:#00CB78;
+            font-size: 13px;
+            font-weight: 700;
+          }
+        }
+      }
     }
+  }
 }
