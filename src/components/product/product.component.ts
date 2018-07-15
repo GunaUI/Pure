@@ -20,5 +20,7 @@ export class ProductComponent {
   getProductInfo(productInfo) {
     this.home.getProductInfo(productInfo);
   }
-
+  addSubscription(product){
+    this.home.addSubscription(product);
+  }  
 }

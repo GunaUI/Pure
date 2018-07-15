@@ -1,154 +1,3 @@
-<!--<ion-header>
-  <ion-navbar>
-    <ion-buttons left>
-      <button color="primary" ion-button icon menuToggle>
-        <ion-icon name="menu"></ion-icon>
-      </button>
-    </ion-buttons>
-    <ion-title>Orders</ion-title>
-  </ion-navbar>
-</ion-header>
-<ion-content>
-  <ion-list>
-    <ion-item-sliding>
-      <ion-item>
-        <ion-avatar item-start>
-          <img src="assets/imgs/menu.jpeg">
-        </ion-avatar>
-        <h2>PURE0001</h2>
-        <ion-note item-end class="note">06-07-2018 9:38 pm</ion-note>
-        <p>Order Placed</p>
-      </ion-item>
-      <ion-item-options side="left" *ngIf="true">
-        <button ion-button color="danger" (click)="deleteOrder('PURE0001');">
-          <ion-icon name="close"></ion-icon>
-          Cancel
-        </button>
-        <button ion-button color="secondary">
-          <ion-icon name="create"></ion-icon>
-          Edit
-        </button>
-      </ion-item-options>
-      <ion-item-options side="right">
-        <button ion-button color="primary">
-          <ion-icon name="more"></ion-icon>
-          More
-        </button>
-        <button ion-button color="success" (click)="openInvoice();">
-          <ion-icon name="document"></ion-icon>
-          Invoice
-        </button>
-        <button ion-button color="warning">
-          <ion-icon name="copy"></ion-icon>
-          Repeat
-        </button>
-      </ion-item-options>
-    </ion-item-sliding>
-    <ion-item-sliding>
-      <ion-item>
-        <ion-avatar item-start>
-          <img src="assets/imgs/menu.jpeg">
-        </ion-avatar>
-        <h2>PURE0002</h2>
-        <ion-note item-end class="note">05-07-2018 9:38 pm</ion-note>
-        <p>Order Received</p>
-      </ion-item>
-      <ion-item-options side="left" *ngIf="true">
-        <button ion-button color="danger" (click)="deleteOrder('PURE0001');">
-          <ion-icon name="close"></ion-icon>
-          Cancel
-        </button>
-        <button ion-button color="secondary">
-          <ion-icon name="create"></ion-icon>
-          Edit
-        </button>
-      </ion-item-options>
-      <ion-item-options side="right">
-        <button ion-button color="primary">
-          <ion-icon name="more"></ion-icon>
-          More
-        </button>
-        <button ion-button color="success" (click)="openInvoice();">
-          <ion-icon name="document"></ion-icon>
-          Invoice
-        </button>
-        <button ion-button color="warning">
-          <ion-icon name="copy"></ion-icon>
-          Repeat
-        </button>
-      </ion-item-options>
-    </ion-item-sliding>
-    <ion-item-sliding>
-      <ion-item>
-        <ion-avatar item-start>
-          <img src="assets/imgs/menu.jpeg">
-        </ion-avatar>
-        <h2>PURE0003</h2>
-        <ion-note item-end class="note">04-07-2018 9:38 pm</ion-note>
-        <p>Packed</p>
-      </ion-item>
-      <ion-item-options side="left" *ngIf="false">
-        <button ion-button color="danger" (click)="deleteOrder('PURE0001');">
-          <ion-icon name="close"></ion-icon>
-          Cancel
-        </button>
-        <button ion-button color="secondary">
-          <ion-icon name="create"></ion-icon>
-          Edit
-        </button>
-      </ion-item-options>
-      <ion-item-options side="right">
-        <button ion-button color="primary">
-          <ion-icon name="more"></ion-icon>
-          More
-        </button>
-        <button ion-button color="success" (click)="openInvoice();">
-          <ion-icon name="document"></ion-icon>
-          Invoice
-        </button>
-        <button ion-button color="warning">
-          <ion-icon name="copy"></ion-icon>
-          Repeat
-        </button>
-      </ion-item-options>
-    </ion-item-sliding>
-    <ion-item-sliding>
-      <ion-item>
-        <ion-avatar item-start>
-          <img src="assets/imgs/menu.jpeg">
-        </ion-avatar>
-        <h2>PURE0004</h2>
-        <ion-note item-end class="note">03-07-2018 9:38 pm</ion-note>
-        <p>Out for delivery</p>
-      </ion-item>
-      <ion-item-options side="left" *ngIf="false">
-        <button ion-button color="danger" (click)="deleteOrder('PURE0001');">
-          <ion-icon name="close"></ion-icon>
-          Cancel
-        </button>
-        <button ion-button color="secondary">
-          <ion-icon name="create"></ion-icon>
-          Edit
-        </button>
-      </ion-item-options>
-      <ion-item-options side="right">
-        <button ion-button color="primary">
-          <ion-icon name="more"></ion-icon>
-          More
-        </button>
-        <button ion-button color="success" (click)="openInvoice();">
-          <ion-icon name="document"></ion-icon>
-          Invoice
-        </button>
-        <button ion-button color="warning">
-          <ion-icon name="copy"></ion-icon>
-          Repeat
-        </button>
-      </ion-item-options>
-    </ion-item-sliding>
-  </ion-list>
-</ion-content>-->
-
 <ion-header>
   <ion-navbar color="primary">
     <ion-buttons left>
@@ -160,6 +9,14 @@
   </ion-navbar>
 </ion-header>
 <ion-content>
+  <ion-refresher (ionRefresh)="getOrders($event)">
+        <ion-refresher-content
+        pullingIcon="arrow-dropdown"
+        pullingText="Pull to refresh"
+        refreshingSpinner="circles"
+        refreshingText="Refreshing...">
+        </ion-refresher-content>
+  </ion-refresher>
   <div class="body">
     <div class="orderList"  *ngIf="orderCount > 0">
       <ion-searchbar (ionInput)="getItems($event)"></ion-searchbar>

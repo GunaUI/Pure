@@ -11,6 +11,14 @@
   </ion-navbar>
 </ion-header>
 <ion-content>
+  <ion-refresher (ionRefresh)="getProducts($event)">
+    <ion-refresher-content
+      pullingIcon="arrow-dropdown"
+      pullingText="Pull to refresh"
+      refreshingSpinner="circles"
+      refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
   <ion-grid>
     <ion-row>
       <product *ngFor="let productDetails of products" [productInfo]="productDetails" col-6 style="padding-top:0px !important;padding-bottom:0px !important;"></product>

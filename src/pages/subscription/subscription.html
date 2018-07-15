@@ -1,22 +1,46 @@
 <ion-header>
-  <ion-navbar>
+  <ion-navbar color="primary">
     <ion-buttons left>
-      <button color="primary" ion-button icon menuToggle>
+      <button ion-button icon menuToggle>
         <ion-icon name="menu"></ion-icon>
       </button>
     </ion-buttons>
-    <ion-title>Subscription</ion-title>
+    <ion-title>Recurring Order</ion-title>
   </ion-navbar>
 </ion-header>
 <ion-content>
-  <ion-card>
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content
+      pullingIcon="arrow-dropdown"
+      pullingText="Pull to refresh"
+      refreshingSpinner="circles"
+      refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
+    <ion-card *ngIf="!orders?.length">
     <ion-grid>
       <ion-row>
-        <ion-col>Your Subscription Details</ion-col>
+        <ion-col><h2>No Recurring Order found!</h2></ion-col>
       </ion-row>
       <ion-row>
-        <ion-col>Subscription details in progress!</ion-col>
+        <ion-col>Please click bell icon in home page to add recurring order!</ion-col>
       </ion-row>
     </ion-grid>
   </ion-card>
+
+  <ion-list *ngIf="orders?.length>0">
+    <ion-item *ngFor="let orderdetails of orders index as i" (click)="editItem(orderdetails);">
+      <ion-thumbnail item-start>
+        <img [src]="orderdetails.product_image">
+      </ion-thumbnail>
+      <h3 class="formLabel"><b>{{orderdetails.product_name}}</b></h3>
+      <p><span class="formLabel">Status : </span><span> {{orderdetails.subscribe_status=='enabled' ? 'Active' : 'Inactive'}} </span></p>
+      <p><span class="formLabel">Order Quantity : </span>  {{orderdetails.order_quantity}} can(s)</p>
+      <p><span class="formLabel">Frequency once in  : </span> {{orderdetails.no_of_days_once}} day(s)</p>
+      <p><span class="formLabel">Slot : </span> {{orderdetails.delivery_time_slot}}</p>
+      <button ion-button item-end clear icon-only medium style="color:#000">
+            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+      </button>
+    </ion-item>
+  </ion-list>
 </ion-content>

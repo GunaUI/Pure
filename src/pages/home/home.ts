@@ -17,12 +17,18 @@ export class HomePage {
   productDetail : any;
   constructor(public navCtrl: Nav, public navParams: NavParams, public events: Events ,private serverService: ServerService, private storage: Storage, public modalCtrl: ModalController) {}
 
-  getProducts(): void{
+  getProducts(refresher): void{
       this.serverService.getProducts()
         .subscribe( data => {
           if(data.status=='success'){
             this.products = data.product
-            console.log(data.product);
+            if(refresher!=''){
+              refresher.complete();
+            }
+          }else{
+            if(refresher!=''){
+              refresher.complete();
+            }
           }
       });
   }
@@ -34,7 +40,7 @@ export class HomePage {
   }
 
   ionViewWillLoad() {
-      this.getProducts();
+      this.getProducts('');
       this.storage.get('cartData').then((data) => {
         if(data!=null){
           this.cartCount = data.length;
@@ -71,6 +77,17 @@ export class HomePage {
         }
     })
   }
-  
-
+  addSubscription(product){
+    this.storage.get('userLoginInfo').then((userLoginInfo) => {
+      if (userLoginInfo != null) {
+          let subcription =this.modalCtrl.create('SaveSubcriptionPage',product);
+          subcription.onDidDismiss((response) => {
+      
+          });
+          subcription.present();
+      }else{
+          this.navCtrl.setRoot('LoginPage');
+      }
+    });
+  }  
 }

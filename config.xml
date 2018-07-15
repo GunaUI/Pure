@@ -90,7 +90,11 @@
     <plugin name="cordova-plugin-ionic-webview" spec="^1.2.1" />
     <plugin name="cordova-plugin-ionic-keyboard" spec="^2.1.2" />
     <plugin name="cordova-plugin-inappbrowser" spec="^3.0.0" />
-    <allow-navigation href="http://173.39.66.152:8101" />
-    <engine name="ios" spec="4.5.4" />
     <engine name="android" spec="7.1.0" />
+    <engine name="ios" spec="~4.5.4" />
+    <allow-navigation href="http://173.39.66.152:8101" />
+    <plugin name="cordova-wheel-selector-plugin" spec="^1.1.1" />
+    <allow-navigation href="http://173.39.64.12:8101" />
+    <allow-navigation href="http://173.39.64.12:8100" />
+    <allow-navigation href="http://173.39.64.18:8101" />
 </widget>

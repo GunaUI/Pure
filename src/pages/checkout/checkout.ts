@@ -222,7 +222,7 @@ export class CheckoutPage {
   }
   getDelivery(){
       var ctrl = this; 
-      this.serverService.getDelivery()
+      this.serverService.getDelivery('')
         .subscribe( data => {
           this.deliveryData =data.deliverySlot;
           ctrl.model.delivery = this.deliveryData[0].id;

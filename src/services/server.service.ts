@@ -126,8 +126,8 @@ export class ServerService {
           }
         );
     }
-    getDelivery() {
-      return this.http.get(SERVER_URL+'/api/delivery-slot')
+    getDelivery(flag) {
+      return this.http.get(SERVER_URL+'/api/delivery-slot'+flag)
         .map(
           (response: Response) => {
             return response.json();
@@ -152,6 +152,14 @@ export class ServerService {
     }
     getOrderById(orderId){
       return this.http.get(SERVER_URL+'/api/order/'+orderId)
+        .map(
+          (response: Response) => {
+            return response.json();
+          }
+        );
+    }
+    getRecurringOrder(customerId){
+      return this.http.get(SERVER_URL+'/api/recurrence-order?customerId='+customerId)
         .map(
           (response: Response) => {
             return response.json();

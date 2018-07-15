@@ -4,7 +4,6 @@ import {
 import {
   IonicPage,
   NavController,
-  NavParams,
   ViewController,
   AlertController
 } from 'ionic-angular';

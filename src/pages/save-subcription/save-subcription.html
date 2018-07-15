@@ -1,0 +1,64 @@
+<ion-header>
+
+  <ion-navbar color="primary">
+    <ion-title>Create Recurring Order</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content>
+  <ion-card>
+    <ion-row col-12>
+      <ion-col col-6>
+        <img [src]="productInfo.product_image" alt="{{productInfo.product_name}}" />
+      </ion-col>
+      <ion-col col-6>
+        <h2> {{productInfo.product_name}} <br> <i class="fa fa-rupee" style="font-weight:bold;"> {{productInfo.mrp}}</i></h2>
+        <p>
+          No matter what your drinking water needs are, You can always count on us!
+        </p>
+      </ion-col>
+      <ion-col col-12>
+        <ion-item>
+          <ion-label class="formLabel">Quantity</ion-label>
+          <ion-note item-end (click)="selectCan();" color="primary">
+            {{order.orderQuantity }} Can(s)
+          </ion-note>
+        </ion-item>
+        <ion-item>
+          <ion-label class="formLabel">Frequency </ion-label>
+          <ion-note item-end (click)="selectFrequency();" color="primary">
+            Once in {{order.numOfDaysOnce }} day(s)
+          </ion-note>
+        </ion-item>
+        <ion-item>
+          <ion-label class="formLabel" stacked>Delivery Time</ion-label>
+          <ion-select [(ngModel)]="order.deliveryTime" interface="popover" class="formInput" text-left>
+            <ion-option *ngFor="let data of deliveryData" [value]="data.id">{{data.name}}</ion-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-label class="formLabel" >Status</ion-label>
+          <ion-select [(ngModel)]="order.subscribeStatus" interface="popover" class="formInput" text-left>
+            <ion-option [value]="'enabled'">Active</ion-option>
+            <ion-option [value]="'disabled'">Inactive</ion-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-card>
+</ion-content>
+<ion-footer>
+  <ion-toolbar>
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <button ion-button color="primary" outline block (click)="closeModal()">Back</button>
+        </ion-col>
+        <ion-col>
+          <button ion-button color="primary" [disabled]="false" block (click)="saveRecurringOrder()">Save</button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-footer>
