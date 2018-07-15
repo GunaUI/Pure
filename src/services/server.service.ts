@@ -166,5 +166,13 @@ export class ServerService {
           }
         );
     }
+    getConfig() {
+    return this.http.get(SERVER_URL+'/api/config')
+      .map(
+        (response: Response) => {
+          return response.json();
+        }
+      );
+  }
 }
 

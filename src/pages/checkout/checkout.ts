@@ -33,7 +33,7 @@ export class CheckoutPage {
     delivery : '9AM to 12AM',
     expressCost : 0,
     floor : 0,
-    floorCharge : 5,
+    floorCharge : 0,
     state:"None Selected",
     state_id:0,
     city:"None Selected",
@@ -46,6 +46,21 @@ export class CheckoutPage {
   order :any = {};
 
   constructor(public navCtrl: Nav,private alertCtrl : AlertController, private storage: Storage,private serverService: ServerService,public popoverCtrl: PopoverController,private loadingCtrl: LoadingController, private toastCtrl: ToastController) {
+    this.getConfigData();
+  }
+
+  getConfigData(): void{
+      var ctrl = this;
+      this.serverService.getConfig()
+        .subscribe( data => {
+          if(data["status"]=="success"){
+            for (var prop in data["product"]) { 
+              if (data["product"][prop]["global_name"]=='floor_charge'){
+                ctrl.model.floorCharge = parseInt(data["product"][prop]["global_value"])
+              }
+            }
+          }
+      });
   }
 
 
@@ -67,7 +82,7 @@ export class CheckoutPage {
           ctrl.orderForm.form.patchValue({
             orderData: {
               expressCost : 0,
-              floorCharge : 5,
+              floorCharge : ctrl.model.floorCharge,
               address: user["customer"]["address"],
               floor: user["customer"]["floor_number"],
               lift: false,
@@ -230,8 +245,8 @@ export class CheckoutPage {
   }
   liftAvailability(){
     if(!this.orderForm.form.value.orderData.lift && parseInt(this.orderForm.form.value.orderData.floor)>0){
-      this.totalServiceCost = (parseInt(this.orderForm.form.value.orderData.floor) * (this.totalOrderQuantity) *5);
-      this.grandTotal = this.orderInfo.grandOrderTotal + (parseInt(this.orderForm.form.value.orderData.floor) * (this.totalOrderQuantity) *5);
+      this.totalServiceCost = (parseInt(this.orderForm.form.value.orderData.floor) * (this.totalOrderQuantity) * this.model.floorCharge);
+      this.grandTotal = this.orderInfo.grandOrderTotal + (parseInt(this.orderForm.form.value.orderData.floor) * (this.totalOrderQuantity) * this.model.floorCharge);
     }else{
       this.grandTotal = this.orderInfo.grandOrderTotal;
       this.totalServiceCost = 0;

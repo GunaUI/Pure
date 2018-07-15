@@ -15,6 +15,7 @@ import {
 import {
   Storage
 } from '@ionic/storage'
+import { ServerService } from "../../services/server.service";
 
 @IonicPage()
 @Component({
@@ -25,6 +26,7 @@ export class BulkPage {
   @ViewChild('orderForm') orderForm: NgForm;
   productInfo: any
   cartCount: any
+  minQty : any
   model: any = {
     qty: 3,
     emptyCan: 3,
@@ -34,8 +36,24 @@ export class BulkPage {
     type: 'bulk'
   };
 
-  constructor(private navCtrl: Nav, private navParams: NavParams, private toastCtrl: ToastController, private storage: Storage, public modalCtrl: ModalController) {
+  constructor(private navCtrl: Nav, private navParams: NavParams, private toastCtrl: ToastController, private storage: Storage, public modalCtrl: ModalController,private serverService: ServerService) {
     this.productInfo = this.navParams.data;
+    this.getConfigData();
+  }
+  getConfigData(): void{
+      var ctrl = this;
+      this.serverService.getConfig()
+        .subscribe( data => {
+          if(data["status"]=="success"){
+            for (var prop in data["product"]) { 
+              if (data["product"][prop]["global_name"]=='bulk_qty'){
+                ctrl.model.qty = parseInt(data["product"][prop]["global_value"])
+                ctrl.model.emptyCan = parseInt(data["product"][prop]["global_value"])
+                ctrl.minQty = parseInt(data["product"][prop]["global_value"]);
+              }
+            }
+          }
+      });
   }
 
   ionViewWillLoad() {
@@ -168,7 +186,7 @@ export class BulkPage {
   reduceQty(type) {
     if (type == 'order') {
       let initialQty = parseInt(this.model.qty);
-      if (parseInt(this.model.qty) > 3) {
+      if (parseInt(this.model.qty) > this.minQty) {
         this.model.qty = parseInt(this.model.qty) - 1;
       }
       if (parseInt(this.model.emptyCan) > 0 && this.model.emptyCan > initialQty) {
@@ -201,6 +219,7 @@ export class BulkPage {
   }
 
   calculateOrder() {
+    var ctrl = this;
     let orderQty: number = parseInt(this.model.qty) > 0 ? parseInt(this.model.qty) : 0;
     let returnQty: number = parseInt(this.model.emptyCan) > 0 ? parseInt(this.model.emptyCan) : 0;
     if (orderQty == NaN || returnQty == NaN) {
@@ -211,12 +230,23 @@ export class BulkPage {
         showCloseButton: true
       }).present();
       if (orderQty == NaN) {
-        orderQty = 3;
-        this.model.qty = 3;
+        orderQty = this.minQty;
+        this.model.qty = this.minQty;
       } else if (returnQty == NaN) {
-        returnQty = 3;
-        this.model.returnQty = 3;
+        returnQty = this.minQty;
+        this.model.returnQty = this.minQty;
       }
+    }else if(orderQty< this.minQty){
+      this.toastCtrl.create({
+          message: " Warning !! : Please enter minimum order quantity of "+ ctrl.minQty +" cans",
+          position: 'top',
+          duration: 3000,
+          showCloseButton: true,
+          closeButtonText: 'Got it!',
+          dismissOnPageChange: true,
+          cssClass: "toast-warning",
+        }).present();
+        this.model.qty = this.minQty;
     } else {
       this.model.orderCost = orderQty * parseInt(this.productInfo.bulk_price);
       let depositQty = orderQty - returnQty;

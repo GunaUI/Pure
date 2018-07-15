@@ -34,14 +34,14 @@
         <ion-icon name="cart" item-left></ion-icon>Order Details</ion-item-divider>
       <ion-item>
         <ion-label class="formLabel"> Order Qunatity</ion-label>
-        <ion-input type="number" min="3" inputmode="numeric" pattern="[0-9]*" required [(ngModel)]="model.qty" (keyup)="calculateOrder();"
+        <ion-input type="number" min="minQty" inputmode="numeric" pattern="[0-9]*" required [(ngModel)]="model.qty" (blur)="calculateOrder();"
           [ngModelOptions]="{standalone: true}" class="formInput" text-center></ion-input>
         <ion-icon color="warning" item-end (click)="reduceQty('order');" class="qtyBtn"> <i class="fa fa-minus-circle" aria-hidden="true"></i></ion-icon>
         <ion-icon color="success" item-end (click)="increaseQty('order');" class="qtyBtn"><i class="fa fa-plus-circle" aria-hidden="true"></i></ion-icon>
       </ion-item>
       <ion-item>
         <ion-label class="formLabel">Return Empty Can</ion-label>
-        <ion-input type="number" min="0" inputmode="numeric" pattern="[0-9]*" required [(ngModel)]="model.emptyCan" (keyup)="calculateOrder();"
+        <ion-input type="number" min="0" inputmode="numeric" pattern="[0-9]*" required [(ngModel)]="model.emptyCan" (blur)="calculateOrder();"
           [ngModelOptions]="{standalone: true}" class="formInput" text-center></ion-input>
         <ion-icon color="warning" item-end (click)="reduceQty('return');" class="qtyBtn"><i class="fa fa-minus-circle" aria-hidden="true"></i></ion-icon>
         <ion-icon color="success" item-end (click)="increaseQty('return');" class="qtyBtn"><i class="fa fa-plus-circle" aria-hidden="true"></i></ion-icon>
@@ -60,8 +60,8 @@
       </ion-item>
     </ion-list>
   </form>
-  <button ion-button block color="primary" type="submit" *ngIf="!productInfo.qty" [disabled]="model.subtotal<=0 && model.qty<=3"
+  <button ion-button block color="primary" type="submit" *ngIf="!productInfo.qty" [disabled]="model.subtotal<=0 || model.qty<minQty"
     (click)="orderForm.ngSubmit.emit()">Add to cart</button>
-  <button ion-button block color="warning" type="submit" *ngIf="productInfo.qty" [disabled]="model.subtotal<=0 && model.qty<=3"
+  <button ion-button block color="warning" type="submit" *ngIf="productInfo.qty" [disabled]="model.subtotal<=0 || model.qty<minQty"
     (click)="updateCart(productInfo);">Update cart</button>
 </ion-content>
