@@ -17,7 +17,7 @@
           <ion-icon name="alert" item-left small color="warning"></ion-icon>Name is required!</ion-item>
         <ion-item>
           <ion-label class="formLabel">Contact Number</ion-label>
-          <ion-input type="text"  name="contactNumber" id="contactNumber" ngModel required #contactNumber="ngModel" class="formInput" text-right></ion-input>
+          <ion-input type="text"  name="contactNumber" id="contactNumber" ngModel required #contactNumber="ngModel" class="formInput" text-right pattern="[0-9]*" minlength="10" maxlength="10"></ion-input>
         </ion-item>
         <ion-item no-lines *ngIf="!contactNumber.valid && contactNumber.touched" class="error-font-size">
           <ion-icon name="alert" item-left small color="warning"></ion-icon>Contact Number is required!</ion-item>
@@ -76,7 +76,7 @@
           <ion-icon name="alert" item-left small color="warning"></ion-icon>Locality is required!, Please select area to proceed</ion-item>
         <ion-item>
           <ion-label class="formLabel">Zipcode</ion-label>
-          <ion-input type="text" name="zipcode" id="zipcode" ngModel required #zipcode="ngModel" class="formInput" text-right (blur)="validateService();"></ion-input>
+          <ion-input type="text" name="zipcode" id="zipcode" ngModel required #zipcode="ngModel" class="formInput" text-right (blur)="validateService();" pattern="[0-9]*" minlength="6" maxlength="6"></ion-input>
         </ion-item>
         <ion-item no-lines *ngIf="!zipcode.valid && zipcode.touched" class="error-font-size">
           <ion-icon name="alert" item-left small color="warning"></ion-icon>Zipcode is required!</ion-item>

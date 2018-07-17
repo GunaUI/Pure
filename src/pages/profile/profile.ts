@@ -209,10 +209,17 @@ export class ProfilePage {
           if (data != null && data.state_id != 0) {
             ctrl.billing.state = data.state_name;
             ctrl.billing.state_id = data.state_id;
-            this.stateValid = true;
+            ctrl.billing.city = "None Selected";
+            ctrl.billing.city_id = 0;
+            ctrl.billing.area = "None Selected";
+            ctrl.billing.area_id = 0;
+            ctrl.billing.locality = "None Selected";
+            ctrl.billing.locality_id = 0;
+            ctrl.stateValid = true;
+            ctrl.disableSubmit = true;
           } else {
-            this.stateValid = false;
-            this.disableSubmit = true;
+            ctrl.stateValid = false;
+            ctrl.disableSubmit = true;
           }
         })
       });
@@ -236,6 +243,11 @@ export class ProfilePage {
               ctrl.cityValid = true;
               ctrl.billing.city = data.city_name;
               ctrl.billing.city_id = data.city_id;
+              ctrl.billing.area = "None Selected";
+              ctrl.billing.area_id = 0;
+              ctrl.billing.locality = "None Selected";
+              ctrl.billing.locality_id = 0;
+              ctrl.disableSubmit = true;
             }
           })
         });
@@ -263,6 +275,9 @@ export class ProfilePage {
               ctrl.areaValid = true;
               ctrl.billing.area = data.area_name;
               ctrl.billing.area_id = data.area_id;
+               ctrl.billing.locality = "None Selected";
+              ctrl.billing.locality_id = 0;
+              ctrl.disableSubmit = true;
             }
           })
         });

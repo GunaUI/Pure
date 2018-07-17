@@ -52,7 +52,7 @@ export class MenuPage {
         this.user = null;
       })
       this.activePage = 'home';
-      this.nav.setRoot("HomePage");
+      this.nav.setRoot("LoginPage");
     } else {
       this.activePage = 'home';
       this.nav.setRoot("HomePage");

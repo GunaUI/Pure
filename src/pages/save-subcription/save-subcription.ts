@@ -23,7 +23,7 @@ export class SaveSubcriptionPage {
         showCloseButton: true,
         closeButtonText: 'Got it!',
         dismissOnPageChange: true,
-        duration:4000,
+        duration:8000,
         cssClass: "toast-warning"
       }).present();
 
@@ -96,13 +96,7 @@ export class SaveSubcriptionPage {
             order: [this.order],
             recurrenceOrderId:this.productInfo["recurrence_order_id"]
           }
-        }else{
-          let data = {
-            customerID : userLoginInfo["customer_id"],
-            order: [this.order]
-          }
-        }
-        this.serverService.postData('/api/recurrence-order', data).then((response) => {
+          this.serverService.postData('/api/recurrence-order', data).then((response) => {
             if(response["status"]='success'){
               this.alertCtrl.create({
                 title: "Recurring Order Successful",
@@ -128,6 +122,40 @@ export class SaveSubcriptionPage {
           }, (err) => {
             console.log('error', err)
           });
+        }else{
+          var addData = {
+            customerID : userLoginInfo["customer_id"],
+            order: [this.order]
+          }
+
+          this.serverService.postData('/api/recurrence-order', addData).then((response) => {
+            if(response["status"]='success'){
+              this.alertCtrl.create({
+                title: "Recurring Order Successful",
+                message: "Your recurring order saved successfully!.",
+                buttons: [{
+                  text: "Done",
+                  handler: () => {
+                    this.viewCtrl.dismiss();
+                  }
+                }]
+              }).present()
+            }else{
+                this.toastCtrl.create({
+                    message: 'Recurring Order Failure!, Please try again or contact admin.',
+                    duration: 2000,
+                    position: 'middle',
+                    showCloseButton: true,
+                    closeButtonText: 'Done',
+                    dismissOnPageChange: true,
+                    cssClass: "toast-error"
+                }).present();
+            }
+          }, (err) => {
+            console.log('error', err)
+          });
+        }
+        
       }
     });
   }

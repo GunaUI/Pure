@@ -28,7 +28,7 @@
         <ion-icon name="alert" item-left small color="warning"></ion-icon>Please enter a valid email!</ion-item>
       <ion-item>
         <ion-label>Mobile</ion-label>
-        <ion-input type="tel" id="phone" ngModel name="phone" required #phone="ngModel" (blur)="checkExistingUser()" text-right></ion-input>
+        <ion-input type="tel" id="phone" ngModel name="phone" required #phone="ngModel" (blur)="checkExistingUser()" text-right pattern="[0-9]*" minlength="10" maxlength="10" ></ion-input>
       </ion-item>
       <ion-item no-lines *ngIf="!phone.valid && phone.touched" class="error-font-size">
         <ion-icon name="alert" item-left small color="warning"></ion-icon>Enter valid phone number!</ion-item>
@@ -101,7 +101,7 @@
         <ion-icon name="alert" item-left small color="warning"></ion-icon>Locality is required!, Please select area to proceed</ion-item>
       <ion-item>
         <ion-label>Zipcode</ion-label>
-        <ion-input type="text" name="zipcode" id="zipcode" ngModel required #zipcode="ngModel" text-right></ion-input>
+        <ion-input type="text" name="zipcode" id="zipcode" ngModel required #zipcode="ngModel" text-right pattern="[0-9]*" minlength="6" maxlength="6"></ion-input>
       </ion-item>
       <ion-item no-lines *ngIf="!zipcode.valid && zipcode.touched" class="error-font-size">
         <ion-icon name="alert" item-left small color="warning"></ion-icon>Zipcode is required!</ion-item>

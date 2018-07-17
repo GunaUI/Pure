@@ -57,6 +57,7 @@ export class SignupPage {
     })
   }
   onSubmit() {
+    if(this.registerForm.value.userData.phone.length==10){
     var ctrl = this;
     const loader = this.loadingCtrl.create({
       content: "Please wait..."
@@ -90,14 +91,28 @@ export class SignupPage {
                   }
                   ctrl.serverService.postData('/api/customer', this.registerData).then((response) => {
                     if (response["pinService"]) {
-                      loader.dismiss();
                       ctrl.storage.set('registrationVerifiction', response).then((data) => {
-                        ctrl.navCtrl.setRoot("LoginPage");
+                      ctrl.alertCtrl.create({
+                        title: 'Registered Successfully!!',
+                        message: 'We have sent an OTP to your registered Email. Please check',
+                        buttons: [{
+                            text: 'Okay',
+                            handler: () => {
+                              loader.dismiss();
+                              ctrl.navCtrl.setRoot("LoginPage");
+                            }
+                          }
+                        ]
+                      }).present();
                       });
                     } else {
                       let toast = ctrl.toastCtrl.create({
-                        message: 'We are not serving for zipcode ' + ctrl.registerForm.value.billingData.zipcode + ', We will get back to you soon. ',
-                        duration: 3000
+                        message: 'Registered Successfully, We are not serving for zipcode ' + ctrl.registerForm.value.billingData.zipcode + ', We will get back to you soon. ',
+                        duration: 3000,
+                        showCloseButton: true,
+                        closeButtonText: 'Ok',
+                        dismissOnPageChange: true,
+                        cssClass: "toast-success"
                       });
                       toast.present();
                       loader.dismiss();
@@ -111,7 +126,11 @@ export class SignupPage {
               } else {
                 let toast = ctrl.toastCtrl.create({
                   message: 'Please enter valid delivery address',
-                  duration: 3000
+                  duration: 3000,
+                  showCloseButton: true,
+                  closeButtonText: 'Ok',
+                  dismissOnPageChange: true,
+                  cssClass: "toast-warning"
                 });
                 toast.present();
                 loader.dismiss();
@@ -129,11 +148,13 @@ export class SignupPage {
                         phone: ''
                       }
                     })
+                    loader.dismiss();
                   }
                 },
                 {
                   text: 'Yes',
                   handler: () => {
+                    loader.dismiss();
                     this.navCtrl.setRoot("LoginPage");
                   }
                 }
@@ -143,6 +164,16 @@ export class SignupPage {
           }
         });
     }, 100);
+    }else{
+      this.toastCtrl.create({
+        message: 'Please enter valid Mobile Number',
+        duration: 3000,
+        showCloseButton: true,
+        closeButtonText: 'Ok',
+        dismissOnPageChange: true,
+        cssClass: "toast-warning"
+      }).present();
+    }
   }
   getState(ev) {
     var ctrl = this;
@@ -160,10 +191,17 @@ export class SignupPage {
           if (data != null && data.state_id != 0) {
             ctrl.billing.state = data.state_name;
             ctrl.billing.state_id = data.state_id;
-            this.stateValid = true;
+            ctrl.billing.city = "None Selected";
+            ctrl.billing.city_id = 0;
+            ctrl.billing.area = "None Selected";
+            ctrl.billing.area_id = 0;
+            ctrl.billing.locality = "None Selected";
+            ctrl.billing.locality_id = 0;
+            ctrl.stateValid = true;
+            ctrl.disableSubmit = true;
           } else {
-            this.stateValid = false;
-            this.disableSubmit = true;
+            ctrl.stateValid = false;
+            ctrl.disableSubmit = true;
           }
         })
       });
@@ -187,6 +225,11 @@ export class SignupPage {
               ctrl.cityValid = true;
               ctrl.billing.city = data.city_name;
               ctrl.billing.city_id = data.city_id;
+              ctrl.billing.area = "None Selected";
+              ctrl.billing.area_id = 0;
+              ctrl.billing.locality = "None Selected";
+              ctrl.billing.locality_id = 0;
+              ctrl.disableSubmit = true;
             }
           })
         });
@@ -214,6 +257,9 @@ export class SignupPage {
               ctrl.areaValid = true;
               ctrl.billing.area = data.area_name;
               ctrl.billing.area_id = data.area_id;
+              ctrl.billing.locality = "None Selected";
+              ctrl.billing.locality_id = 0;
+              ctrl.disableSubmit = true;
             }
           })
         });

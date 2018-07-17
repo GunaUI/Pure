@@ -154,7 +154,14 @@ export class CheckoutPage {
           if(data!=null && data.state_id!=0){
             ctrl.model.state=data.state_name;
             ctrl.model.state_id=data.state_id;
-            this.stateValid = true;
+            ctrl.model.city = "None Selected";
+            ctrl.model.city_id = 0;
+            ctrl.model.area = "None Selected";
+            ctrl.model.area_id = 0;
+            ctrl.model.locality = "None Selected";
+            ctrl.model.locality_id = 0;
+            ctrl.stateValid = true;
+            ctrl.disableSubmit = true;
           }else if(ctrl.model.state_id=='' || ctrl.model.state_id==null){
             this.stateValid = false;
             this.disableSubmit = true;
@@ -178,6 +185,9 @@ export class CheckoutPage {
             ctrl.cityValid = true;
             ctrl.model.city=data.city_name;
             ctrl.model.city_id=data.city_id;
+            ctrl.model.locality = "None Selected";
+            ctrl.model.locality_id = 0;
+            ctrl.disableSubmit = true;
           }
         })
       });
