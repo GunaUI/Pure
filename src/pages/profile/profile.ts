@@ -168,22 +168,16 @@ export class ProfilePage {
             });
           } else {
             const confirm = this.alertCtrl.create({
-              title: 'Alreay You have account!',
-              message: 'Do you want to login ?',
+              title: 'Exising Mobile Number',
+              message: "You can't update to this number, its already mapped to another user",
               buttons: [{
-                  text: 'No',
+                  text: 'Ok',
                   handler: () => {
                     this.updateProfileForm.form.patchValue({
                       userData: {
                         phone: ''
                       }
                     })
-                  }
-                },
-                {
-                  text: 'Yes',
-                  handler: () => {
-                    this.navCtrl.setRoot("LoginPage");
                   }
                 }
               ]
@@ -320,22 +314,16 @@ export class ProfilePage {
       .subscribe(user => {
         if (user.status == "fail") {
           const confirm = this.alertCtrl.create({
-            title: 'Alreay You have account!',
-            message: 'Do you want to login ?',
+            title: 'Exising Mobile Number',
+            message: "You can't update to this number, its already mapped to another user",
             buttons: [{
-                text: 'No',
+                text: 'Ok',
                 handler: () => {
                   this.updateProfileForm.form.patchValue({
                     userData: {
                       phone: ''
                     }
                   })
-                }
-              },
-              {
-                text: 'Yes',
-                handler: () => {
-                  this.navCtrl.setRoot("LoginPage");
                 }
               }
             ]

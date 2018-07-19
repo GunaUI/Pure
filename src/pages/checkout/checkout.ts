@@ -118,7 +118,7 @@ export class CheckoutPage {
           if(user["customer"]["state_id"]!=0 && user["customer"]["city_id"]!=0 && user["customer"]["area_id"]!=0 && user["customer"]["locality_id"]!=0){
             ctrl.disableSubmit = false;
           }
-          
+          this.liftAvailability();
         });
         ctrl.storage.get('cartData').then((data) => {
             if(data!=null){
