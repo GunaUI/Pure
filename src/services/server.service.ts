@@ -174,5 +174,21 @@ export class ServerService {
         }
       );
   }
+  getWalletHistory(customerId){
+    return this.http.get(SERVER_URL+'/api/wallet?customerId='+customerId+'&history=yes')
+      .map(
+        (response: Response) => {
+          return response.json();
+        }
+      );
+  }
+  getWalletBalance(customerId){
+    return this.http.get(SERVER_URL+'/api/wallet?customerId='+customerId)
+      .map(
+        (response: Response) => {
+          return response.json();
+        }
+      );
+  }
 }
 

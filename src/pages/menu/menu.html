@@ -14,7 +14,7 @@
       <ion-item text-wrap (click)="openPage('home')" menuClose>
         <ion-icon name="home" item-left large [class.active-highlight]="checkActive('home')"></ion-icon>
         <h2>Home</h2>
-        <p>Check your orders</p>
+        <p>Buy Products</p>
       </ion-item>
       <ion-item (click)="openPage('orders');" *ngIf="loggedIn" menuClose>
         <ion-icon name="cart" item-left large [class.active-highlight]="checkActive('orders')"></ion-icon>
@@ -41,6 +41,11 @@
         <ion-icon name="contact" item-left large [class.active-highlight]="checkActive('profile')"></ion-icon>
         <h2>Profile</h2>
         <p>Update your profile</p>
+      </ion-item>
+      <ion-item (click)="openPage('wallet');" *ngIf="loggedIn" menuClose>
+        <ion-icon name="card" item-left large [class.active-highlight]="checkActive('wallet')"></ion-icon>
+        <h2>Wallet</h2>
+        <p>Instant checkout using wallet</p>
       </ion-item>
       <ion-item (click)="openPage('logout');" *ngIf="loggedIn" menuClose>
         <ion-icon name="log-out" item-left large [class.active-highlight]="checkActive('logout')"></ion-icon>

@@ -40,6 +40,8 @@ export class MenuPage {
       this.nav.setRoot('SignupPage');
     } else if (page == 'login') {
       this.nav.setRoot("LoginPage");
+    } else if (page == 'wallet') {
+      this.nav.setRoot("WalletPage");
     } else if (page == 'profile') {
       this.nav.setRoot("ProfilePage");
     } else if (page == 'orders') {

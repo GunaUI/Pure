@@ -1,0 +1,43 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-buttons left>
+      <button ion-button icon menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>Wallet</ion-title>
+  </ion-navbar>
+  <div class="welcome-header" *ngIf="balance.amount>0">
+    <div class="content">
+      <div class="title">Current Balance : <i class="fa fa-rupee" aria-hidden="true"></i> {{balance.amount}}</div>
+      <div class="subtitle">Wallet Status : {{balance.status | titlecase}}</div>
+    </div>
+</div>
+</ion-header>
+<ion-content padding style="margin-top:20px;"> 
+  
+  <timeline endIcon="call">
+    <timeline-item *ngFor="let item of items"> 
+      <timeline-time [time]="{ title: item.balance_after_recharge , 'titleIcon':'fa fa-rupee',subtitle: item.created_on  }" ></timeline-time>
+      <ion-icon name="calendar"></ion-icon>
+      <ion-card col-12 style="background-color: ivory;">
+        <ion-card-header>
+          Recharge Amount : <i class="fa fa-rupee" aria-hidden="true"></i> {{item.recharge_amount}}
+        </ion-card-header>
+        <ion-card-content>
+          <ion-list no-lines>
+            <ion-item>
+              <h3>Previous balance : <i class="fa fa-rupee" aria-hidden="true"></i> {{item.balance_before_recharge}}</h3>
+            </ion-item>
+            <ion-item>
+              <h3>Payment mode : {{item.payment_mode | titlecase}}</h3>
+            </ion-item>
+            <ion-item>
+              <h3>Status : {{item.recharge_status | titlecase}}</h3>
+            </ion-item>
+          </ion-list>
+        </ion-card-content>
+      </ion-card>
+    </timeline-item>
+  </timeline>
+</ion-content>
